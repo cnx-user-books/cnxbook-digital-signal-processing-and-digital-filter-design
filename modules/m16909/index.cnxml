@@ -1,0 +1,489 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:bib="http://bibtexml.sf.net/">
+  <title>Design of Infinite Impulse Response (IIR) Filters by Frequency Transformations</title>
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m16909</md:content-id>
+  <md:title>Design of Infinite Impulse Response (IIR) Filters by Frequency Transformations</md:title>
+  <md:abstract/>
+  <md:uuid>614718b0-932d-4a41-8136-bec8b90fd67f</md:uuid>
+</metadata>
+  <content>
+    <para id="id2255546">The design of a digital filter is usually specified in terms of
+the characteristics of the signals to be passed through the filter. In
+many cases, the signals are described in terms of their frequency
+content. For example, even though it cannot be predicted just what a
+person may say, it can be predicted that the speech will have
+frequency content between 300 and 4000 Hz. Therefore, a filter can be
+designed to pass speech without knowing what the speech is. This is
+true of many signals and of many types of noise or interference. For
+these reasons among others, specifications for filters are generally
+given in terms of the frequency response of the filter.</para>
+    <para id="id2255560">The basic IIR filter design process is similar to that for the
+FIR problem:</para>
+    <list id="id2255565" list-type="enumerated">
+      <item id="uid1">Choose a desired response, usually in the frequency domain;
+</item>
+      <item id="uid2">Choose an allowed class of filters, in this case, the Nth-order IIR filters;
+</item>
+      <item id="uid3">Establish a measure of distance between the desired response and the actual response of a member of
+the allowed class; and
+</item>
+      <item id="uid4">Develop a method to find the best allowed filter as measured by being closest to the desired response.
+</item>
+    </list>
+    <para id="id2255613">This section develops several practical methods for IIR
+filter design. A very important set of methods is based on
+converting Butterworth, Chebyshev I and II, and elliptic-function
+analog filter designs to digital filter designs by both the impulse-
+invariant method and the bilinear transformation. The
+characteristics of these four approximations are based on
+combinations of a Taylor's series and a Chebyshev approximation in
+the pass and stopbands. Many results from this chapter can be
+used for analog filter design as well as for digital design.</para>
+    <para id="id2255626">Extensions of the frequency-sampling and least-squared-error
+design for the FIR filter are developed for the IIR filter. Several
+direct iterative numerical methods for optimal approximation are
+described in this chapter. Prony's method and direct numerical methods
+are presented for designing IIR filters according to time-domain
+specifications.</para>
+    <para id="id2255635">The discussion of the four classical lowpass
+filter design methods is arranged so that each method has a section
+on properties and a section on design procedures. There are also
+design programs in the appendix. An experienced person can simply
+use the design programs. A less experienced designer should read the
+design procedure material, and a person who wants to understand the
+theory in order to modify the programs, develop new programs, or
+better understand the given ones, should study the properties
+section and consult the references.</para>
+    <section id="uid5">
+      <title>Rational Function Approximation</title>
+      <para id="id2255654">The mathematical problem inherent in the frequency-domain
+filter design problem is the approximation of a desired complex
+frequency-response function <m:math><m:mrow><m:msub><m:mi>H</m:mi><m:mi>d</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> by a rational transfer
+function <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> with an Mth-degree numerator and an Nth-degree
+denominator for values of the complex variable <m:math><m:mi>z</m:mi></m:math> along the unit
+circle of <m:math><m:mrow><m:mi>z</m:mi><m:mo>=</m:mo><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mi>ω</m:mi></m:mrow></m:msup></m:mrow></m:math>. This approximation is achieved by
+minimizing an error measure between <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:msub><m:mi>H</m:mi><m:mi>d</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>.</para>
+      <para id="id2255778">For the digital filter design problem, the mathematics are
+complicated by the approximation being defined on the unit circle.
+In terms of <m:math><m:mi>z</m:mi></m:math>, frequency is a polar coordinate variable. It is
+often much easier and clearer to formulate the problem such that
+frequency is a rectangular coordinate variable, in the way it
+naturally occurs for analog filters using the Laplace complex
+variable <m:math><m:mi>s</m:mi></m:math>. A particular change of complex variable that converts
+the polar coordinate variable to a rectangular coordinate variable
+is the bilinear transformation<link target-id="bid0"/>, <link target-id="bid1"/>, <link target-id="bid2"/>, <link target-id="bid3"/>.</para>
+      <equation id="uid6">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>z</m:mi>
+            <m:mo>=</m:mo>
+            <m:mo>-</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:mi>s</m:mi>
+                <m:mo>+</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+              <m:mrow>
+                <m:mi>s</m:mi>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2255866">The details of the bilinear and alternative transformations are
+covered elsewhere. For the purposes of this section, it is
+sufficient to observe<link target-id="bid0"/>, <link target-id="bid2"/> that the frequency response of a
+filter in terms of the new variable is found by evaluating <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>)</m:mo></m:mrow></m:math>
+along the imaginary axis, i.e., for <m:math><m:mrow><m:mi>s</m:mi><m:mo>=</m:mo><m:mi>j</m:mi><m:mi>ω</m:mi></m:mrow></m:math>. This is exactly
+how the frequency response of analog filters is obtained.</para>
+      <para id="id2255918">There are two reasons that the approximation process is often
+formulated in terms of the square of the magnitude of the transfer
+function, rather than the real and/or imaginary parts of the
+complex transfer function or the magnitude of the transfer
+function. The first reason is that the squared-magnitude frequency-
+response function is an analytic, real-valued function of a real
+variable, and this considerably simplifies the problem of finding a
+“best" solution. The second reason is that effects of the signal or
+interference are often stated in terms of the energy or power
+that is proportional to the square of the magnitude of the signal
+or noise.</para>
+      <para id="id2255943">In order to move back and forth between the transfer function
+<m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>)</m:mo></m:mrow></m:math> and the squared-magnitude frequency response
+<m:math><m:msup><m:mrow><m:mo>|</m:mo><m:mi>F</m:mi><m:mrow><m:mo>(</m:mo><m:mi>j</m:mi><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow><m:mo>|</m:mo></m:mrow><m:mn>2</m:mn></m:msup></m:math>, an intermediate function is defined. The analytic
+complex-valued function of the complex variable s is defined by</para>
+      <equation id="uid7">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>F</m:mi>
+            <m:mi>F</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>s</m:mi>
+            <m:mo>)</m:mo>
+            <m:mo>=</m:mo>
+            <m:mi>F</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>s</m:mi>
+            <m:mo>)</m:mo>
+            <m:mi>F</m:mi>
+            <m:mo>(</m:mo>
+            <m:mo>-</m:mo>
+            <m:mi>s</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256279">which is related to the squared magnitude
+by</para>
+      <equation id="uid8">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mrow>
+                <m:mi>F</m:mi>
+                <m:mi>F</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>s</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>|</m:mo>
+              </m:mrow>
+              <m:mrow>
+                <m:mi>s</m:mi>
+                <m:mo>=</m:mo>
+                <m:mi>j</m:mi>
+                <m:mi>ω</m:mi>
+              </m:mrow>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:msup>
+              <m:mrow>
+                <m:mo>|</m:mo>
+                <m:mi>F</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mi>ω</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>|</m:mo>
+              </m:mrow>
+              <m:mn>2</m:mn>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256348">If</para>
+      <equation id="uid9">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>F</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>j</m:mi>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+            <m:mo>=</m:mo>
+            <m:mi>R</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+            <m:mo>+</m:mo>
+            <m:mi>j</m:mi>
+            <m:mi>I</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256399">then</para>
+      <equation id="uid10">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msup>
+              <m:mrow>
+                <m:mo>|</m:mo>
+                <m:mi>F</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mi>ω</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>|</m:mo>
+              </m:mrow>
+              <m:mn>2</m:mn>
+            </m:msup>
+            <m:mo>=</m:mo>
+            <m:mi>R</m:mi>
+            <m:msup>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mn>2</m:mn>
+            </m:msup>
+            <m:mo>+</m:mo>
+            <m:mi>I</m:mi>
+            <m:msup>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mn>2</m:mn>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <equation id="uid11">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mo>=</m:mo>
+            <m:mo>(</m:mo>
+            <m:mi>R</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+            <m:mo>+</m:mo>
+            <m:mi>j</m:mi>
+            <m:mi>I</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+            <m:mo>)</m:mo>
+            <m:mo>(</m:mo>
+            <m:mi>R</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+            <m:mo>-</m:mo>
+            <m:mi>j</m:mi>
+            <m:mi>I</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <equation id="uid12">
+        <m:math mode="display">
+          <m:msub>
+            <m:mrow>
+              <m:mo>=</m:mo>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>s</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mo>-</m:mo>
+                <m:mi>s</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>|</m:mo>
+            </m:mrow>
+            <m:mrow>
+              <m:mi>s</m:mi>
+              <m:mo>=</m:mo>
+              <m:mi>j</m:mi>
+              <m:mi>ω</m:mi>
+            </m:mrow>
+          </m:msub>
+        </m:math>
+      </equation>
+      <para id="id2256587">In this context, the approximation is arrived at in terms of
+<m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>j</m:mi><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math>, and the result is an analytic function <m:math><m:mrow><m:mi>F</m:mi><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>)</m:mo></m:mrow></m:math> with a
+factor <m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>)</m:mo></m:mrow></m:math>, which is the desired filter transfer function in
+terms of the rectangular variable <m:math><m:mi>s</m:mi></m:math>. A comparable function can be
+defined in terms of the digital transfer function using the polar
+variable <m:math><m:mi>z</m:mi></m:math> by defining</para>
+      <equation id="uid13">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mi>H</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>z</m:mi>
+            <m:mo>)</m:mo>
+            <m:mo>=</m:mo>
+            <m:mi>H</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>z</m:mi>
+            <m:mo>)</m:mo>
+            <m:mi>H</m:mi>
+            <m:mo>(</m:mo>
+            <m:mn>1</m:mn>
+            <m:mo>/</m:mo>
+            <m:mi>z</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256710">which gives the magnitude-squared frequency response when evaluated
+around the unit circle, i.e., <m:math><m:mrow><m:mi>z</m:mi><m:mo>=</m:mo><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mi>ω</m:mi></m:mrow></m:msup></m:mrow></m:math>.</para>
+      <para id="id2256738">The next section develops four useful approximations using the
+continuous-time Laplace transform formulation in s. These will be
+transformed into digital transfer functions by techniques covered in
+another module. They can also be used directly for analog filter
+design.</para>
+    </section>
+    <section id="uid14">
+      <title>Classical Analog Lowpass Filter Approximations</title>
+      <para id="id2256754">Four basic filter approximations are considered to be standard.
+They are often developed and presented in terms of a normalized
+lowpass filter that can be modified to give other versions such as
+highpass or bandpass filters. These four forms use Taylor's series
+approximations and Chebyshev approximations in various
+combinations<link target-id="bid1"/>, <link target-id="bid4"/>, <link target-id="bid5"/>, <link target-id="bid6"/>. It is interesting to note that
+none of these are defined in terms of a mean-squared error measure.
+Although it would be an interesting error criterion, the reason is
+that there is no closed-form solution to the LS-error approximation
+problem which is nonlinear for the IIR filter.</para>
+      <para id="id2256794">This section develops the four classical approximations in terms
+of the Laplace transform variable s. They can be used as prototype
+filters to be converted into digital filters or used directly for
+analog filter design.</para>
+      <para id="id2256800">The desired lowpass filter frequency response is similar to
+the case for the FIR filter. Here it is expressed in terms of the
+magnitude squared of the transfer function, which is a function of <m:math><m:mrow><m:mi>s</m:mi><m:mo>=</m:mo><m:mi>j</m:mi><m:mi>ω</m:mi></m:mrow></m:math> and is illustrated in <link document="m16889" target-id="uid86">Figure 8 from FIR Digital Filters</link> and <link document="m16892" target-id="uid26">Figure 1 from Least Squared Error Design of FIR Filters</link>.</para>
+      <para id="id2256828">The Butterworth filter uses a Taylor's series approximation to
+the ideal at both <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math> and <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mi>∞</m:mi></m:mrow></m:math>. The Chebyshev
+filter uses a Chebyshev (min-max) approximation across the passband and a
+Taylor's series at <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mi>∞</m:mi></m:mrow></m:math>. The Inverse or Type-II Chebyshev
+filter uses a Taylor's series approximation at <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math> and a
+Chebyshev across the stopband. The elliptic-function filter uses a
+Chebyshev approximation across both the pass and stopbands. The squared-
+magnitude frequency response for these approximations to the ideal is
+given in <link target-id="uid15"/>, and the design is developed in the
+following sections.</para>
+      <figure id="uid15" orient="horizontal"><media id="id6884481" alt="Figure one contains four graphs. Each graph has a horizontal axis labeled normalized frequency, with values from 0 to 3 in increments of 1. The graphs also have a vertical axis labeled Magnitude Response with values from 0 to 1 in increments of 0.2. The first graph is titled Analog Butterworth Filter, with a curve beginning at (0, 1) in a horizontal direction, and then begins decreasing at a increasing rate. By approximately (1, 0.5), the curve has settled and switches to decreasing at a decreasing rate. It becomes more shallow until it reaches a horizontal asymptote at the horizontal axis and terminates at (3, 0). The second graph is titled Analog Chebyshev Filter. It also begins with a single curve at (0, 1). The first segment of the curve contains two small troughs and two small peaks, until (1, 1) the curve begins decreasing sharply, and by (1.8, 0) it has reached a horizontal asymptote on the horizontal axis. The third graph is titled Analog Inverse Chebyshev Fitler. It begins at (0, 1) with a horizontal segment to (0.8, 1), then sharply decreases to a kink in the graph at (1, 0). After the kink is a small peak that leads to another kink at (1.8, 0). After this kink the curve increases slowly and shallows out until it terminates at (3, 0.1) The fourth graph is titled Analog Elliptic Function Filter. This graph contains one curve, beginning at (0, 1), and wavering with two troughs and two peaks of decreasing wavelengths, until at (1, 1) the curve sharply decreases to (1, 0), to a kink in the graph. A peak and a second kink at (1.2, 0) follows, and the curve terminates with a long shallow section ending at (3, 0.1)."><image src="../../media/figIIR2.png" mime-type="image/png" width="443"/><image for="pdf" src="../../media/figIIR2.eps" mime-type="application/postscript"/></media>
+        
+      <caption>Frequency Responses of the Four Classical Lowpass IIR Filter
+Approximations</caption></figure>
+      
+    </section>
+  </content>
+  <bib:file>
+    <bib:entry id="bid5">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Gold, B. and Rader, C. M.</bib:author>
+        <bib:title>Digital Processing of Signals</bib:title>
+        <bib:publisher>McGraw-Hill</bib:publisher>
+        <bib:year>1969</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid3">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Mitra, Sanjit K.</bib:author>
+        <bib:title>Digital Signal Processing, A Computer-Based Approach</bib:title>
+        <bib:publisher>McGraw-Hill</bib:publisher>
+        <bib:year>2006</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition>Third</bib:edition>
+        <bib:month/>
+        <bib:note>First edition in 1998, second in 2001</bib:note>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid2">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Oppenheim, A. V. and Schafer, R. W.</bib:author>
+        <bib:title>Discrete-Time Signal Processing</bib:title>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1999</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Englewood Cliffs, NJ</bib:address>
+        <bib:edition>Second</bib:edition>
+        <bib:month/>
+        <bib:note>Earlier editions in 1975 and 1989</bib:note>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid0">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Parks, T. W. and Burrus, C. S.</bib:author>
+        <bib:title>Digital Filter Design</bib:title>
+        <bib:publisher>John Wiley &amp; Sons</bib:publisher>
+        <bib:year>1987</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid1">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Rabiner, L. R. and Gold, B.</bib:author>
+        <bib:title>Theory and Application of Digital Signal Processing</bib:title>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1975</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Englewood Cliffs, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid4">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Taylor, F. J.</bib:author>
+        <bib:title>Digital Filter Design Handbook</bib:title>
+        <bib:publisher>Marcel Dekker, Inc.</bib:publisher>
+        <bib:year>1983</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid6">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Valkenburg, M.E. Van</bib:author>
+        <bib:title>Analog Filter Design</bib:title>
+        <bib:publisher>Holt, Rinehart, and Winston</bib:publisher>
+        <bib:year>1982</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+  </bib:file>
+</document>

@@ -1,0 +1,98 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:bib="http://bibtexml.sf.net/">
+  <title>Taylor Series, Maximally Flat, and Zero Moment Design Criteria</title>
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m16894</md:content-id>
+  <md:title>Taylor Series, Maximally Flat, and Zero Moment Design Criteria</md:title>
+  <md:abstract/>
+  <md:uuid>7b16f9dc-8808-4a11-b8bf-a68f5e94b2c7</md:uuid>
+</metadata>
+  <content>
+    <para id="id2255546">The third major approximation criterion uses some measure of the
+smoothness or flatness of the frequency response. Work has been done by Herrmann
+<link target-id="bid0"/>, P. P. Vaidyanathan, and Selesnick and Burrus <link target-id="bid1"/>, <link target-id="bid2"/>, <link target-id="bid3"/>, <link target-id="bid4"/>.
+This approach is related to how polynomial signals are processed and
+may be related to zero moments in wavelet systems.</para>
+    
+  </content>
+  <bib:file>
+    <bib:entry id="bid0">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Herrmann, O.</bib:author>
+        <bib:title>On the Approximation Problem in Nonrecursive Digital Filter Design</bib:title>
+        <bib:journal>IEEE Transactions on Circuit Theory</bib:journal>
+        <bib:year>1971</bib:year>
+<!--optional fields-->
+        <bib:volume>18</bib:volume>
+        <bib:number/>
+        <bib:pages>411–413</bib:pages>
+        <bib:month>May</bib:month>
+        <bib:note>Reprinted in DSP reprints, IEEE Press, 1972, page 202</bib:note>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid3">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Selesnick, Ivan W. and Burrus, C. Sidney</bib:author>
+        <bib:title>Exchange Algorithms for the Design of Linear Phase FIR Filters and Differentiators Having Flat Monotonic Passbands and Equiripple Stopbands</bib:title>
+        <bib:journal>IEEE Transactions on Circuits and Systems II</bib:journal>
+        <bib:year>1996</bib:year>
+<!--optional fields-->
+        <bib:volume>43</bib:volume>
+        <bib:number>9</bib:number>
+        <bib:pages>671–675</bib:pages>
+        <bib:month>September</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid1">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Selesnick, Ivan W. and Burrus, C. Sidney</bib:author>
+        <bib:title>Generalized Digital Butterworth Filter Design</bib:title>
+        <bib:journal>IEEE Transactions on Signal Processing</bib:journal>
+        <bib:year>1996</bib:year>
+<!--optional fields-->
+        <bib:volume>46</bib:volume>
+        <bib:number>6</bib:number>
+        <bib:pages>1688–1694</bib:pages>
+        <bib:month>June</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid2">
+      <bib:inproceedings>
+<!--required fields-->
+        <bib:author>Selesnick, Ivan W. and Burrus, C. Sidney</bib:author>
+        <bib:title>Generalized Digital Butterworth Filter Design</bib:title>
+        <bib:booktitle>Proceedings of the IEEE International Conference on Acoustics, Speech, and Signal Processing</bib:booktitle>
+        <bib:year>1996</bib:year>
+<!--optional fields-->
+        <bib:editor/>
+        <bib:volume>3</bib:volume>
+        <bib:series/>
+        <bib:pages>III-1367–1370</bib:pages>
+        <bib:address>IEEE ICASSP-96, Atlanta</bib:address>
+        <bib:month>May 7–10</bib:month>
+        <bib:organization/>
+        <bib:publisher/>
+        <bib:note/>
+      </bib:inproceedings>
+    </bib:entry>
+    <bib:entry id="bid4">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Selesnick, Ivan W. and Burrus, C. Sidney</bib:author>
+        <bib:title>Maximally Flat Lowpass FIR Filters with Reduced Delay</bib:title>
+        <bib:journal>IEEE Transaction on Circuits and Systems: II</bib:journal>
+        <bib:year>1998</bib:year>
+<!--optional fields-->
+        <bib:volume>45</bib:volume>
+        <bib:number>1</bib:number>
+        <bib:pages>53–68</bib:pages>
+        <bib:month>January</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+  </bib:file>
+</document>

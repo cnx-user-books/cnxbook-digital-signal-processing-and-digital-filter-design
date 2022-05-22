@@ -1,0 +1,3438 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:bib="http://bibtexml.sf.net/">
+  <title>Block, Multi-rate, Multi-dimensional Processing and Distributed Arithmetic</title>
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m16914</md:content-id>
+  <md:title>Block, Multi-rate, Multi-dimensional Processing and Distributed Arithmetic</md:title>
+  <md:abstract/>
+  <md:uuid>7f070d57-0a42-4c4d-9872-5b8d57db73f2</md:uuid>
+</metadata>
+  <content>
+    <section id="uid1">
+      <title>Introduction</title>
+      <para id="id2255554">The partitioning of long or infinite strings of data into shorter sections
+or blocks has been used to allow application of the FFT to realize
+on-going or continuous convolution <link target-id="bid0"/>, <link target-id="bid1"/>. These notes
+develop the idea of block processing and shows that it is a generalization
+of the overlap-add and overlap-save methods <link target-id="bid0"/>, <link target-id="bid2"/>. They
+further generalize the idea to a multidimensional formulation of
+convolution <link target-id="bid3"/>, <link target-id="bid4"/>. Moving in the opposite direction, it is
+shown that, rather than partitioning a string of scalars into blocks and
+then into blocks of blocks, one can partition a scalar number into blocks
+of bits and then include the operation of multiplication in the signal
+processing formulation. This is called distributed arithmetic <link target-id="bid5"/>
+and, since it describes operations at the bit level, is completely
+general. These notes try to present a coherent development of these
+ideas.</para>
+    </section>
+    <section id="uid2">
+      <title>Block Signal Processing</title>
+      <para id="id2255620">In this section the usual convolution and recursion that implements FIR
+and IIR discrete-time filters are reformulated in terms of vectors and
+matrices. Because the same data is partitioned and grouped in a variety
+of ways, it is important to have a consistent notation in order to be
+clear. The <m:math><m:msup><m:mi>n</m:mi><m:mrow><m:mi>t</m:mi><m:mi>h</m:mi></m:mrow></m:msup></m:math> element of a data sequence is expressed <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> or, in
+some cases to simplify, <m:math><m:msub><m:mi>h</m:mi><m:mi>n</m:mi></m:msub></m:math>. A block or finite length column vector is
+denoted <m:math><m:msub><m:munder><m:mi>h</m:mi><m:mo>̲</m:mo></m:munder><m:mi>n</m:mi></m:msub></m:math> with <m:math><m:mi>n</m:mi></m:math> indicating the <m:math><m:msup><m:mi>n</m:mi><m:mrow><m:mi>t</m:mi><m:mi>h</m:mi></m:mrow></m:msup></m:math> block or
+section of a longer vector. A matrix, square or rectangular, is indicated
+by an upper case letter such as <m:math><m:mi>H</m:mi></m:math> with a subscript if appropriate.</para>
+      <section id="uid4">
+        <title>Block Convolution</title>
+        <para id="id2254902">The operation of a finite impulse response (FIR) filter is described by a
+finite convolution as</para>
+        <equation id="uid6"><m:math mode="display">
+            <m:mrow>
+              <m:mi>y</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>k</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>L</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>-</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256063">where <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is causal, <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is causal and of length <m:math><m:mi>L</m:mi></m:math>, and the time
+index <m:math><m:mi>n</m:mi></m:math> goes from zero to infinity or some large value. With a change
+of index variables this becomes</para>
+        <equation id="uid7"><m:math mode="display">
+            <m:mrow>
+              <m:mi>y</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>k</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mi>n</m:mi>
+              </m:munderover>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>-</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256186">which can be expressed as a matrix operation by</para>
+        <equation id="uid8">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mo>=</m:mo>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mo>⋯</m:mo>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256388">The <m:math><m:mi>H</m:mi></m:math> matrix of impulse response values is partitioned into <m:math><m:mi>N</m:mi></m:math> by <m:math><m:mi>N</m:mi></m:math>
+square sub matrices and the <m:math><m:mi>X</m:mi></m:math> and <m:math><m:mi>Y</m:mi></m:math> vectors are partitioned into
+length-<m:math><m:mi>N</m:mi></m:math> blocks or sections. This is illustrated for <m:math><m:mrow><m:mi>N</m:mi><m:mo>=</m:mo><m:mn>3</m:mn></m:mrow></m:math> by</para>
+        <equation id="uid9">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>H</m:mi>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mspace width="72.26999pt"/>
+              <m:msub>
+                <m:mi>H</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>3</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>4</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>3</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>5</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>4</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>3</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mspace width="36.135pt"/>
+              <m:mspace width="4.pt"/>
+              <m:mtext>etc.</m:mtext>
+              <m:mspace width="4.pt"/>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid10">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:munder>
+                  <m:mi>x</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mspace width="72.26999pt"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>x</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>3</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>4</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>5</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mspace width="72.26999pt"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>y</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mspace width="36.135pt"/>
+              <m:mspace width="4.pt"/>
+              <m:mtext>etc.</m:mtext>
+              <m:mspace width="4.pt"/>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256849">Substituting these definitions into <link target-id="uid8"/> gives</para>
+        <equation id="uid11">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>y</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>y</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>y</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mo>=</m:mo>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>H</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mo>⋯</m:mo>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>H</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>H</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>H</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>H</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>H</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>x</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>x</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>x</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257073">The general expression for the <m:math><m:msup><m:mi>n</m:mi><m:mrow><m:mi>t</m:mi><m:mi>h</m:mi></m:mrow></m:msup></m:math> output block is</para>
+        <equation id="uid12"><m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:munder>
+                  <m:mi>y</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mi>n</m:mi>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow> 
+               <m:mrow>
+                  <m:mi>k</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mi>n</m:mi>
+              </m:munderover>
+              <m:msub>
+                <m:mi>H</m:mi>
+                <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>x</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mi>k</m:mi>
+              </m:msub>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257166">which is a vector or block convolution. Since the matrix-vector
+multiplication within the block convolution is itself a convolution, <link target-id="uid13"/>
+is a sort of convolution of convolutions and the finite length
+matrix-vector multiplication can be carried out using the FFT or other
+fast convolution methods.</para>
+        <para id="id2257180">The equation for one output block can be written as the product</para>
+        <equation id="uid13">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:munder>
+                  <m:mi>y</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mn>2</m:mn>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mfenced separators="" open="[" close="]">
+                <m:msub>
+                  <m:mi>H</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msub>
+                <m:msub>
+                  <m:mi>H</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:msub>
+                  <m:mi>H</m:mi>
+                  <m:mn>0</m:mn>
+                </m:msub>
+              </m:mfenced>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>x</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>x</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>x</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257289">and the effects of one input block can be written</para>
+        <equation id="uid14">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>H</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>H</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>H</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:msub>
+                <m:munder>
+                  <m:mi>x</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>y</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>y</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>y</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257409">These are generalize statements of overlap save and overlap add
+<link target-id="bid0"/>, <link target-id="bid2"/>. The block length can be longer, shorter, or equal to
+the filter length.</para>
+      </section>
+      <section id="uid15">
+        <title>Block Recursion</title>
+        <para id="id2257438">Although less well-known, IIR filters can be implemented with block
+processing <link target-id="bid6"/>, <link target-id="bid7"/>, <link target-id="bid8"/>, <link target-id="bid9"/>, <link target-id="bid10"/>. The block form of an IIR
+filter is developed in much the same way as for the block convolution
+implementation of the FIR filter. The general constant coefficient
+difference equation which describes an IIR filter with recursive
+coefficients <m:math><m:msub><m:mi>a</m:mi><m:mi>l</m:mi></m:msub></m:math>, convolution coefficients <m:math><m:msub><m:mi>b</m:mi><m:mi>k</m:mi></m:msub></m:math>, input signal <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>,
+and output signal <m:math><m:mrow><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is given by</para>
+        <equation id="uid17"><m:math mode="display">
+            <m:mrow>
+              <m:mi>y</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>l</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:msub>
+                <m:mi>a</m:mi>
+                <m:mi>l</m:mi>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:mi>y</m:mi>
+                <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>l</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:mo>+</m:mo>
+              <m:munderover>
+<m:mrow>         
+       <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>k</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:msub>
+                <m:mi>b</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:mi>x</m:mi>
+                <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:msub>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257650">using both functional notation and subscripts, depending on which is
+easier and clearer. The impulse response <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is</para>
+        <equation id="uid18"><m:math mode="display">
+            <m:mrow>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>l</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:msub>
+                <m:mi>a</m:mi>
+                <m:mi>l</m:mi>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>-</m:mo>
+                <m:mi>l</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>+</m:mo>
+              <m:munderover>
+<m:mrow>         
+       <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>k</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:msub>
+                <m:mi>b</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:mi>δ</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>-</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257790">which can be written in matrix operator form</para>
+        <equation id="uid19">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mn>1</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mo>⋯</m:mo>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>a</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>1</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>a</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>a</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>1</m:mn>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>a</m:mi>
+                        <m:mn>3</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>a</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>a</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>a</m:mi>
+                        <m:mn>3</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>a</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>3</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>4</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mo>=</m:mo>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>b</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>b</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>b</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>b</m:mi>
+                        <m:mn>3</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258055">In terms of <m:math><m:mi>N</m:mi></m:math> by <m:math><m:mi>N</m:mi></m:math> submatrices and length-<m:math><m:mi>N</m:mi></m:math> blocks, this becomes</para>
+        <equation id="uid20">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>A</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mo>⋯</m:mo>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>A</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>A</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>A</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>A</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>h</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>h</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>h</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mo>=</m:mo>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>b</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>b</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258289">From this formulation, a block recursive equation can be written that will
+generate the impulse response block by block.</para>
+        <equation id="uid21">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>h</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mi>n</m:mi>
+              </m:msub>
+              <m:mo>+</m:mo>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>h</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+              <m:mspace width="4.pt"/>
+              <m:mtext>for</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mrow>
+                <m:mi>n</m:mi>
+                <m:mo>≥</m:mo>
+                <m:mn>2</m:mn>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid22">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:munder>
+                  <m:mi>h</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mi>n</m:mi>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mo>-</m:mo>
+              <m:msubsup>
+                <m:mi>A</m:mi>
+                <m:mn>0</m:mn>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msubsup>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>h</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mi>K</m:mi>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>h</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msub>
+              <m:mspace width="4.pt"/>
+              <m:mtext>for</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mrow>
+                <m:mi>n</m:mi>
+                <m:mo>≥</m:mo>
+                <m:mn>2</m:mn>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258495">with initial conditions given by</para>
+        <equation id="uid23">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:munder>
+                  <m:mi>h</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mo>-</m:mo>
+              <m:msubsup>
+                <m:mi>A</m:mi>
+                <m:mn>0</m:mn>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msubsup>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:msubsup>
+                <m:mi>A</m:mi>
+                <m:mn>0</m:mn>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msubsup>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>b</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:mo>+</m:mo>
+              <m:msubsup>
+                <m:mi>A</m:mi>
+                <m:mn>0</m:mn>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msubsup>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>b</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mn>1</m:mn>
+              </m:msub>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258612">This can also be written to generate the square partitions of the impulse
+response matrix by</para>
+        <equation id="uid24">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>H</m:mi>
+                <m:mi>n</m:mi>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mi>K</m:mi>
+              <m:msub>
+                <m:mi>H</m:mi>
+                <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msub>
+              <m:mspace width="4.pt"/>
+              <m:mtext>for</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mrow>
+                <m:mi>n</m:mi>
+                <m:mo>≥</m:mo>
+                <m:mn>2</m:mn>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258672">with initial conditions given by</para>
+        <equation id="uid25">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>H</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mi>K</m:mi>
+              <m:msubsup>
+                <m:mi>A</m:mi>
+                <m:mn>0</m:mn>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msubsup>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:mi>B</m:mi>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:mo>+</m:mo>
+              <m:msubsup>
+                <m:mi>A</m:mi>
+                <m:mn>0</m:mn>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msubsup>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:mi>B</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258754">ane <m:math><m:mrow><m:mi>K</m:mi><m:mo>=</m:mo><m:mo>-</m:mo><m:msubsup><m:mi>A</m:mi><m:mn>0</m:mn><m:mrow><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:msubsup><m:msub><m:mi>A</m:mi><m:mn>1</m:mn></m:msub></m:mrow></m:math>. This recursively generates square submatrices
+of <m:math><m:mi>H</m:mi></m:math> similar to those defined in <link target-id="uid9"/> and <link target-id="uid11"/> and shows the
+basic structure of the dynamic system.</para>
+        <para id="id2258816">Next, we develop the recursive formulation for a general input as
+described by the scalar difference equation <link target-id="uid18"/> and in matrix operator
+form by</para>
+        <equation id="uid26">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mn>1</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mo>⋯</m:mo>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>a</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>1</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>a</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>a</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>1</m:mn>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>a</m:mi>
+                        <m:mn>3</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>a</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>a</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>a</m:mi>
+                        <m:mn>3</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>a</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>3</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>4</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mo>=</m:mo>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>b</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mo>⋯</m:mo>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>b</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>b</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>b</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>b</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>b</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>b</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>b</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>b</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>3</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>4</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259228">which, after substituting the definitions of the sub matrices and assuming
+the block length is larger than the order of the numerator or denominator,
+becomes</para>
+        <equation id="uid27">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>A</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mo>⋯</m:mo>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>A</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>A</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>A</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>A</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>y</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>y</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>y</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mo>=</m:mo>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>B</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mo>⋯</m:mo>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>B</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>B</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>B</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>B</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>x</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>x</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:munder>
+                          <m:mi>x</m:mi>
+                          <m:mo>̲</m:mo>
+                        </m:munder>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259541">From the partitioned rows of <link target-id="uid28"/>, one can write the block recursive relation</para>
+        <equation id="uid28">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>y</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msub>
+              <m:mo>+</m:mo>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>y</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mi>n</m:mi>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:msub>
+                <m:mi>B</m:mi>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>x</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msub>
+              <m:mo>+</m:mo>
+              <m:msub>
+                <m:mi>B</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>x</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mi>n</m:mi>
+              </m:msub>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259673">Solving for <m:math><m:msub><m:munder><m:mi>y</m:mi><m:mo>̲</m:mo></m:munder><m:mrow><m:mi>n</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:msub></m:math> gives</para>
+        <equation id="uid29">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:munder>
+                  <m:mi>y</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mo>-</m:mo>
+              <m:msubsup>
+                <m:mi>A</m:mi>
+                <m:mn>0</m:mn>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msubsup>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>y</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mi>n</m:mi>
+              </m:msub>
+              <m:mo>+</m:mo>
+              <m:msubsup>
+                <m:mi>A</m:mi>
+                <m:mn>0</m:mn>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msubsup>
+              <m:msub>
+                <m:mi>B</m:mi>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>x</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msub>
+              <m:mo>+</m:mo>
+              <m:msubsup>
+                <m:mi>A</m:mi>
+                <m:mn>0</m:mn>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msubsup>
+              <m:msub>
+                <m:mi>B</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>x</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mi>n</m:mi>
+              </m:msub>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid30">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:munder>
+                  <m:mi>y</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mi>K</m:mi>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>y</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mi>n</m:mi>
+              </m:msub>
+              <m:mo>+</m:mo>
+              <m:msub>
+                <m:mi>H</m:mi>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>x</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msub>
+              <m:mo>+</m:mo>
+              <m:msub>
+                <m:mover accent="true">
+                  <m:mi>H</m:mi>
+                  <m:mo>˜</m:mo>
+                </m:mover>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>x</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mi>n</m:mi>
+              </m:msub>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259968">which is a first order vector difference equation <link target-id="bid9"/>, <link target-id="bid10"/>. This
+is the fundamental block recursive algorithm that implements the original
+scalar difference equation in <link target-id="uid18"/>. It has several important
+characteristics.</para>
+        <list id="id2259992" list-type="enumerated"><item id="uid31">The block recursive formulation is similar to a state variable equation
+but the states are blocks or sections of the output <link target-id="bid10"/>, <link target-id="bid11"/>, <link target-id="bid12"/>, <link target-id="bid13"/>.
+</item>
+          <item id="uid32">The eigenvalues of <m:math><m:mi>K</m:mi></m:math> are the poles of the original scalar problem
+raised to the <m:math><m:mi>N</m:mi></m:math> power plus others that are zero. The longer the block
+length, the “more stable" the filter is, i.e. the further the poles are
+from the unit circle <link target-id="bid9"/>, <link target-id="bid10"/>, <link target-id="bid12"/>, <link target-id="bid14"/>, <link target-id="bid15"/>.
+</item>
+          <item id="uid33">If the block length were shorter than the denominator, the vector
+difference equation would be higher than first order. There would be a
+non zero <m:math><m:msub><m:mi>A</m:mi><m:mn>2</m:mn></m:msub></m:math>. If the block length were shorter than the numerator,
+there would be a non zero <m:math><m:msub><m:mi>B</m:mi><m:mn>2</m:mn></m:msub></m:math> and a higher order block convolution
+operation. If the block length were one, the order of the vector equation
+would be the same as the scalar equation. They would be the same
+equation.
+</item>
+          <item id="uid34">The actual arithmetic that goes into the calculation of the output is
+partly recursive and partly convolution. The longer the block, the more
+the output is calculated by convolution and, the more arithmetic is
+required.
+</item>
+          <item id="uid35">It is possible to remove the zero eigenvalues in <m:math><m:mi>K</m:mi></m:math> by making <m:math><m:mi>K</m:mi></m:math>
+rectangular or square and N by N This results in a form even more similar
+to a state variable formulation <link target-id="bid16"/>, <link target-id="bid10"/>. This is briefly
+discussed below in <link document="m16881" target-id="uid73">The Z-Transform</link>.
+</item>
+          <item id="uid36">There are several ways of using the FFT in the calculation of the various
+matrix products in <link target-id="uid29"/> and in <link target-id="uid39"/> and <link target-id="uid40"/>. Each has
+some arithmetic advantage for various forms and orders of the original
+equation. It is also possible to implement some of the operations using
+rectangular transforms, number theoretic transforms, distributed
+arithmetic, or other efficient convolution algorithms
+<link target-id="bid10"/>, <link target-id="bid12"/>, <link target-id="bid17"/>, <link target-id="bid18"/>, <link target-id="bid19"/>, <link target-id="bid20"/>.
+</item>
+          <item id="uid37">By choosing the block length equal to the period, a periodically time
+varying filter can be made block time invariant. In other words, all the
+time varying characteristics are moved to the finite matrix multiplies
+which leave the time invariant properties at the block level. This allows
+use of z-transform and other time-invariant methods to be used for
+stability analysis and frequency response analysis <link target-id="bid21"/>, <link target-id="bid22"/>. It
+also turns out to be related to filter banks and multi-rate filters
+<link target-id="bid23"/>, <link target-id="bid24"/>, <link target-id="bid25"/>.
+</item>
+        </list>
+      </section>
+      <section id="uid38">
+        <title>Block State Formulation</title>
+        <para id="id2260310">It is possible to reduce the size of the matrix operators in the block
+recursive description <link target-id="uid30"/> to give a form even more like a state
+variable equation <link target-id="bid16"/>, <link target-id="bid10"/>, <link target-id="bid13"/>. If <m:math><m:mi>K</m:mi></m:math> in <link target-id="uid30"/> has several
+zero eigenvalues, it should be possible to reduce the size of <m:math><m:mi>K</m:mi></m:math> until it
+has full rank. That was done in <link target-id="bid10"/> and the result is</para>
+        <equation id="uid39">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:munder>
+                  <m:mi>z</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mi>n</m:mi>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:msub>
+                <m:mi>K</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>z</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msub>
+              <m:mo>+</m:mo>
+              <m:msub>
+                <m:mi>K</m:mi>
+                <m:mn>2</m:mn>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>x</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mi>n</m:mi>
+              </m:msub>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid40">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:munder>
+                  <m:mi>y</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mi>n</m:mi>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:msub>
+                <m:mi>H</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>z</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msub>
+              <m:mo>+</m:mo>
+              <m:msub>
+                <m:mi>H</m:mi>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:munder>
+                  <m:mi>x</m:mi>
+                  <m:mo>̲</m:mo>
+                </m:munder>
+                <m:mi>n</m:mi>
+              </m:msub>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2260527">where <m:math><m:msub><m:mi>H</m:mi><m:mn>0</m:mn></m:msub></m:math> is the same <m:math><m:mi>N</m:mi></m:math> by <m:math><m:mi>N</m:mi></m:math> convolution matrix, <m:math><m:msub><m:mi>N</m:mi><m:mn>1</m:mn></m:msub></m:math> is a
+rectangular <m:math><m:mi>L</m:mi></m:math> by <m:math><m:mi>N</m:mi></m:math> partition of the convolution matrix <m:math><m:mi>H</m:mi></m:math>, <m:math><m:msub><m:mi>K</m:mi><m:mn>1</m:mn></m:msub></m:math> is a
+square <m:math><m:mi>N</m:mi></m:math> by <m:math><m:mi>N</m:mi></m:math> matrix of full rank, and <m:math><m:msub><m:mi>K</m:mi><m:mn>2</m:mn></m:msub></m:math> is a rectangular <m:math><m:mi>N</m:mi></m:math> by <m:math><m:mi>L</m:mi></m:math>
+matrix.</para>
+        <para id="id2260673">This is now a minimal state equation whose input and output are blocks of
+the original input and output. Some of the matrix multiplications can be
+carried out using the FFT or other techniques.</para>
+      </section>
+      <section id="uid41">
+        <title>Block Implementations of Digital Filters</title>
+        <para id="id2260687">The advantage of the block convolution and recursion implementations is a
+possible improvement in arithmetic efficiency by using the FFT or other
+fast convolution methods for some of the multiplications in <link target-id="uid12"/> or
+<link target-id="uid29"/> <link target-id="bid26"/>, <link target-id="bid27"/>. There is the reduction of quantization effects
+due to an effective decrease in the magnitude of the eigenvalues and the
+possibility of easier parallel implementation for IIR filters. The
+disadvantages are a delay of at least one block length and an increased
+memory requirement.</para>
+        <para id="id2260719">These methods could also be used in the various filtering methods for
+evaluating the DFT. This the chirp z-transform, Rader's method, and
+Goertzel's algorithm.</para>
+      </section>
+      <section id="uid42">
+        <title>Multidimensional Formulation</title>
+        <para id="id2260733">This process of partitioning the data vectors and the operator matrices
+can be continued by partitioning <link target-id="uid12"/> and <link target-id="uid28"/> and creating
+blocks of blocks to give a higher dimensional structure. One should use
+index mapping ideas rather than partitioned matrices for this approach
+<link target-id="bid3"/>, <link target-id="bid4"/>.</para>
+      </section>
+    </section>
+    <section id="uid43">
+      <title>Periodically Time-Varying Discrete-Time Systems</title>
+      <para id="id2260773">Most time-varying systems are periodically time-varying and this allows
+special results to be obtained. If the block length is set equal to the
+period of the time variations, the resulting block equations are time
+invariant and all to the time varying characteristics are contained in the
+matrix multiplications. This allows some of the tools of time invariant
+systems to be used on periodically time-varying systems.</para>
+      <para id="id2260783">The PTV system is analyzed in <link target-id="bid28"/>, <link target-id="bid25"/>, <link target-id="bid29"/>, <link target-id="bid21"/>, the filter
+analysis and design problem, which includes the decimation–interpolation
+structure, is addressed in <link target-id="bid30"/>, <link target-id="bid22"/>, <link target-id="bid23"/>, and the bandwidth
+compression problem in <link target-id="bid24"/>. These structures can take the form of
+filter banks <link target-id="bid31"/>.</para>
+    </section>
+    <section id="uid45">
+      <title>Multirate Filters, Filter Banks, and Wavelets</title>
+      <para id="id2260851">Another area that is related to periodically time varying systems and to
+block processing is filter banks <link target-id="bid31"/>, <link target-id="bid32"/>. Recently the area of
+perfect reconstruction filter banks has been further developed and shown
+to be closely related to wavelet based signal analysis
+<link target-id="bid25"/>, <link target-id="bid33"/>, <link target-id="bid34"/>, <link target-id="bid31"/>, <link target-id="bid35"/>. The filter bank structure has several forms
+with the polyphase and lattice being particularly interesting. Further
+work on multirate filters can be found in
+<link target-id="bid36"/>, <link target-id="bid37"/>, <link target-id="bid38"/>, <link target-id="bid39"/>, <link target-id="bid40"/>, <link target-id="bid41"/>.</para>
+      <para id="id2260932">An idea that has some elements of multirate filters, perfect
+reconstruction, and distributed arithmetic is given in
+<link target-id="bid42"/>, <link target-id="bid43"/>. Parks has noted that design of multirate filters
+has some elements in common with complex approximation and of 2-D filter
+design <link target-id="bid44"/>, <link target-id="bid45"/> and is looking at using Tang's method for these
+designs.</para>
+    </section>
+    <section id="uid46">
+      <title>Distributed Arithmetic</title>
+      <para id="id2260974">Rather than grouping the individual scalar data values in a discrete-time
+signal into blocks, the scalar values can be partitioned into groups of
+bits. Because multiplication of integers, multiplication of polynomials,
+and discrete-time convolution are the same operations, the bit-level
+description of multiplication can be mixed with the convolution of the
+signal processing. The resulting structure is called distributed
+arithmetic <link target-id="bid5"/>, <link target-id="bid46"/>. It can be used to create an efficient table
+look-up scheme to implement an FIR or IIR filter using no multiplications
+by fetching previously calculated partial products which are stored in a
+table. Distributed arithmetic, block processing, and multi-dimensional
+formulations can be combined into an integrated powerful description to
+implement digital filters and processors. There may be a new form of
+distributed arithmetic using the ideas in <link target-id="bid42"/>, <link target-id="bid43"/>.</para>
+      
+    </section>
+  </content>
+  <bib:file>
+    <bib:entry id="bid3">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Agarwal, R. C. and Burrus, C. S.</bib:author>
+        <bib:title>Fast One-Dimensional Digital Convolution by Multi-Dimensional Techniques</bib:title>
+        <bib:journal>IEEE Transactions on Acoustics, Speech, and Signal Processing</bib:journal>
+        <bib:year>1974</bib:year>
+<!--optional fields-->
+        <bib:volume>ASSP-22</bib:volume>
+        <bib:number>1</bib:number>
+        <bib:pages>1–10</bib:pages>
+        <bib:month>February</bib:month>
+        <bib:note>also in IEEE Press DSP Reprints II, 1979; and Number Theory in DSP, by McClellan and Rader, Prentice-Hall, 1979</bib:note>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid38">
+      <bib:incollection>
+<!--required fields-->
+        <bib:author>Ansari, Rashid and Liu, Bede</bib:author>
+        <bib:title>Multirate Signal Processing</bib:title>
+        <bib:booktitle>Advanced Topics in Signal Processing</bib:booktitle>
+        <bib:publisher>John Wiley &amp; Sons</bib:publisher>
+        <bib:year>1993</bib:year>
+<!--optional fields-->
+        <bib:editor>Mitra, Sanjit K. and Kaiser, James F.</bib:editor>
+        <bib:number/>
+        <bib:series/>
+        <bib:type/>
+        <bib:chapter>14</bib:chapter>
+        <bib:pages>981–1084</bib:pages>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:incollection>
+    </bib:entry>
+    <bib:entry id="bid17">
+      <bib:inproceedings>
+<!--required fields-->
+        <bib:author>Burrus, C. S. and Agarwal, R. C.</bib:author>
+        <bib:title>Efficient Implementation of Recursive Digital Filters</bib:title>
+        <bib:booktitle>Proceedings of the Seventh Asilomar Conference on Circuits and Systems</bib:booktitle>
+        <bib:year>1973</bib:year>
+<!--optional fields-->
+        <bib:editor/>
+        <bib:number/>
+        <bib:series/>
+        <bib:pages>280–284</bib:pages>
+        <bib:address>Pacific Grove, CA</bib:address>
+        <bib:month>November, 5</bib:month>
+        <bib:organization/>
+        <bib:publisher/>
+        <bib:note/>
+      </bib:inproceedings>
+    </bib:entry>
+    <bib:entry id="bid14">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Barnes, C. W.</bib:author>
+        <bib:title>Roundoff–Noise and Overflow in Normal Digital Filters</bib:title>
+        <bib:journal>IEEE Transactions on Circuit and Systems</bib:journal>
+        <bib:year>1979</bib:year>
+<!--optional fields-->
+        <bib:volume>CAS-26</bib:volume>
+        <bib:number/>
+        <bib:pages>154–155</bib:pages>
+        <bib:month>March</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid35">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Burrus, C. Sidney and Gopinath, Ramesh A. and Guo, Haitao</bib:author>
+        <bib:title>Introduction to Wavelets and the Wavelet Transform</bib:title>
+        <bib:publisher>Prentice Hall</bib:publisher>
+        <bib:year>1998</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Upper Saddle River, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid15">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Barnes, C. W. and Shinnaka, S.</bib:author>
+        <bib:title>Block Shift Invariance and Block Implementation of Discrete-Time Filters</bib:title>
+        <bib:journal>IEEE Transactions on Circuit and Systems</bib:journal>
+        <bib:year>1980</bib:year>
+<!--optional fields-->
+        <bib:volume>CAS-27</bib:volume>
+        <bib:number>4</bib:number>
+        <bib:pages>667–672</bib:pages>
+        <bib:month>August</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid9">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Burrus, C. S.</bib:author>
+        <bib:title>Block Implementation of Digital Filters</bib:title>
+        <bib:journal>IEEE Transactions on Circuit Theory</bib:journal>
+        <bib:year>1971</bib:year>
+<!--optional fields-->
+        <bib:volume>CT-18</bib:volume>
+        <bib:number>6</bib:number>
+        <bib:pages>697–701</bib:pages>
+        <bib:month>November</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid10">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Burrus, C. S.</bib:author>
+        <bib:title>Block Realization of Digital Filters</bib:title>
+        <bib:journal>IEEE Transactions on Audio and Electroacoustics</bib:journal>
+        <bib:year>1972</bib:year>
+<!--optional fields-->
+        <bib:volume>AU-20</bib:volume>
+        <bib:number>4</bib:number>
+        <bib:pages>230–235</bib:pages>
+        <bib:month>October</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid5">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Burrus, C. S.</bib:author>
+        <bib:title>Digital Filter Structures Described by Distributed Arithmetic</bib:title>
+        <bib:journal>IEEE Transactions on Circuit and Systems</bib:journal>
+        <bib:year>1977</bib:year>
+<!--optional fields-->
+        <bib:volume>CAS-24</bib:volume>
+        <bib:number>12</bib:number>
+        <bib:pages>674–680</bib:pages>
+        <bib:month>December</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid4">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Burrus, C. S.</bib:author>
+        <bib:title>Index Mapping for Multidimensional Formulation of the DFT and Convolution</bib:title>
+        <bib:journal>IEEE Transactions on Acoustics, Speech, and Signal Processing</bib:journal>
+        <bib:year>1977</bib:year>
+<!--optional fields-->
+        <bib:volume>ASSP-25</bib:volume>
+        <bib:number>3</bib:number>
+        <bib:pages>239–242</bib:pages>
+        <bib:month>June</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid18">
+      <bib:inproceedings>
+<!--required fields-->
+        <bib:author>Burrus, C. S.</bib:author>
+        <bib:title>Recursive Digital Filter Structures Using New High Speed Convolution Algorithms</bib:title>
+        <bib:booktitle>IEEE International Conference on Acoustics, Speech, and Signal Processing</bib:booktitle>
+        <bib:year>1977</bib:year>
+<!--optional fields-->
+        <bib:editor/>
+        <bib:number/>
+        <bib:series/>
+        <bib:pages>363–365</bib:pages>
+        <bib:address>Hartford, CT</bib:address>
+        <bib:month>May</bib:month>
+        <bib:organization/>
+        <bib:publisher/>
+        <bib:note/>
+      </bib:inproceedings>
+    </bib:entry>
+    <bib:entry id="bid7">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Chanoux, D.</bib:author>
+        <bib:title>Synthesis of Recursive Digital Filters using the FFT</bib:title>
+        <bib:journal>IEEE Transactions on Audio and Electroacoustics</bib:journal>
+        <bib:year>1970</bib:year>
+<!--optional fields-->
+        <bib:volume>AU-18</bib:volume>
+        <bib:number/>
+        <bib:pages>211–212</bib:pages>
+        <bib:month>June</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid29">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Claasen, T. A. C. M. and Mecklenbraüker, W. F. G.</bib:author>
+        <bib:title>On Stationary Linear Time–Varying Systems</bib:title>
+        <bib:journal>IEEE Trans. on Circuits and Systems</bib:journal>
+        <bib:year>1982</bib:year>
+<!--optional fields-->
+        <bib:volume>29</bib:volume>
+        <bib:number>3</bib:number>
+        <bib:pages>169–184</bib:pages>
+        <bib:month>March</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid25">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Crochiere, R. E. and Rabiner, L. R.</bib:author>
+        <bib:title>Multirate Digital Signal Processing</bib:title>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1983</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Englewood Cliffs, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid37">
+      <bib:incollection>
+<!--required fields-->
+        <bib:author>Crochiere, R. E. and Rabiner, L. R.</bib:author>
+        <bib:title>Multirate Processing of Digital Signals</bib:title>
+        <bib:booktitle>Advanced Topics in Signal Processing</bib:booktitle>
+        <bib:publisher>Prentice Hall</bib:publisher>
+        <bib:year>1988</bib:year>
+<!--optional fields-->
+        <bib:editor>Lim, J. S. and Oppenheim, A. V.</bib:editor>
+        <bib:number/>
+        <bib:series/>
+        <bib:type/>
+        <bib:chapter>3</bib:chapter>
+        <bib:pages>123–198</bib:pages>
+        <bib:address>Upper Saddle River, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:incollection>
+    </bib:entry>
+    <bib:entry id="bid33">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Daubechies, Ingrid</bib:author>
+        <bib:title>Ten Lectures on Wavelets</bib:title>
+        <bib:publisher>SIAM</bib:publisher>
+        <bib:year>1992</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Philadelphia, PA</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note>Notes from the 1990 CBMS-NSF Conference on Wavelets and Applications at Lowell, MA</bib:note>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid30">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Franasek, P. A. and Liu, B.</bib:author>
+        <bib:title>On a Class of Time–Varying Filters</bib:title>
+        <bib:journal>IEEE Trans. on Information Theory</bib:journal>
+        <bib:year>1967</bib:year>
+<!--optional fields-->
+        <bib:volume>13</bib:volume>
+        <bib:number/>
+        <bib:pages>477</bib:pages>
+        <bib:month/>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid41">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Fliege, F. J.</bib:author>
+        <bib:title>Multirate Digital Signal Processing: Multrirate Systems, Filter Banks, and Wavelets</bib:title>
+        <bib:publisher>Wiley &amp; Sons</bib:publisher>
+        <bib:year>1994</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid34">
+      <bib:incollection>
+<!--required fields-->
+        <bib:author>Gopinath, R. A. and Burrus, C. S.</bib:author>
+        <bib:title>Wavelet Transforms and Filter Banks</bib:title>
+        <bib:booktitle>Wavelets: A Tutorial in Theory and Applications</bib:booktitle>
+        <bib:publisher>Academic Press</bib:publisher>
+        <bib:year>1992</bib:year>
+<!--optional fields-->
+        <bib:editor>Chui, Charles K.</bib:editor>
+        <bib:number/>
+        <bib:series/>
+        <bib:type/>
+        <bib:chapter/>
+        <bib:pages>603–655</bib:pages>
+        <bib:address>San Diego, CA</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note>Volume 2 in the series: Wavelet Analysis and its Applications</bib:note>
+      </bib:incollection>
+    </bib:entry>
+    <bib:entry id="bid6">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Gold, B. and Jordan, K. L.</bib:author>
+        <bib:title>A Note on Digital Filter Synthesis</bib:title>
+        <bib:journal>Proceedings of the IEEE</bib:journal>
+        <bib:year>1968</bib:year>
+<!--optional fields-->
+        <bib:volume>56</bib:volume>
+        <bib:number/>
+        <bib:pages>1717–1718</bib:pages>
+        <bib:month>October</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid32">
+      <bib:phdthesis>
+<!--required fields-->
+        <bib:author>Gopinath, Ramesh A.</bib:author>
+        <bib:title>Wavelets and Filter Banks – New Results and Applications</bib:title>
+        <bib:school>Rice University</bib:school>
+        <bib:year>1992</bib:year>
+<!--optional fields-->
+        <bib:type>Ph. D. Thesis</bib:type>
+        <bib:address>Houston, Tx</bib:address>
+        <bib:month>August</bib:month>
+        <bib:note/>
+      </bib:phdthesis>
+    </bib:entry>
+    <bib:entry id="bid2">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Gold, B. and Rader, C. M.</bib:author>
+        <bib:title>Digital Processing of Signals</bib:title>
+        <bib:publisher>McGraw-Hill</bib:publisher>
+        <bib:year>1969</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid42">
+      <bib:inproceedings>
+<!--required fields-->
+        <bib:author>Ghanekar, S. P. and Tantaratana, S. and Franks, L. E.</bib:author>
+        <bib:title>High-Precision Multiplier–Free FIR Filter Realization with Periodically Time–Varying Coefficients</bib:title>
+        <bib:booktitle>Paper Summaries for the 1992 DSP Workshop</bib:booktitle>
+        <bib:year>1992</bib:year>
+<!--optional fields-->
+        <bib:editor/>
+        <bib:number/>
+        <bib:series/>
+        <bib:pages>3.3.1</bib:pages>
+        <bib:address>Starved Rock Lodge, Utica, Ill.</bib:address>
+        <bib:month/>
+        <bib:organization/>
+        <bib:publisher/>
+        <bib:note/>
+      </bib:inproceedings>
+    </bib:entry>
+    <bib:entry id="bid43">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Ghanekar, S. P. and Tantaratana, S. and Franks, L. E.</bib:author>
+        <bib:title>A Class of High-Precision Multiplier–Free FIR Filter Realizations with Periodically Time–Varying Coefficients</bib:title>
+        <bib:journal>IEEE Transactions on Signal Processing</bib:journal>
+        <bib:year>1995</bib:year>
+<!--optional fields-->
+        <bib:volume>43</bib:volume>
+        <bib:number>4</bib:number>
+        <bib:pages>822–830</bib:pages>
+        <bib:month/>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid1">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Helms, H. D.</bib:author>
+        <bib:title>Fast Fourier Transform Method of Computing Difference Equations and Simulating Filters</bib:title>
+        <bib:journal>IEEE Trans. on Audio and Electroacoustics</bib:journal>
+        <bib:year>1967</bib:year>
+<!--optional fields-->
+        <bib:volume>AU-15</bib:volume>
+        <bib:number/>
+        <bib:pages>85–90</bib:pages>
+        <bib:month>June</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid39">
+      <bib:incollection>
+<!--required fields-->
+        <bib:author>Herley, Cormac and Nayebi, Kambiz</bib:author>
+        <bib:title>Time Frequency and Multirate Signal Processing</bib:title>
+        <bib:booktitle>The Digital Signal Processing Handbook</bib:booktitle>
+        <bib:publisher>CRC Press, IEEE Press</bib:publisher>
+        <bib:year>1998</bib:year>
+<!--optional fields-->
+        <bib:editor>Madisetti, V. K. and Williams, Douglas B.</bib:editor>
+        <bib:number/>
+        <bib:series/>
+        <bib:type/>
+        <bib:chapter>8</bib:chapter>
+        <bib:pages/>
+        <bib:address>Boca Raton, New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:incollection>
+    </bib:entry>
+    <bib:entry id="bid36">
+      <bib:incollection>
+<!--required fields-->
+        <bib:author>j. harris, frederic</bib:author>
+        <bib:title>Multirate FIR Filters for Interpolating and Desampling</bib:title>
+        <bib:booktitle>Handbook of Digital Signal Processing</bib:booktitle>
+        <bib:publisher>Academic Press</bib:publisher>
+        <bib:year>1987</bib:year>
+<!--optional fields-->
+        <bib:editor>Elliott, Douglas F.</bib:editor>
+        <bib:number/>
+        <bib:series/>
+        <bib:type/>
+        <bib:chapter>3</bib:chapter>
+        <bib:pages>173–288</bib:pages>
+        <bib:address>San Diego</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:incollection>
+    </bib:entry>
+    <bib:entry id="bid11">
+      <bib:inproceedings>
+<!--required fields-->
+        <bib:author>Loeffler, C. M. and Burrus, C. S.</bib:author>
+        <bib:title>Equivalence of Block Filter Representations</bib:title>
+        <bib:booktitle>Proceedings of the 1981 IEEE International Symposium on Circuits and Systems</bib:booktitle>
+        <bib:year>1981</bib:year>
+<!--optional fields-->
+        <bib:editor/>
+        <bib:number/>
+        <bib:series/>
+        <bib:pages>546-550</bib:pages>
+        <bib:address>Chicago, IL</bib:address>
+        <bib:month>April</bib:month>
+        <bib:organization/>
+        <bib:publisher/>
+        <bib:note/>
+      </bib:inproceedings>
+    </bib:entry>
+    <bib:entry id="bid24">
+      <bib:inproceedings>
+<!--required fields-->
+        <bib:author>Loeffler, C. M. and Burrus, C. S.</bib:author>
+        <bib:title>Periodically Time–Varying Bandwidth Compressor</bib:title>
+        <bib:booktitle>Proceedings of the IEEE International Symposium on Circuits and Systems</bib:booktitle>
+        <bib:year>1982</bib:year>
+<!--optional fields-->
+        <bib:editor/>
+        <bib:number/>
+        <bib:series/>
+        <bib:pages>663–665</bib:pages>
+        <bib:address>Rome, Italy</bib:address>
+        <bib:month>May</bib:month>
+        <bib:organization/>
+        <bib:publisher/>
+        <bib:note/>
+      </bib:inproceedings>
+    </bib:entry>
+    <bib:entry id="bid23">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Loeffler, C. M. and Burrus, C. S.</bib:author>
+        <bib:title>Optimal Design of Periodically Time Varying and Multirate Digital Filters</bib:title>
+        <bib:journal>IEEE Transactions on Acoustics, Speech, and Signal Processing</bib:journal>
+        <bib:year>1984</bib:year>
+<!--optional fields-->
+        <bib:volume>ASSP-32</bib:volume>
+        <bib:number>5</bib:number>
+        <bib:pages>991-924</bib:pages>
+        <bib:month>October</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid21">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Meyer, R. A. and Burrus, C. S.</bib:author>
+        <bib:title>A Unified Analysis of Multirate and Periodically Time Varying Digital Filters</bib:title>
+        <bib:journal>IEEE Transactions on Circuits and Systems</bib:journal>
+        <bib:year>1975</bib:year>
+<!--optional fields-->
+        <bib:volume>CAS-22</bib:volume>
+        <bib:number>3</bib:number>
+        <bib:pages>162–168</bib:pages>
+        <bib:month>March</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid22">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Meyer, R. A. and Burrus, C. S.</bib:author>
+        <bib:title>Design and Implementation of Multirate Digital Filters</bib:title>
+        <bib:journal>IEEE Transactions on Acoustics, Speech, and Signal Processing</bib:journal>
+        <bib:year>1976</bib:year>
+<!--optional fields-->
+        <bib:volume>ASSP-24</bib:volume>
+        <bib:number>1</bib:number>
+        <bib:pages>53–58</bib:pages>
+        <bib:month>February</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid26">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Mitra, S. K. and Gransekaran, R.</bib:author>
+        <bib:title>A Note on Block Implementation of IIR Digital Filters</bib:title>
+        <bib:journal>IEEE Transactions on Circuit and Systems</bib:journal>
+        <bib:year>1977</bib:year>
+<!--optional fields-->
+        <bib:volume>CAS-24</bib:volume>
+        <bib:number>7</bib:number>
+        <bib:pages/>
+        <bib:month>July</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid27">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Mitra, S. K. and Gransekaran, R.</bib:author>
+        <bib:title>Block Implementation of Recursive Digital Filters – New Structures and Properties</bib:title>
+        <bib:journal>IEEE Transactions on Circuit and Systems</bib:journal>
+        <bib:year>1978</bib:year>
+<!--optional fields-->
+        <bib:volume>CAS-25</bib:volume>
+        <bib:number>4</bib:number>
+        <bib:pages>200–207</bib:pages>
+        <bib:month>April</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid16">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Meek, J. W. and Veletsos, A. S.</bib:author>
+        <bib:title>Fast Convolution for Recursive Digital Filters</bib:title>
+        <bib:journal>IEEE Transactions on Audio and Electroacoustics</bib:journal>
+        <bib:year>1972</bib:year>
+<!--optional fields-->
+        <bib:volume>AU-20</bib:volume>
+        <bib:number/>
+        <bib:pages>93–94</bib:pages>
+        <bib:month>March</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid20">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Pitas, I. and Burrus, C. S.</bib:author>
+        <bib:title>Time and Error Analysis of Digital Convolution by Rectangular Transforms</bib:title>
+        <bib:journal>Signal Processing</bib:journal>
+        <bib:year>1983</bib:year>
+<!--optional fields-->
+        <bib:volume>5</bib:volume>
+        <bib:number>2</bib:number>
+        <bib:pages>153–162</bib:pages>
+        <bib:month>March</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid40">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Proakis, John G. and Rader, Charles M. and Ling, Fuyun and Nikias, Chrysostomos L.</bib:author>
+        <bib:title>Advanced Digital Signal Processing</bib:title>
+        <bib:publisher>Macmillan</bib:publisher>
+        <bib:year>1992</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid44">
+      <bib:techreport>
+<!--required fields-->
+        <bib:author>Shenoy, R. G. and Burnside, Daniel and Parks, T. W.</bib:author>
+        <bib:title>Linear Periodic Systems and Multirate Filter Design</bib:title>
+        <bib:institution>Schlumberger–Doll Research Note</bib:institution>
+        <bib:year>1992</bib:year>
+<!--optional fields-->
+        <bib:type>Technical report</bib:type>
+        <bib:number>GEO-002-92-16b</bib:number>
+        <bib:address/>
+        <bib:month>September</bib:month>
+        <bib:note/>
+      </bib:techreport>
+    </bib:entry>
+    <bib:entry id="bid45">
+      <bib:inproceedings>
+<!--required fields-->
+        <bib:author>Shenoy, R. G. and Parks, T. W. and Burnside, Daniel</bib:author>
+        <bib:title>Fourier Analysis of Linear Periodic Systems and Multirate Filter Design</bib:title>
+        <bib:booktitle>Paper Summaries for the 1992 DSP Workshop</bib:booktitle>
+        <bib:year>1992</bib:year>
+<!--optional fields-->
+        <bib:editor/>
+        <bib:number/>
+        <bib:series/>
+        <bib:pages>2.4.1</bib:pages>
+        <bib:address>Starved Rock Lodge, Utica, Ill.</bib:address>
+        <bib:month/>
+        <bib:organization/>
+        <bib:publisher/>
+        <bib:note/>
+      </bib:inproceedings>
+    </bib:entry>
+    <bib:entry id="bid0">
+      <bib:inproceedings>
+<!--required fields-->
+        <bib:author>Stockham, T. G.</bib:author>
+        <bib:title>High Speed Convolution and Correlation</bib:title>
+        <bib:booktitle>AFIPS Conf. Proc.</bib:booktitle>
+        <bib:year>1966</bib:year>
+<!--optional fields-->
+        <bib:editor/>
+        <bib:volume>28</bib:volume>
+        <bib:series/>
+        <bib:pages>229–233</bib:pages>
+        <bib:address/>
+        <bib:month/>
+        <bib:organization>1966 Spring Joint Computer Conference</bib:organization>
+        <bib:publisher/>
+        <bib:note/>
+      </bib:inproceedings>
+    </bib:entry>
+    <bib:entry id="bid31">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Vaidyanathan, P. P.</bib:author>
+        <bib:title>Multirate Systems and Filter Banks</bib:title>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1992</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Englewood Cliffs, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid8">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Voelcker, H. B. and Hartquist, E. E.</bib:author>
+        <bib:title>Digital Filtering via Block Recursion</bib:title>
+        <bib:journal>IEEE Transactions on Audio and Electroacoustics</bib:journal>
+        <bib:year>1970</bib:year>
+<!--optional fields-->
+        <bib:volume>AU-18</bib:volume>
+        <bib:number/>
+        <bib:pages>169–176</bib:pages>
+        <bib:month>June</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid46">
+      <bib:article>
+<!--required fields-->
+        <bib:author>White, S. A.</bib:author>
+        <bib:title>Applications of Distributed Arithmetic to Digital Signal Processing</bib:title>
+        <bib:journal>IEEE ASSP Magazine</bib:journal>
+        <bib:year>1989</bib:year>
+<!--optional fields-->
+        <bib:volume>6</bib:volume>
+        <bib:number>3</bib:number>
+        <bib:pages>4–19</bib:pages>
+        <bib:month>July</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid28">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Zadeh, L. A.</bib:author>
+        <bib:title>Frequency Analysis of Variable Networks</bib:title>
+        <bib:journal>Proceeding of the IRE</bib:journal>
+        <bib:year>1950</bib:year>
+<!--optional fields-->
+        <bib:volume>38</bib:volume>
+        <bib:number>3</bib:number>
+        <bib:pages>291–299</bib:pages>
+        <bib:month/>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid19">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Zalcstein, Y.</bib:author>
+        <bib:title>A Note on Fast Convolution</bib:title>
+        <bib:journal>IEEE Transactions on Computers</bib:journal>
+        <bib:year>1971</bib:year>
+<!--optional fields-->
+        <bib:volume>C-20</bib:volume>
+        <bib:number/>
+        <bib:pages>665</bib:pages>
+        <bib:month>June</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid12">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Zeman, Jan and Lindgren, Allen G.</bib:author>
+        <bib:title>Fast Digital Filters with Low Round–Off Noise</bib:title>
+        <bib:journal>IEEE Transactions on Circuit and Systems</bib:journal>
+        <bib:year>1981</bib:year>
+<!--optional fields-->
+        <bib:volume>CAS-28</bib:volume>
+        <bib:number/>
+        <bib:pages>716–723</bib:pages>
+        <bib:month>July</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid13">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Zeman, Jan and Lindgren, Allen G.</bib:author>
+        <bib:title>Fast State–Space Decimator with Very Low Round–off Noise</bib:title>
+        <bib:journal>Signal Processing</bib:journal>
+        <bib:year>1981</bib:year>
+<!--optional fields-->
+        <bib:volume>3</bib:volume>
+        <bib:number>4</bib:number>
+        <bib:pages>377–388</bib:pages>
+        <bib:month>October</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+  </bib:file>
+</document>

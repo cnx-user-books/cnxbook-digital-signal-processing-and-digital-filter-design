@@ -1,0 +1,309 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:bib="http://bibtexml.sf.net/">
+  <title>Preface: Digital Signal Processing and Digital Filter Design</title>
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m16880</md:content-id>
+  <md:title>Preface: Digital Signal Processing and Digital Filter Design</md:title>
+  <md:abstract/>
+  <md:uuid>c8b8f734-f5a6-47fb-8bd1-97a04fab8496</md:uuid>
+</metadata>
+  <content>
+    <para id="id2255546">Digital signal processing (DSP) has existed as long as quantitative
+calculations have been systematically applied to data in Science, Social
+Science, and Technology. The set of activities started out as a
+collection of ideas and techniques in very different applications. Around
+1965, when the fast Fourier transform (FFT) was rediscovered, DSP was
+extracted from its applications and became a single academic and
+professional discipline to be developed as far as possible.</para>
+    <para id="id2255557">One of the earliest books on DSP was by Gold and Rader <link target-id="bid0"/>, written
+in 1968, although there had been earlier books on sampled data control and
+time series analysis, and chapters in books on computer applications. In
+the late 60's and early 70's there was an explosion of activity in both
+the theory and application of DSP. As the area was beginning to mature,
+two very important books on DSP were published in 1975, one by Oppenheim
+and Schafer <link target-id="bid1"/> and the other by Rabiner and Gold <link target-id="bid2"/>. These
+three books dominated the early courses in universities and self study in industry.</para>
+    <para id="id2255586">The early applications of DSP were in the defense, oil, and medical
+industries. They were the ones who needed and could afford the
+expensive but higher quality processing that digital techniques
+offered over analog signal processing. However, as the theory
+developed more efficient algorithms, as computers became more
+powerful and cheaper, and finally, as DSP chips became commodity
+items (e.g. the Texas Instruments TMS-320 series) DSP moved into a
+variety of commercial applications and the current digitization of
+communications began. The applications are now everywhere. They
+are tele-communications, seismic signal processing, radar and sonar
+signal processing, speech and music signal processing, image and
+picture processing, entertainment signal processing, financial data
+signal processing, medical signal processing, nondestructive
+testing, factory floor monitoring, simulation, visualization,
+virtual reality, robotics, and control. DSP chips are found in
+virtually all cell phones, digital cameras, high-end stereo systems,
+MP3 players, DVD players, cars, toys, the “Segway", and many other
+digital systems.</para>
+    <para id="id2255627">In a modern curriculum, DSP has moved from a specialized
+graduate course down to a general undergraduate course, and, in some
+cases, to the introductory freshman or sophomore EE course <link target-id="bid3"/>.
+An exciting project is experimenting with teaching DSP in high schools and
+in colleges to non-technical majors <link target-id="bid4"/>.</para>
+    <para id="id2255646">Our reason for writing this book and adding to the already long list of DSP
+books is to cover the new results in digital filter design that have become
+available in the last 10 to 20 years and to make these results available on
+line in Connexions as well as print. Digital filters are important parts of
+a large number of systems and processes. In many cases, the use of modern
+optimal design methods allows the use of a less expensive DSP chip for a
+particular application or obtaining higher performance with existing hardware.
+The book should be useful in an introductory course if the students have
+had a course on discrete-time systems. It can be used in a second DSP course on
+filter design or used for self-study or reference in industry.</para>
+    <para id="id2255662">We first cover the optimal design of Finite Impulse Response (FIR) filters
+using a least squared error, a maximally flat, and a Chebyshev criterion.
+A feature of the book is covering finite impulse response (FIR) 
+filter design before infinite impulse response (IIR) filter design. This
+reflects modern practice and new filter design algorithms. The FIR filter
+design chapter contains new methods on constrained optimization, mixed
+optimization criteria, and modifications to the basic Parks-McClellan
+algorithm that are very useful. Design programs are given in MatLab and FORTRAN.</para>
+    <para id="id2255679">A brief chapter on structures and implementation presents block processing
+for both FIR and IIR filters, distributed arithmetic structures for
+multiplierless implementation, and multirate systems for filter banks and
+wavelets. This is presented as a generalization to sampling and to
+periodically time-varying systems. The bifrequency map gives a clearer
+explanation of aliasing and how to control it.</para>
+    <para id="id2255689">The basic notes that were developed into this book have evolved over
+35 years of teaching and conducting research in DSP at Rice, Erlangen, and
+MIT. They contain the results of research on filters and algorithms
+done at those universities and other universities and industries
+around the world. The book tries to give not only the different
+methods and approaches, but also reasons and intuition for choosing
+one method over another. It should be interesting to both the
+university student and the industrial practitioner.</para>
+    <para id="id2255701">We want to acknowledge with gratitude the long time support of Texas
+Instruments, Inc., the National Science Foundation, National
+Instruments, Inc. and the MathWorks, Inc. as well as the
+support of the Maxfield and Oshman families. We also want
+to thank our long-time colleagues Tom Parks,
+Hans Schuessler, Jim McClellan, Al Oppenheim, Sanjit Mitra, Ivan
+Selesnick, Doug Jones, Don Johnson, Leland Jackson, Rich Baraniuk,
+and our graduate students over 30 years
+from whom we have learned much and with whom we have
+argued often, particularly, Selesnick, Gopinath, Soewito, and Vargas.
+We also owe much to the IEEE Signal Processing Society
+and to Rice University for environments to learn, teach, create, and
+collaborate. Much of the results in DSP was supported directly or indirectly
+by the NSF, most recently NSF grant EEC-0538934 in the Partnerships for Innovation program
+working with National Instruments, Inc.</para>
+    <para id="id2255720">We particularly thank Texas Instruments and Prentice Hall for returning the copyrights
+to me so that part of the material in <emphasis>DFT/FFT and Convolution Algorithms</emphasis><link target-id="bid5"/>,
+<emphasis>Design of Digital Filters</emphasis><link target-id="bid6"/>, and “Efficient Fourier Transform and Convolution Algorithms" in
+<emphasis>Advanced Topics in Signal Processing</emphasis><link target-id="bid7"/> could be included here under the Creative
+Commons Attribution copyright. I also appreciate IEEE policy that allows parts of my papers
+to be included here.</para>
+    <para id="id2255761">A rather long list of references is included to point to more
+background, to more advanced theory, and to applications. A book of
+Matlab
+ DSP exercises that could be used with this book has been
+published through Prentice Hall <link target-id="bid8"/>, <link target-id="bid9"/>. Some Matlab
+ programs are included to aid in understanding the design
+algorithms and to actually design filters. LabView from National
+Instruments is a very useful tool to both learn with and use in
+application. All of the material in these notes is being put into
+“Connexions" <link target-id="bid10"/> which is a modern web-based open-content
+information system www.cnx.org. Further information is available on our web site
+at www.dsp.rice.edu with links to other related work. We thank Richard Baraniuk,
+Don Johnson, Ray Wagner, Daniel Williamson, and Marcia Horton for their help.</para>
+    <para id="id2255808">This version of the book is a draft and will continue to evolve under Connexions.
+A companion FFT book is being written and is also available in Connexions and print
+form. All of these two books are in the repository of Connexions and, therefore,
+available to anyone free to use, reuse, modify, etc. as long as attribution is given.</para>
+    <para id="id2255816">C. Sidney Burrus</para>
+    <para id="id2255824">Houston, Texas</para>
+    <para id="id2255830">June 2008
+
+</para>
+    
+  </content>
+  <bib:file>
+    <bib:entry id="bid10">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Baraniuk, Richard G. and Burrus, C. Sidney and Johnson, Don H. and Jones, Douglas L.</bib:author>
+        <bib:title>Connexions: Sharing Knowledge and Building Communities in Signal Processing</bib:title>
+        <bib:journal>IEEE Signal Processing Magazine</bib:journal>
+        <bib:year>2004</bib:year>
+<!--optional fields-->
+        <bib:volume>21</bib:volume>
+        <bib:number>5</bib:number>
+        <bib:pages>10–16</bib:pages>
+        <bib:month>September</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid8">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Burrus, C. S. and McClellan, J. H. and Oppenheim, A. V. and Parks, T. W. and Schafer, R. W. and Schüssler, H. W.</bib:author>
+        <bib:title>Computer-Based Exercises for Signal Processing Using Matlab
+</bib:title>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1994</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Englewood Cliff, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note>Second edition, 1998</bib:note>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid5">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Burrus, C. S. and Parks, T. W.</bib:author>
+        <bib:title>DFT/FFT and Convolution Algorithms</bib:title>
+        <bib:publisher>John Wiley &amp; Sons</bib:publisher>
+        <bib:year>1985</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid7">
+      <bib:incollection>
+<!--required fields-->
+        <bib:author>Burrus, C. S.</bib:author>
+        <bib:title>Efficient Fourier Transform and Convolution Algorithms</bib:title>
+        <bib:booktitle>Advanced Topics in Signal Processing</bib:booktitle>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1988</bib:year>
+<!--optional fields-->
+        <bib:editor>Lim, J. S. and Oppenheim, A. V.</bib:editor>
+        <bib:number/>
+        <bib:series/>
+        <bib:type/>
+        <bib:chapter>4</bib:chapter>
+        <bib:pages>199–245</bib:pages>
+        <bib:address>Englewood Cliffs, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:incollection>
+    </bib:entry>
+    <bib:entry id="bid0">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Gold, B. and Rader, C. M.</bib:author>
+        <bib:title>Digital Processing of Signals</bib:title>
+        <bib:publisher>McGraw-Hill</bib:publisher>
+        <bib:year>1969</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid9">
+      <bib:book>
+<!--required fields-->
+        <bib:author>McClellan (editor), J. H. and Burrus, C. S. and Oppenheim, A. V. and Parks, T. W. and Schafer, R. W. and Schüssler, H. W.</bib:author>
+        <bib:title>Computer-Based Exercises for Signal Processing Using Matlab
+</bib:title>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1998</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Upper Saddle River, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note>Second edition</bib:note>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid3">
+      <bib:book>
+<!--required fields-->
+        <bib:author>McClellan, James H. and Schafer, Ronald W. and Yoder, Mark A.</bib:author>
+        <bib:title>DSP First</bib:title>
+        <bib:publisher>Prentice Hall</bib:publisher>
+        <bib:year>1997</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address/>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid1">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Oppenheim, A. V. and Schafer, R. W.</bib:author>
+        <bib:title>Digital Signal Processing</bib:title>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1975</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Englewood Cliffs, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid4">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Orsak, G. and Wood, S. and Douglas, S. and Munson, D. and Treichler, J. and Athale, R. and Yoder, M.</bib:author>
+        <bib:title>Engineering our Digital Future: The Infinity Project</bib:title>
+        <bib:publisher>Prentice Hall</bib:publisher>
+        <bib:year>2003</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address/>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid6">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Parks, T. W. and Burrus, C. S.</bib:author>
+        <bib:title>Digital Filter Design</bib:title>
+        <bib:publisher>John Wiley &amp; Sons</bib:publisher>
+        <bib:year>1987</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid2">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Rabiner, L. R. and Gold, B.</bib:author>
+        <bib:title>Theory and Application of Digital Signal Processing</bib:title>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1975</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Englewood Cliffs, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+  </bib:file>
+</document>

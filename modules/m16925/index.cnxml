@@ -1,0 +1,2958 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:bib="http://bibtexml.sf.net/">
+  <title>Elliptic-Function Filter Properties</title>
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m16925</md:content-id>
+  <md:title>Elliptic-Function Filter Properties</md:title>
+  <md:abstract/>
+  <md:uuid>21d53c58-6ec3-4d91-982d-af5cfd81e19f</md:uuid>
+</metadata>
+
+<content>
+    <section id="uid1">
+      <title>Elliptic-Function Filter Properties</title>
+      <para id="id2255554">In this section, a design procedure is developed that uses
+a Chebyshev error criterion in both the passband and the stopband.
+This is the fourth possible combination of Chebyshev and Taylor's
+series approximations in the passband and stopband. The resulting
+filter is called an elliptic-function filter, because elliptic
+functions are normally used to calculate the pole and zero
+locations. It is also sometimes called a Cauer filter or a rational
+Chebyshev filter, and it has equal ripple approximation error in
+both pass and stopbands <link target-id="bid0"/>, <link target-id="bid1"/>, <link target-id="bid2"/>, <link target-id="bid3"/>.</para>
+      <para id="id2255588">The error criteria of the elliptic-function filter are
+particularly well suited to the way specifications for filters
+are often given. For that reason, use of the elliptic-function
+filter design usually gives the lowest order filter of the four
+classical filter design methods for a given set of
+specifications. Unfortunately, the design of this filter is the
+most complicated of the four. However, because of the efficiency
+of this class of filters, it is worthwhile gaining some
+understanding of the mathematics behind the design procedure.</para>
+      <para id="id2255600">This section sketches an outline of the theory of elliptic-
+function filter design. The details and properties of the elliptic
+functions themselves should simply be accepted, and attention put on
+understanding the overall picture. A more complete development is
+available in <link target-id="bid0"/>, <link target-id="bid4"/>. Straightforward design of elliptic-function
+filters can be accomplished by skipping this section and going directly to
+Program 8 in the appendix or by using Matlab. However, it is important to
+understand the basics of the underlying theory to use the packaged design
+programs intelligently.</para>
+      <para id="id2255623">Because both the passband and stopband approximations are
+over the entire bands, a transition band between the two must be
+defined. Using a normalized passband edge, the bands are defined by</para>
+      <equation id="id2255630">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mn>0</m:mn>
+            <m:mo>&lt;</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>&lt;</m:mo>
+            <m:mn>1</m:mn>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mtext>passband</m:mtext>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <equation id="id2255664">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mn>1</m:mn>
+            <m:mo>&lt;</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>&lt;</m:mo>
+            <m:msub>
+              <m:mi>ω</m:mi>
+              <m:mi>s</m:mi>
+            </m:msub>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mtext>transition</m:mtext>
+            <m:mspace width="4.pt"/>
+            <m:mtext>band</m:mtext>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <equation id="uid2">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi>ω</m:mi>
+              <m:mi>s</m:mi>
+            </m:msub>
+            <m:mo>&lt;</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>&lt;</m:mo>
+            <m:mi>∞</m:mi>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mtext>stopband</m:mtext>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2255747">This is illustrated in <link target-id="uid3"/>.</para>
+<!--empty paragraphs get left behind.-->
+      <figure id="uid3" orient="horizontal"><media id="id1163984110902" alt="Figure one is a graph titled analog third order elliptic function filter. The horizontal axis is labeled frequency, ω and ranges in value from 0 to 3 in increments of 0.5. The vertical axis is labeled magnitude response and ranges in value from 0 to 1 in increments of 0.2. A blue curve starts at (0, 1) with a strengthening negative slope to a trough at approximately (0.5, 0.9). At this point the graph begins increasing more sharply than it previously decreased to a peak at approximately (0.9, 1). The height between the peak and trough is measured and labeled as passband ripple, δ_1. After the peak, the curve moves downward sharply to a kink on the horizontal axis, at approximately (1.5, 0) The curve then begins increasing at a decreasing rate until it settles along a horizontal asymptote at a vertical value of approximately 0.1. The measurement from the horizontal axis to this horizontal asymptote is labeled, stopband ripple δ_2."><image src="../../media/figIIR10.png" mime-type="image/png" width="417"/><image for="pdf" src="../../media/figIIR10.eps" mime-type="application/postscript"/></media>
+        
+      <caption>Third Order Analog Elliptic Function Lowpass Filter showing the
+Ripples and Band Edges</caption></figure>
+      <para id="id2255768">The characteristics of the elliptic function
+filter are best described in terms of the four parameters that
+specify the frequency response:</para>
+      <list id="id2255778" list-type="enumerated">
+        <item id="uid4">The maximum variation or ripple in the passband <m:math><m:msub><m:mi>δ</m:mi><m:mn>1</m:mn></m:msub></m:math>,
+</item>
+        <item id="uid5">The width of the transition band <m:math><m:mrow><m:mo>(</m:mo><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:math>,
+</item>
+        <item id="uid6">The maximum response or ripple in the stopband <m:math><m:msub><m:mi>δ</m:mi><m:mn>2</m:mn></m:msub></m:math>, and
+</item>
+        <item id="uid7">The order of the filter <m:math><m:mi>N</m:mi></m:math>.
+</item>
+      </list>
+      <para id="id2255885">The result of the design is that for any three of the parameters
+given, the fourth is minimum. This is a very flexible and
+powerful description of a filter frequency response.</para>
+      <para id="id2255892">The form of the frequency-response function is a
+generalization of that for the Chebyshev filter</para>
+      <equation id="uid8">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>F</m:mi>
+            <m:mi>F</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>j</m:mi>
+              <m:mi>ω</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:msup>
+              <m:mrow>
+                <m:mo>|</m:mo>
+                <m:mi>F</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mi>ω</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>|</m:mo>
+              </m:mrow>
+              <m:mn>2</m:mn>
+            </m:msup>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mn>1</m:mn>
+              <m:mrow>
+                <m:mn>1</m:mn>
+                <m:mo>+</m:mo>
+                <m:msup>
+                  <m:mi>ϵ</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:msup>
+                  <m:mi>G</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>ω</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256222">where</para>
+      <equation id="uid9">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>F</m:mi>
+            <m:mi>F</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>s</m:mi>
+            <m:mo>)</m:mo>
+            <m:mo>=</m:mo>
+            <m:mi>F</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>s</m:mi>
+            <m:mo>)</m:mo>
+            <m:mi>F</m:mi>
+            <m:mo>(</m:mo>
+            <m:mo>-</m:mo>
+            <m:mi>s</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256268">with <m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>)</m:mo></m:mrow></m:math> being the prototype analog filter transfer
+function similar to that for the Chebyshev filter. <m:math><m:mrow><m:mi>G</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is a
+rational function that approximates zero in the passband and infinity in
+the stopband. The definition of this function is a generalization of the
+definition of the Chebyshev polynomial.</para>
+      <section id="uid10">
+        <title>Elliptic Functions</title>
+        <para id="id2256316">In order to develop analytical expressions for equal-ripple
+rational functions, an interesting class of transcendental
+functions, called the Jacobian elliptic functions, is outlined.
+These functions can be viewed as a generalization of the normal
+trigonometric and hyperbolic functions. The elliptic integral of the
+first kind <link target-id="bid5"/> is defined as</para>
+        <equation id="uid11">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>u</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>φ</m:mi>
+                <m:mo>,</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:msubsup>
+                <m:mo>∫</m:mo>
+                <m:mn>0</m:mn>
+                <m:mi>φ</m:mi>
+              </m:msubsup>
+              <m:mfrac>
+                <m:mrow>
+                  <m:mi>d</m:mi>
+                  <m:mi>y</m:mi>
+                </m:mrow>
+                <m:msqrt>
+                  <m:mrow>
+                    <m:mn>1</m:mn>
+                    <m:mo>-</m:mo>
+                    <m:msup>
+                      <m:mi>k</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                    <m:msup>
+                      <m:mo form="prefix">sin</m:mo>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>y</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mrow>
+                </m:msqrt>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256410">The trigonometric sine of the inverse of this
+function is defined as the Jacobian elliptic sine of <m:math><m:mi>u</m:mi></m:math> with
+modulus <m:math><m:mi>k</m:mi></m:math>, and is denoted</para>
+        <equation id="uid12">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>s</m:mi>
+              <m:mi>n</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>u</m:mi>
+              <m:mo>,</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>=</m:mo>
+              <m:mo form="prefix">sin</m:mo>
+              <m:mo>(</m:mo>
+              <m:mi>φ</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>u</m:mi>
+              <m:mo>,</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256483">A special evaluation of <link target-id="uid11"/> is known as the complete elliptic
+integral <m:math><m:mrow><m:mi>K</m:mi><m:mo>=</m:mo><m:mi>u</m:mi><m:mo>(</m:mo><m:mi>π</m:mi><m:mo>/</m:mo><m:mn>2</m:mn><m:mo>,</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math>. It can be shown <link target-id="bid5"/> that <m:math><m:mrow><m:mi>s</m:mi><m:mi>n</m:mi><m:mo>(</m:mo><m:mi>u</m:mi><m:mo>)</m:mo></m:mrow></m:math> and
+most of the other elliptic functions are periodic with periods <m:math><m:mrow><m:mn>4</m:mn><m:mi>K</m:mi></m:mrow></m:math> if <m:math><m:mi>u</m:mi></m:math>
+is real. Because of this, <m:math><m:mi>K</m:mi></m:math> is also called the “quarter period". A plot
+of <m:math><m:mrow><m:mi>s</m:mi><m:mi>n</m:mi><m:mo>(</m:mo><m:mi>u</m:mi><m:mo>,</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math> for several values of the modulus <m:math><m:mi>k</m:mi></m:math> is shown in
+<link target-id="uid13"/>.</para>
+        <figure id="uid13" orient="horizontal"><media id="id1163980949991" alt="Figure two is a graph titled elliptic sine of u, modulus k. The horizontal axis is labeled Independent Variable, u, and ranges in variable from 0 to 12 in increments of 2. The vertical axis is labeled sn(u, k) and ranges in value from -1 to 1 in increments of 0.5. There are four wavelike functions on this graph. The first, a blue curve, begins increasing from the origin and completes two peaks and nearly two troughs before it terminates with a positive slope at (12, -0.5). This curve is labeled k=0. The second, a green curve, is wavelike and begins positive in a similar fashion as the blue curve, but its trough is substantially wider, and it only completes one and a half peaks and one full trough before it terminates at (12, 1) when it is just about to reach the top of a peak. This curve is labeled k=0.9. The third, a red curve, has an even wider peak than the previous curve, completing one peak and half of one trough before it terminates traveling completely horizontal in a portion of the trough at (12, -1). This curve is labeled k=0.99. The fourth, a teal curve, is again an exaggeration of a sinusoidal function with an extremely wide peak, that does not even reach the horizontal apex of the trough when it terminates at (12, -1). This curve is labeled k=0.999."><image src="../../media/figIIR11.png" mime-type="image/png" width="451"/><image for="pdf" src="../../media/figIIR11.eps" mime-type="application/postscript"/></media>
+          
+        <caption>Jacobian Elliptic Sine Function of u with Modulus k</caption></figure>
+        <para id="id2256626">For k=0, <m:math><m:mrow><m:mi>s</m:mi><m:mi>n</m:mi><m:mo>(</m:mo><m:mi>u</m:mi><m:mo>,</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mo form="prefix">sin</m:mo><m:mo>(</m:mo><m:mi>u</m:mi><m:mo>)</m:mo></m:mrow></m:math>. As <m:math><m:mi>k</m:mi></m:math> approaches 1, the <m:math><m:mrow><m:mi>s</m:mi><m:mi>n</m:mi><m:mo>(</m:mo><m:mi>u</m:mi><m:mo>,</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math>
+looks like a "fat" sine function. For <m:math><m:mrow><m:mi>k</m:mi><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow></m:math>, <m:math><m:mrow><m:mi>s</m:mi><m:mi>n</m:mi><m:mo>(</m:mo><m:mi>u</m:mi><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mo form="prefix">tanh</m:mo><m:mo>(</m:mo><m:mi>u</m:mi><m:mo>)</m:mo></m:mrow></m:math>
+and is not periodic (period becomes infinite).</para>
+        <para id="id2256745">The quarter period or complete elliptic integral <m:math><m:mi>K</m:mi></m:math> is a
+function of the modulus <m:math><m:mi>k</m:mi></m:math> and is illustrated in <link target-id="uid14"/>.</para>
+        <figure id="uid14" orient="horizontal"><media id="id1163981785494" alt="Figure three is a graph titled complete elliptic integral, K_k. The horizontal axis is labeled modulus, k and ranges in value from 0 to 1 in increments of 1. The vertical axis is labeled complete elliptic integral, and ranges in value from 0 to 5 in increments of 0.5. There is one curve in this graph, and at its beginning at approximately (0, 1.5) is an arrow pointing at the place it begins, labeled π/2. The curve moves from left to right with a shallow slope at first, but the slope is slowly increasing across the page, and by the horizontal value 0.8 the graph has a sharp positive slope. At the horizontal value 1, the curve is completely vertical, and ends in the top-right corner of the graph, at (1, 5)."><image src="../../media/figIIR12.png" mime-type="image/png" width="417"/><image for="pdf" src="../../media/figIIR12.eps" mime-type="application/postscript"/></media>
+          
+        <caption>Complete Elliptic Integral as a function of the Modulus</caption></figure>
+        <para id="id2256786">For a modulus of zero, the quarter period is <m:math><m:mrow><m:mi>K</m:mi><m:mo>=</m:mo><m:mi>π</m:mi><m:mo>/</m:mo><m:mn>2</m:mn></m:mrow></m:math> and it
+does not increase much until k nears unity. It then increases
+rapidly and goes to infinity as <m:math><m:mi>k</m:mi></m:math> goes to unity.</para>
+        <para id="id2256818">Another parameter that is used is the complementary modulus
+<m:math><m:msup><m:mi>k</m:mi><m:mo>'</m:mo></m:msup></m:math> defined by</para>
+        <equation id="uid15">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msup>
+                <m:mi>k</m:mi>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mo>+</m:mo>
+              <m:msup>
+                <m:mi>k</m:mi>
+                <m:mrow>
+                  <m:mo>'</m:mo>
+                  <m:mn>2</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mo>=</m:mo>
+              <m:mn>1</m:mn>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256873">where both <m:math><m:mi>k</m:mi></m:math> and <m:math><m:msup><m:mi>k</m:mi><m:mo>'</m:mo></m:msup></m:math> are assumed real and between 0 and 1. The
+complete elliptic integral of the complementary modulus is denoted
+<m:math><m:msup><m:mi>K</m:mi><m:mo>'</m:mo></m:msup></m:math>.</para>
+        <para id="id2256914">In addition to the elliptic sine, other elliptic functions
+that are rather obvious generalizations are</para>
+        <equation id="id2256919">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>c</m:mi>
+              <m:mi>n</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>u</m:mi>
+              <m:mo>,</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>=</m:mo>
+              <m:mi>c</m:mi>
+              <m:mi>o</m:mi>
+              <m:mi>s</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>φ</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>u</m:mi>
+              <m:mo>,</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="id2256969">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>s</m:mi>
+              <m:mi>c</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>u</m:mi>
+              <m:mo>,</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>=</m:mo>
+              <m:mi>t</m:mi>
+              <m:mi>a</m:mi>
+              <m:mi>n</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>φ</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>u</m:mi>
+              <m:mo>,</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="id2257019">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>c</m:mi>
+              <m:mi>s</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>u</m:mi>
+              <m:mo>,</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>=</m:mo>
+              <m:mi>c</m:mi>
+              <m:mi>t</m:mi>
+              <m:mi>n</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>φ</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>u</m:mi>
+              <m:mo>,</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="id2257069">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>n</m:mi>
+              <m:mi>c</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>u</m:mi>
+              <m:mo>,</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>=</m:mo>
+              <m:mi>s</m:mi>
+              <m:mi>e</m:mi>
+              <m:mi>c</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>φ</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>u</m:mi>
+              <m:mo>,</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="id2257119">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>n</m:mi>
+              <m:mi>s</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>u</m:mi>
+              <m:mo>,</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>=</m:mo>
+              <m:mi>c</m:mi>
+              <m:mi>s</m:mi>
+              <m:mi>c</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>φ</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>u</m:mi>
+              <m:mo>,</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257169">There are six other elliptic functions that have no trigonometric
+counterparts <link target-id="bid5"/>. One that is needed is</para>
+        <equation id="uid16">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>d</m:mi>
+              <m:mi>n</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>u</m:mi>
+                <m:mo>,</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:msqrt>
+                <m:mrow>
+                  <m:mn>1</m:mn>
+                  <m:mo>-</m:mo>
+                  <m:msup>
+                    <m:mi>k</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mi>s</m:mi>
+                  <m:msup>
+                    <m:mi>n</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>u</m:mi>
+                    <m:mo>,</m:mo>
+                    <m:mi>k</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mrow>
+              </m:msqrt>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257244">Many interesting properties of the elliptic functions exist
+<link target-id="bid5"/>. They obey a large set of identities such as</para>
+        <equation id="uid17">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>s</m:mi>
+              <m:msup>
+                <m:mi>n</m:mi>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>u</m:mi>
+                <m:mo>,</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>+</m:mo>
+              <m:mi>c</m:mi>
+              <m:msup>
+                <m:mi>n</m:mi>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>u</m:mi>
+                <m:mo>,</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mn>1</m:mn>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257316">They have derivatives that are elliptic functions. For example,</para>
+        <equation id="uid18">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mfrac>
+                <m:mrow>
+                  <m:mi>d</m:mi>
+                  <m:mspace width="4pt"/>
+                  <m:mi>s</m:mi>
+                  <m:mi>n</m:mi>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>d</m:mi>
+                  <m:mi>u</m:mi>
+                </m:mrow>
+              </m:mfrac>
+              <m:mo>=</m:mo>
+              <m:mi>c</m:mi>
+              <m:mi>n</m:mi>
+              <m:mspace width="4pt"/>
+              <m:mi>d</m:mi>
+              <m:mi>n</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257363">The elliptic functions are the solutions of a set of nonlinear
+differential equations of the form</para>
+        <equation id="uid19">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msup>
+                <m:mi>x</m:mi>
+                <m:mrow>
+                  <m:mo>'</m:mo>
+                  <m:mo>'</m:mo>
+                </m:mrow>
+              </m:msup>
+              <m:mo>+</m:mo>
+              <m:mi>a</m:mi>
+              <m:mi>x</m:mi>
+              <m:mo>±</m:mo>
+              <m:mi>b</m:mi>
+              <m:msup>
+                <m:mi>x</m:mi>
+                <m:mn>3</m:mn>
+              </m:msup>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257413">Some of the most important properties for the elliptic functions
+are as functions of a complex variable. For a purely imaginary
+argument</para>
+        <equation id="uid20">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>s</m:mi>
+              <m:mi>n</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>j</m:mi>
+                <m:mi>v</m:mi>
+                <m:mo>,</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mi>j</m:mi>
+              <m:mi>s</m:mi>
+              <m:mi>c</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>v</m:mi>
+                <m:mo>,</m:mo>
+                <m:msup>
+                  <m:mi>k</m:mi>
+                  <m:mo>'</m:mo>
+                </m:msup>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid21">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>c</m:mi>
+              <m:mi>n</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>j</m:mi>
+                <m:mi>v</m:mi>
+                <m:mo>,</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mi>n</m:mi>
+              <m:mi>c</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>v</m:mi>
+                <m:mo>,</m:mo>
+                <m:msup>
+                  <m:mi>k</m:mi>
+                  <m:mo>'</m:mo>
+                </m:msup>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257527">This indicates that the elliptic functions, in contrast to the
+circular and hyperbolic trigonometric functions, are periodic in
+both the real and the imaginary part of the argument with periods
+related to <m:math><m:mi>K</m:mi></m:math> and <m:math><m:msup><m:mi>K</m:mi><m:mo>'</m:mo></m:msup></m:math>, respectively. They are the only class
+of functions that are “doubly periodic".</para>
+        <para id="id2257560">One particular value that the <m:math><m:mrow><m:mi>s</m:mi><m:mi>n</m:mi></m:mrow></m:math> function takes on that is
+important in creating a rational function is</para>
+        <equation id="uid22">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>s</m:mi>
+              <m:mi>n</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>K</m:mi>
+              <m:mo>+</m:mo>
+              <m:mi>j</m:mi>
+              <m:msup>
+                <m:mi>K</m:mi>
+                <m:mo>'</m:mo>
+              </m:msup>
+              <m:mo>,</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>=</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>/</m:mo>
+              <m:mi>k</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+      </section>
+      <section id="uid23">
+        <title>The Chebyshev Rational Function</title>
+        <para id="id2257633">The rational function <m:math><m:mrow><m:mi>G</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> needed in <link target-id="uid8"/> is sometimes called a
+Chebyshev rational function because of its equal-ripple properties.
+It can be defined in terms of two elliptic functions with moduli <m:math><m:mi>k</m:mi></m:math>
+and <m:math><m:msub><m:mi>k</m:mi><m:mn>1</m:mn></m:msub></m:math> by</para>
+        <equation id="uid24">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>G</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mi>s</m:mi>
+              <m:mi>n</m:mi>
+              <m:mspace width="4pt"/>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mspace width="4pt"/>
+              <m:mi>s</m:mi>
+              <m:msup>
+                <m:mi>n</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>,</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>,</m:mo>
+              <m:msub>
+                <m:mi>k</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257759">In terms of the intermediate complex variable <m:math><m:mi>φ</m:mi></m:math>, <m:math><m:mrow><m:mi>G</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math>
+and <m:math><m:mi>ω</m:mi></m:math> become</para>
+        <equation id="uid25">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>G</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mi>s</m:mi>
+              <m:mi>n</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mi>φ</m:mi>
+                <m:mo>,</m:mo>
+                <m:msub>
+                  <m:mi>k</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid26">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>ω</m:mi>
+              <m:mo>=</m:mo>
+              <m:mi>s</m:mi>
+              <m:mi>n</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>φ</m:mi>
+              <m:mo>,</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257879">It can be shown <link target-id="bid4"/> that <m:math><m:mrow><m:mi>G</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is a real-valued rational
+function if the parameters <m:math><m:mi>k</m:mi></m:math>, <m:math><m:msub><m:mi>k</m:mi><m:mn>1</m:mn></m:msub></m:math>, and <m:math><m:mi>n</m:mi></m:math> take on special
+values. Note the similarity of the definition of <m:math><m:mrow><m:mi>G</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> to
+the definition of the Chebyshev polynomial <m:math><m:mrow><m:msub><m:mi>C</m:mi><m:mi>N</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>. In this case,
+however, n is not necessarily an integer
+and is not the order of the filter. Requiring that <m:math><m:mrow><m:mi>G</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> be a
+rational function requires an alignment of the imaginary periods
+<link target-id="bid4"/> of the two elliptic functions in <link target-id="uid25"/>,<link target-id="uid26"/>. It also requires
+alignment of an integer multiple of the real periods. The integer
+multiplier is denoted by <m:math><m:mi>N</m:mi></m:math> and is the order of the resulting
+filter <link target-id="bid4"/>. These two requirements are stated by the following
+very important relations:</para>
+        <equation id="uid27">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>n</m:mi>
+              <m:msup>
+                <m:mi>K</m:mi>
+                <m:mo>'</m:mo>
+              </m:msup>
+              <m:mo>=</m:mo>
+              <m:msubsup>
+                <m:mi>K</m:mi>
+                <m:mn>1</m:mn>
+                <m:mo>'</m:mo>
+              </m:msubsup>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mtext>alignment</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mtext>of</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mtext>imaginary</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mtext>periods</m:mtext>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid28">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>n</m:mi>
+              <m:mi>K</m:mi>
+              <m:mo>=</m:mo>
+              <m:mi>N</m:mi>
+              <m:msub>
+                <m:mi>K</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mtext>alignment</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mtext>of</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mtext>a</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mtext>multiple</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mtext>of</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mtext>the</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mtext>real</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mtext>periods</m:mtext>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258188">which, on removing the parameter <m:math><m:mi>n</m:mi></m:math>, become</para>
+        <equation id="uid29">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mfrac>
+                <m:msub>
+                  <m:mi>K</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:mi>K</m:mi>
+              </m:mfrac>
+              <m:mi>N</m:mi>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:msubsup>
+                  <m:mi>K</m:mi>
+                  <m:mn>1</m:mn>
+                  <m:mo>'</m:mo>
+                </m:msubsup>
+                <m:msup>
+                  <m:mi>K</m:mi>
+                  <m:mo>'</m:mo>
+                </m:msup>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258253">or</para>
+        <equation id="uid30">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>N</m:mi>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mrow>
+                  <m:mi>K</m:mi>
+                  <m:msubsup>
+                    <m:mi>K</m:mi>
+                    <m:mn>1</m:mn>
+                    <m:mo>'</m:mo>
+                  </m:msubsup>
+                </m:mrow>
+                <m:mrow>
+                  <m:msup>
+                    <m:mi>K</m:mi>
+                    <m:mo>'</m:mo>
+                  </m:msup>
+                  <m:msub>
+                    <m:mi>K</m:mi>
+                    <m:mn>1</m:mn>
+                  </m:msub>
+                </m:mrow>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258307">These relationships are central to the design of elliptic- function
+filters. <m:math><m:mi>N</m:mi></m:math> is an odd integer which is the order of the filter. For <m:math><m:mrow><m:mi>N</m:mi><m:mo>=</m:mo><m:mn>5</m:mn></m:mrow></m:math>, the resulting rational function is shown in <link target-id="uid31"/>.</para>
+        <figure id="uid31" orient="horizontal"><media id="id1163989485498" alt="Figure four is a graph titled chebyshev rational function, G(ω). The horizontal axis is labeled Frequency, ω, and the vertical axis is labeled Magnitude of G(ω). The horizontal ranges in value from 0 to 3 in increments of 0.5, and the vertical axis ranges in value from 0 to 30 in increments of 5. There are two horizontal lines on the graph, the first along the vertical value of 0, labeled 1/k, and the second approximately along the vertical value of 28, labeled 1/k_1. There is one smaller horizontal line segment at a vertical value of 1 that extends only to (1, 1). There is a curve that begins at (0, 0) and completes two peaked waves of amplitude 1, one wide and one narrow, before it reaches (1, 0). At this point the curve sharply increases with a strong positive slope. The curve then seems to continue off the graph and return to create one narrow trough and one wide trough with the local minima sitting on the horizontal line at 28."><image src="../../media/figIIR13.png" mime-type="image/png" width="541"/><image for="pdf" src="../../media/figIIR13.eps" mime-type="application/postscript"/></media>
+          
+        <caption>Fifth Order Elliptic Rational Function</caption></figure>
+        <para id="id2258356">This function is the basis of the approximation necessary
+for the optimal filter frequency response. It approximates zero over the
+frequency range <m:math><m:mrow><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>&lt;</m:mo><m:mi>ω</m:mi><m:mo>&lt;</m:mo><m:mn>1</m:mn></m:mrow></m:math> by an equal-ripple oscillation between
+<m:math><m:mrow><m:mo>±</m:mo><m:mn>1</m:mn></m:mrow></m:math>. It also approximates infinity over the range <m:math><m:mrow><m:mn>1</m:mn><m:mo>/</m:mo><m:mi>k</m:mi><m:mo>&lt;</m:mo><m:mo>|</m:mo><m:mi>ω</m:mi><m:mo>|</m:mo><m:mo>&lt;</m:mo><m:mi>∞</m:mi></m:mrow></m:math> by a reciprocal oscillation that keeps <m:math><m:mrow><m:mrow><m:mo>|</m:mo><m:mi>F</m:mi><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow><m:mo>|</m:mo><m:mo>&gt;</m:mo><m:mn>1</m:mn></m:mrow><m:mo>/</m:mo><m:msub><m:mi>k</m:mi><m:mn>1</m:mn></m:msub></m:mrow></m:math>. The
+zero approximation is normalized in both the frequency range and the
+<m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> values to unity. The infinity approximation has its frequency
+range set by the choice of the modulus <m:math><m:mi>k</m:mi></m:math>, and the minimum value of
+<m:math><m:mrow><m:mo>|</m:mo><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo><m:mo>|</m:mo></m:mrow></m:math> is set by the choice of the second modulus <m:math><m:msub><m:mi>k</m:mi><m:mn>1</m:mn></m:msub></m:math>.</para>
+        <para id="id2258529">If <m:math><m:mi>k</m:mi></m:math> and <m:math><m:msub><m:mi>k</m:mi><m:mn>1</m:mn></m:msub></m:math> are determined from the filter specifications,
+they in turn determine the complementary moduli <m:math><m:msup><m:mi>k</m:mi><m:mo>'</m:mo></m:msup></m:math> and <m:math><m:msubsup><m:mi>k</m:mi><m:mn>1</m:mn><m:mo>'</m:mo></m:msubsup></m:math>,
+which altogether determine the four values of the complete elliptic
+integral <m:math><m:mi>K</m:mi></m:math> needed to determine the order <m:math><m:mi>N</m:mi></m:math> in <link target-id="uid30"/>. In
+general, this sequence of events will not result in an integer. In
+practice, however, the next larger integer is used, and either <m:math><m:mi>k</m:mi></m:math>
+or <m:math><m:msub><m:mi>k</m:mi><m:mn>1</m:mn></m:msub></m:math> (or perhaps both) is altered to satisfy <link target-id="uid30"/>.</para>
+        <para id="id2258643">In addition to the two-band equal-ripple characteristics,
+<m:math><m:mrow><m:mi>G</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> has another interesting and valuable property. The pole and
+zero locations have a reciprocal relationship that can be expressed
+by</para>
+        <equation id="uid32">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>G</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mi>G</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msub>
+                  <m:mi>ω</m:mi>
+                  <m:mi>s</m:mi>
+                </m:msub>
+                <m:mo>/</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>/</m:mo>
+              <m:msub>
+                <m:mi>k</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258723">where</para>
+        <equation id="uid33">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mi>s</m:mi>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>/</m:mo>
+              <m:mi>k</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258757">This states that if the zeros of <m:math><m:mrow><m:mi>G</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> are located at
+<m:math><m:msub><m:mi>ω</m:mi><m:mrow><m:mi>z</m:mi><m:mi>i</m:mi></m:mrow></m:msub></m:math>, the poles are located at</para>
+        <equation id="uid34">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mrow>
+                  <m:mi>p</m:mi>
+                  <m:mi>i</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>/</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>k</m:mi>
+                <m:msub>
+                  <m:mi>ω</m:mi>
+                  <m:mrow>
+                    <m:mi>z</m:mi>
+                    <m:mi>i</m:mi>
+                  </m:mrow>
+                </m:msub>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258844">If the zeros are known, the poles are known, and vice versa. A
+similar relation exists between the points of zero derivatives in
+the 0 to 1 region and those in the <m:math><m:mrow><m:mn>1</m:mn><m:mo>/</m:mo><m:mi>k</m:mi></m:mrow></m:math> to infinity region.</para>
+        <para id="id2258866">The zeros of <m:math><m:mrow><m:mi>G</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> are found from <link target-id="uid25"/> by requiring</para>
+        <equation id="uid35">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>G</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mi>s</m:mi>
+              <m:mi>n</m:mi>
+              <m:mrow>
+                <m:mo>[</m:mo>
+                <m:mi>n</m:mi>
+                <m:mi>φ</m:mi>
+                <m:mo>,</m:mo>
+                <m:msub>
+                  <m:mi>k</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:mo>]</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258943">which implies</para>
+        <equation id="eip-500"><m:math>
+<m:mi>n</m:mi>
+<m:mi>φ</m:mi>
+<m:mo>=</m:mo>
+<m:mn>2</m:mn>
+<m:msub>
+<m:mi>K</m:mi>
+<m:mn>1</m:mn>
+</m:msub>
+<m:mi>i</m:mi>
+<m:mtext>
+for </m:mtext>
+<m:mi>i</m:mi>
+<m:mo>=</m:mo>
+<m:mi>0,1,...</m:mi>
+</m:math></equation><para id="element-496">From <link target-id="uid24"/>, this gives</para>
+        <equation id="eip-812"><m:math>
+<m:msub>
+<m:mi>ω</m:mi>
+<m:mi>zi</m:mi>
+</m:msub>
+<m:mo>=</m:mo>
+<m:mi>sn</m:mi>
+<m:mo>[</m:mo>
+<m:mn>2</m:mn>
+<m:msub>
+<m:mi>K</m:mi>
+<m:mn>1</m:mn>
+</m:msub>
+<m:mi>i</m:mi>
+<m:mo>/</m:mo>
+<m:mi>n,k</m:mi>
+<m:mo>],</m:mo>
+<m:mi>i</m:mi>
+<m:mo>=</m:mo>
+<m:mi>0,1,...</m:mi>
+</m:math>
+</equation><para id="id2258957">This can be reformulated using <link target-id="uid28"/> so that <m:math><m:mi>n</m:mi></m:math> and <m:math><m:msub><m:mi>K</m:mi><m:mn>1</m:mn></m:msub></m:math> are not
+needed. For <m:math><m:mi>N</m:mi></m:math> odd, the zero locations are</para>
+        <equation id="eip-734"><m:math>
+<m:msub>
+<m:mi>ω</m:mi>
+<m:mi>zi</m:mi>
+</m:msub>
+<m:mo>=</m:mo>
+<m:mi>sn</m:mi>
+<m:mo>[</m:mo>
+<m:mn>2</m:mn>
+<m:msub>
+<m:mi>K</m:mi>
+<m:mn>1</m:mn>
+</m:msub>
+<m:mi>i</m:mi>
+<m:mo>/</m:mo>
+<m:mi>N,k</m:mi>
+<m:mo>],</m:mo>
+<m:mi>i</m:mi>
+<m:mo>=</m:mo>
+<m:mi>0,1,...</m:mi>
+</m:math>
+</equation><para id="id2259000">The pole locations are found from these zero locations using
+<link target-id="uid34"/>. The locations of the zero-derivative points are given by</para>
+        <equation id="uid36">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mrow>
+                  <m:mi>d</m:mi>
+                  <m:mi>i</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mi>s</m:mi>
+              <m:mi>n</m:mi>
+              <m:mrow>
+                <m:mo>[</m:mo>
+                <m:mi>K</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mi>i</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>/</m:mo>
+                <m:mi>N</m:mi>
+                <m:mo>,</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>]</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259068">in the 0 to 1 region, and the corresponding points in
+the 1/k to infinity region are found from <link target-id="uid34"/>.</para>
+        <para id="id2259080">The above relations assume N to be an odd integer. A
+modification for N even is necessary. For proper alignment of the
+real periods, the original definition of <m:math><m:mrow><m:mi>G</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is
+changed to</para>
+        <equation id="uid37">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>G</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mi>s</m:mi>
+              <m:mi>n</m:mi>
+              <m:mrow>
+                <m:mo>[</m:mo>
+                <m:mi>φ</m:mi>
+                <m:mo>+</m:mo>
+                <m:msub>
+                  <m:mi>K</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:mo>,</m:mo>
+                <m:msub>
+                  <m:mi>k</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:mo>]</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259158">which gives for the zero locations with N even</para>
+        <equation id="uid38">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mrow>
+                  <m:mi>z</m:mi>
+                  <m:mi>i</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mi>s</m:mi>
+              <m:mi>n</m:mi>
+              <m:mrow>
+                <m:mo>[</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mi>i</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:msub>
+                  <m:mi>K</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:mo>/</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>,</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>]</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259230">The even and odd N cases can be combined to
+give</para>
+        <equation id="uid39">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mrow>
+                  <m:mi>z</m:mi>
+                  <m:mi>i</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mo>±</m:mo>
+              <m:mi>s</m:mi>
+              <m:mi>n</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>i</m:mi>
+                <m:mi>K</m:mi>
+                <m:mo>/</m:mo>
+                <m:mi>N</m:mi>
+                <m:mo>,</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259284">for</para>
+        <equation id="id2259289">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>i</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+              <m:mo>,</m:mo>
+              <m:mn>2</m:mn>
+              <m:mo>,</m:mo>
+              <m:mn>4</m:mn>
+              <m:mo>,</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>,</m:mo>
+              <m:mi>N</m:mi>
+              <m:mo>-</m:mo>
+              <m:mn>1</m:mn>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mtext>for</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mtext>N</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mtext>odd</m:mtext>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="id2259350">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>i</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>,</m:mo>
+              <m:mn>3</m:mn>
+              <m:mo>,</m:mo>
+              <m:mn>5</m:mn>
+              <m:mo>,</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>,</m:mo>
+              <m:mi>N</m:mi>
+              <m:mo>-</m:mo>
+              <m:mn>1</m:mn>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mtext>for</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mtext>N</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mtext>even</m:mtext>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259412">with the poles determined from <link target-id="uid34"/>.</para>
+        <para id="id2259420">Note that it is possible to determine <m:math><m:mrow><m:mi>G</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> from k and N
+without explicitly using <m:math><m:msub><m:mi>k</m:mi><m:mn>1</m:mn></m:msub></m:math> or <m:math><m:mi>n</m:mi></m:math>. Values for <m:math><m:msub><m:mi>k</m:mi><m:mn>1</m:mn></m:msub></m:math> and <m:math><m:mi>n</m:mi></m:math> are
+implied by the requirements of <link target-id="uid33"/> or <link target-id="uid32"/>.</para>
+<section id="fs-id1168683133562">
+        <title>Zero Locations
+</title>
+        <para id="id2259508">The locations of the zeros of the filter transfer function
+<m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> are easily found since they are the same as the poles of
+<m:math><m:mrow><m:mi>G</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math>, given in <link target-id="uid39"/>.</para>
+        <equation id="uid40">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mrow>
+                  <m:mi>z</m:mi>
+                  <m:mi>i</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mrow>
+                  <m:mo>±</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>k</m:mi>
+                  <m:mspace width="4pt"/>
+                  <m:mi>s</m:mi>
+                  <m:mi>n</m:mi>
+                  <m:mo>(</m:mo>
+                  <m:mi>i</m:mi>
+                  <m:mi>K</m:mi>
+                  <m:mo>/</m:mo>
+                  <m:mi>N</m:mi>
+                  <m:mo>,</m:mo>
+                  <m:mi>k</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259616">for</para>
+        <equation id="id2259619">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>i</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+              <m:mo>,</m:mo>
+              <m:mn>2</m:mn>
+              <m:mo>,</m:mo>
+              <m:mn>4</m:mn>
+              <m:mo>,</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>,</m:mo>
+              <m:mi>N</m:mi>
+              <m:mo>-</m:mo>
+              <m:mn>1</m:mn>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mtext>N</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mtext>odd</m:mtext>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="id2259678">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>i</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>,</m:mo>
+              <m:mn>3</m:mn>
+              <m:mo>,</m:mo>
+              <m:mn>5</m:mn>
+              <m:mo>,</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>,</m:mo>
+              <m:mi>N</m:mi>
+              <m:mo>-</m:mo>
+              <m:mn>1</m:mn>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mtext>N</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mtext>even</m:mtext>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259734">These zeros are purely imaginary and lie on the <m:math><m:mi>ω</m:mi></m:math> axis.</para>
+</section>
+<section id="fs-id2616724">       
+ <title>Pole Locations</title>
+        <para id="id2259758">The pole locations are somewhat more complicated to find. An
+approach similar to that used for the Chebyshev filter is
+used here. <m:math><m:mrow><m:mi>F</m:mi><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>)</m:mo></m:mrow></m:math> becomes infinite when</para>
+        <equation id="uid41">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mn>1</m:mn>
+              <m:mo>+</m:mo>
+              <m:msup>
+                <m:mi>ϵ</m:mi>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:msup>
+                <m:mi>G</m:mi>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259821">or</para>
+        <equation id="uid42">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>G</m:mi>
+              <m:mo>=</m:mo>
+              <m:mo>±</m:mo>
+              <m:mi>j</m:mi>
+              <m:mo>(</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>/</m:mo>
+              <m:mi>ϵ</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259859">Using <link target-id="uid25"/> and the periodicity of sn (u,k) , this implies</para>
+        <equation id="uid43">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>G</m:mi>
+              <m:mo>=</m:mo>
+              <m:mi>s</m:mi>
+              <m:mi>n</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mi>φ</m:mi>
+              <m:mo>+</m:mo>
+              <m:mn>2</m:mn>
+              <m:msub>
+                <m:mi>K</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mi>i</m:mi>
+              <m:mo>,</m:mo>
+              <m:msub>
+                <m:mi>k</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mo>)</m:mo>
+              <m:mo>=</m:mo>
+              <m:mo>±</m:mo>
+              <m:mi>j</m:mi>
+              <m:mn>1</m:mn>
+              <m:mo>/</m:mo>
+              <m:mi>ϵ</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259934">or</para>
+        <equation id="uid44">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>φ</m:mi>
+              <m:mo>=</m:mo>
+              <m:mo>(</m:mo>
+              <m:mo>-</m:mo>
+              <m:mn>2</m:mn>
+              <m:msub>
+                <m:mi>K</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mi>i</m:mi>
+              <m:mo>+</m:mo>
+              <m:mi>s</m:mi>
+              <m:msup>
+                <m:mi>n</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>j</m:mi>
+                <m:mn>1</m:mn>
+                <m:mo>/</m:mo>
+                <m:mi>e</m:mi>
+                <m:mo>,</m:mo>
+                <m:msub>
+                  <m:mi>k</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>)</m:mo>
+              <m:mo>/</m:mo>
+              <m:mi>n</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2260015">Define <m:math><m:msub><m:mi>ν</m:mi><m:mn>0</m:mn></m:msub></m:math> to be the second term in <link target-id="uid44"/> by</para>
+        <equation id="uid45">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>j</m:mi>
+              <m:msub>
+                <m:mi>ν</m:mi>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>s</m:mi>
+                <m:msup>
+                  <m:mi>n</m:mi>
+                  <m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:msup>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mn>1</m:mn>
+                  <m:mo>/</m:mo>
+                  <m:mi>e</m:mi>
+                  <m:mo>,</m:mo>
+                  <m:msub>
+                    <m:mi>k</m:mi>
+                    <m:mn>1</m:mn>
+                  </m:msub>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>/</m:mo>
+              <m:mi>n</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2260108">which is similar to the equation for the Chebyshev case. Using properties
+of <m:math><m:mrow><m:mi>s</m:mi><m:mi>n</m:mi></m:mrow></m:math> of an imaginary variable and <link target-id="uid29"/>, <m:math><m:msub><m:mi>ν</m:mi><m:mn>0</m:mn></m:msub></m:math> becomes</para>
+        <equation id="uid46">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>ν</m:mi>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>K</m:mi>
+                <m:mo>/</m:mo>
+                <m:mi>N</m:mi>
+                <m:msub>
+                  <m:mi>K</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mi>s</m:mi>
+              <m:msup>
+                <m:mi>c</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>/</m:mo>
+                <m:mi>ϵ</m:mi>
+                <m:mo>,</m:mo>
+                <m:msup>
+                  <m:mi>k</m:mi>
+                  <m:mo>'</m:mo>
+                </m:msup>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2260221">The poles are now found from <link target-id="uid25"/>,<link target-id="uid26"/>, <link target-id="uid44"/>, and <link target-id="uid46"/> to be</para>
+        <equation id="uid47">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>s</m:mi>
+                <m:mrow>
+                  <m:mi>p</m:mi>
+                  <m:mi>i</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mi>j</m:mi>
+              <m:mspace width="4pt"/>
+              <m:mi>s</m:mi>
+              <m:mi>n</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>K</m:mi>
+                <m:mi>i</m:mi>
+                <m:mo>/</m:mo>
+                <m:mi>N</m:mi>
+                <m:mo>+</m:mo>
+                <m:mi>j</m:mi>
+                <m:msub>
+                  <m:mi>ν</m:mi>
+                  <m:mn>0</m:mn>
+                </m:msub>
+                <m:mo>,</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2260308">This equation can be more clearly written by using the summation
+formula <link target-id="bid5"/> for the elliptic sine function to give</para>
+        <equation id="uid48">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>s</m:mi>
+                <m:mrow>
+                  <m:mi>p</m:mi>
+                  <m:mi>i</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mrow>
+                  <m:mi>c</m:mi>
+                  <m:mi>n</m:mi>
+                  <m:mspace width="4pt"/>
+                  <m:mi>d</m:mi>
+                  <m:mi>n</m:mi>
+                  <m:mspace width="4pt"/>
+                  <m:mi>s</m:mi>
+                  <m:msup>
+                    <m:mi>n</m:mi>
+                    <m:mo>'</m:mo>
+                  </m:msup>
+                  <m:mspace width="4pt"/>
+                  <m:mi>c</m:mi>
+                  <m:msup>
+                    <m:mi>n</m:mi>
+                    <m:mo>'</m:mo>
+                  </m:msup>
+                  <m:mo>+</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mi>s</m:mi>
+                  <m:mi>n</m:mi>
+                  <m:mspace width="4pt"/>
+                  <m:mi>d</m:mi>
+                  <m:msup>
+                    <m:mi>n</m:mi>
+                    <m:mo>'</m:mo>
+                  </m:msup>
+                </m:mrow>
+                <m:mrow>
+                  <m:mn>1</m:mn>
+                  <m:mo>-</m:mo>
+                  <m:mi>d</m:mi>
+                  <m:msup>
+                    <m:mi>n</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mi>s</m:mi>
+                  <m:msup>
+                    <m:mi>n</m:mi>
+                    <m:mrow>
+                      <m:mo>'</m:mo>
+                      <m:mn>2</m:mn>
+                    </m:mrow>
+                  </m:msup>
+                </m:mrow>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2260434">where</para>
+        <equation id="uid49">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>s</m:mi>
+              <m:mi>n</m:mi>
+              <m:mo>=</m:mo>
+              <m:mi>s</m:mi>
+              <m:mi>n</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>K</m:mi>
+              <m:mi>i</m:mi>
+              <m:mo>/</m:mo>
+              <m:mi>N</m:mi>
+              <m:mo>,</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>,</m:mo>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mi>c</m:mi>
+              <m:mi>n</m:mi>
+              <m:mo>=</m:mo>
+              <m:mi>c</m:mi>
+              <m:mi>n</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>K</m:mi>
+              <m:mi>i</m:mi>
+              <m:mo>/</m:mo>
+              <m:mi>N</m:mi>
+              <m:mo>,</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>,</m:mo>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mi>d</m:mi>
+              <m:mi>n</m:mi>
+              <m:mo>=</m:mo>
+              <m:mi>d</m:mi>
+              <m:mi>n</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>K</m:mi>
+              <m:mi>i</m:mi>
+              <m:mo>/</m:mo>
+              <m:mi>N</m:mi>
+              <m:mo>,</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid50">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>s</m:mi>
+              <m:msup>
+                <m:mi>n</m:mi>
+                <m:mo>'</m:mo>
+              </m:msup>
+              <m:mo>=</m:mo>
+              <m:mi>s</m:mi>
+              <m:mi>n</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msub>
+                  <m:mi>ν</m:mi>
+                  <m:mn>0</m:mn>
+                </m:msub>
+                <m:mo>,</m:mo>
+                <m:msup>
+                  <m:mi>k</m:mi>
+                  <m:mo>'</m:mo>
+                </m:msup>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>,</m:mo>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mi>c</m:mi>
+              <m:msup>
+                <m:mi>n</m:mi>
+                <m:mo>'</m:mo>
+              </m:msup>
+              <m:mo>=</m:mo>
+              <m:mi>c</m:mi>
+              <m:mi>n</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msub>
+                  <m:mi>ν</m:mi>
+                  <m:mn>0</m:mn>
+                </m:msub>
+                <m:mo>,</m:mo>
+                <m:msup>
+                  <m:mi>k</m:mi>
+                  <m:mo>'</m:mo>
+                </m:msup>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>,</m:mo>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mi>d</m:mi>
+              <m:msup>
+                <m:mi>n</m:mi>
+                <m:mo>'</m:mo>
+              </m:msup>
+              <m:mo>=</m:mo>
+              <m:mi>d</m:mi>
+              <m:mi>n</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msub>
+                  <m:mi>ν</m:mi>
+                  <m:mn>0</m:mn>
+                </m:msub>
+                <m:mo>,</m:mo>
+                <m:msup>
+                  <m:mi>k</m:mi>
+                  <m:mo>'</m:mo>
+                </m:msup>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2260708">for</para>
+        <equation id="id2260713">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>i</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+              <m:mo>,</m:mo>
+              <m:mn>2</m:mn>
+              <m:mo>,</m:mo>
+              <m:mn>4</m:mn>
+              <m:mo>,</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>.</m:mo>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mtext>N</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mtext>odd</m:mtext>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="id2260766">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>i</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>,</m:mo>
+              <m:mn>3</m:mn>
+              <m:mo>,</m:mo>
+              <m:mn>5</m:mn>
+              <m:mo>,</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>.</m:mo>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mtext>N</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mtext>even</m:mtext>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2260818">The theory of Jacobian elliptic functions can be found in
+<link target-id="bid5"/> and its application to filter design in <link target-id="bid0"/>, <link target-id="bid4"/>, <link target-id="bid3"/>. The
+best techniques for calculating the elliptic functions seem to use the
+arithmetic-geometric mean; efficient algorithms are presented in
+<link target-id="bid6"/>. A design program is given in <link target-id="bid0"/> and a versitile
+FORTRAN program that is easily related to the theory in this chapter is
+given as Program 8 in the appendix of this book. Matlab has a powerful
+elliptic function filter design command as well as accurate algorithms for
+evaluating the Jacobian elliptic functions and integrals.</para>
+        <para id="id2260864">An alternative to the use of elliptic functions for finding
+the transfer function <m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>)</m:mo></m:mrow></m:math> pole locations is to obtain the zeros
+from <link target-id="uid40"/>, then find <m:math><m:mrow><m:mi>G</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> using the reciprocal relation of the
+poles and zeros <link target-id="uid34"/>. <m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>)</m:mo></m:mrow></m:math> is constructed from <m:math><m:mrow><m:mi>G</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mi>ϵ</m:mi></m:math> from
+<link target-id="uid8"/>, and the poles are found using a root-finding algorithm.
+Another possibility is to find the zeros from <link target-id="uid40"/> and the poles
+from the methods for finding a Chebyshev passband from arbitrary
+zeros. These approaches avoid calculating <m:math><m:msub><m:mi>ν</m:mi><m:mn>0</m:mn></m:msub></m:math> by <link target-id="uid46"/> or
+determining <m:math><m:mi>k</m:mi></m:math> from <m:math><m:mrow><m:mi>K</m:mi><m:mo>/</m:mo><m:msup><m:mi>K</m:mi><m:mo>'</m:mo></m:msup></m:mrow></m:math>, as is described in <link target-id="bid6"/>. The
+efficient algorithms for evaluating the elliptic functions and the
+common use of powerful computers make these alternatives less
+attractive now.</para>
+</section>
+<section id="fs-id7688655">
+        <title>Summary</title>
+        <para id="id2261037">In this section the basic properties of the Jacobian
+elliptic functions have been outlined and the necessary
+conditions given for an equal-ripple rational function to be
+defined in terms of them. This rational function was then used to
+construct a filter transfer function with equal-ripple
+properties. Formulas were derived to calculate the pole and zero
+locations for the filter transfer functions and to relate design
+specifications to the functions. These formulas require the
+evaluation of elliptic functions and are implemented in Program 8
+in the appendix.</para>
+</section>      
+</section>
+      <section id="uid51">
+        <title>Elliptic-Function Filter Design Procedures</title>
+        <para id="id2261059">The equal-ripple rational function <m:math><m:mrow><m:mi>G</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is used to describe
+an optimal frequency-response function <m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>j</m:mi><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> and to design
+the corresponding filter. The squared-magnitude frequency-response
+function is</para>
+        <equation id="uid52">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msup>
+                <m:mrow>
+                  <m:mo>|</m:mo>
+                  <m:mi>F</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>j</m:mi>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>|</m:mo>
+                </m:mrow>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mrow>
+                  <m:mn>1</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:msup>
+                    <m:mi>ϵ</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mi>G</m:mi>
+                  <m:msup>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>ω</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                </m:mrow>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2261172">with <m:math><m:mrow><m:mi>G</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> defined by Jacobian Elliptic functions, and <m:math><m:mi>ϵ</m:mi></m:math>
+being a parameter that controls the passband ripple. The plot of this
+function for <m:math><m:mrow><m:mi>N</m:mi><m:mo>=</m:mo><m:mn>3</m:mn></m:mrow></m:math> illustrates the relation to the various specification
+parameters.</para>
+        <para id="id2261220">From <link target-id="uid3"/>, it is seen that the passband ripple is
+measured by <m:math><m:msub><m:mi>δ</m:mi><m:mn>1</m:mn></m:msub></m:math>, the stopband ripple by <m:math><m:msub><m:mi>δ</m:mi><m:mn>2</m:mn></m:msub></m:math>, and the
+normalized transition band by <m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math>. The previous section showed
+that</para>
+        <equation id="uid53">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mi>s</m:mi>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>/</m:mo>
+              <m:mi>k</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2261302">which means that the width of the transition band determines <m:math><m:mi>k</m:mi></m:math>. It
+should be remembered that this development has assumed a passband
+edge normalized to unity. For the unnormalized case, the passband
+edge is <m:math><m:msub><m:mi>ω</m:mi><m:mi>p</m:mi></m:msub></m:math> and the stopband edge becomes</para>
+        <equation id="uid54">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mi>s</m:mi>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:msub>
+                  <m:mi>ω</m:mi>
+                  <m:mi>p</m:mi>
+                </m:msub>
+                <m:mi>k</m:mi>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2261367">The stopband performance is described in terms of the ripple <m:math><m:msub><m:mi>δ</m:mi><m:mn>2</m:mn></m:msub></m:math>
+normalized to a maximum passband response of unity, or in terms of the
+attenuation b in the stopband expressed in positive dB assuming a maximum
+passband response of zero dB. The stopband ripple and attenuation are
+determined from <link target-id="uid52"/> and <link target-id="uid3"/> to be</para>
+        <equation id="uid55">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msubsup>
+                <m:mi>δ</m:mi>
+                <m:mn>2</m:mn>
+                <m:mn>2</m:mn>
+              </m:msubsup>
+              <m:mo>=</m:mo>
+              <m:msup>
+                <m:mn>10</m:mn>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>b</m:mi>
+                  <m:mo>/</m:mo>
+                  <m:mn>10</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mrow>
+                  <m:mn>1</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:msup>
+                    <m:mi>ϵ</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>/</m:mo>
+                  <m:msubsup>
+                    <m:mi>k</m:mi>
+                    <m:mn>1</m:mn>
+                    <m:mn>2</m:mn>
+                  </m:msubsup>
+                </m:mrow>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2261472">This can be rearranged to give <m:math><m:msub><m:mi>k</m:mi><m:mn>1</m:mn></m:msub></m:math> in terms of the stopband ripple
+or attenuation.</para>
+        <equation id="uid56">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msubsup>
+                <m:mi>k</m:mi>
+                <m:mn>1</m:mn>
+                <m:mn>2</m:mn>
+              </m:msubsup>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:msup>
+                  <m:mi>ϵ</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mrow>
+                  <m:mn>1</m:mn>
+                  <m:mo>/</m:mo>
+                  <m:msubsup>
+                    <m:mi>δ</m:mi>
+                    <m:mn>2</m:mn>
+                    <m:mn>2</m:mn>
+                  </m:msubsup>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:mfrac>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:msup>
+                  <m:mi>ϵ</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mrow>
+                  <m:msup>
+                    <m:mn>10</m:mn>
+                    <m:mrow>
+                      <m:mi>b</m:mi>
+                      <m:mo>/</m:mo>
+                      <m:mn>10</m:mn>
+                    </m:mrow>
+                  </m:msup>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2261576">The order <m:math><m:mi>N</m:mi></m:math> of the filter depends on <m:math><m:mi>k</m:mi></m:math> and <m:math><m:msub><m:mi>k</m:mi><m:mn>1</m:mn></m:msub></m:math>, as shown
+in <link target-id="uid30"/>. Equations <link target-id="uid54"/>, <link target-id="uid56"/>, and <link target-id="uid30"/> determine the
+relation of the frequency-response specifications and the
+elliptic-function parameters. The location of the transfer function
+poles and zeros must then be determined.</para>
+        <para id="id2261634">Because of the required relationships of <link target-id="uid30"/> and the fact
+that the order <m:math><m:mi>N</m:mi></m:math> must be an integer, the passband ripple, stopband
+ripple, and transition band cannot be independently set. Several
+straightforward procedures can be used that will always meet two of
+the specifications and exceed the third.</para>
+        <para id="id2261657">The first design step is generally the determination of the
+order <m:math><m:mi>N</m:mi></m:math> from the desired passband ripple <m:math><m:msub><m:mi>δ</m:mi><m:mn>1</m:mn></m:msub></m:math>, the stopband
+ripple <m:math><m:msub><m:mi>δ</m:mi><m:mn>2</m:mn></m:msub></m:math>, and the transition band controlled by <m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math>.
+The following formulas determine the moduli <m:math><m:mi>k</m:mi></m:math> and <m:math><m:msub><m:mi>k</m:mi><m:mn>1</m:mn></m:msub></m:math> from the
+passband ripple <m:math><m:msub><m:mi>δ</m:mi><m:mn>1</m:mn></m:msub></m:math> or its dB equavilent a, and the stopband
+ripple <m:math><m:msub><m:mi>δ</m:mi><m:mn>2</m:mn></m:msub></m:math> or its dB attenuation equivalent b:</para>
+        <equation id="uid57">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>ϵ</m:mi>
+              <m:mo>=</m:mo>
+              <m:msqrt>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mn>2</m:mn>
+                    <m:msub>
+                      <m:mi>δ</m:mi>
+                      <m:mn>1</m:mn>
+                    </m:msub>
+                    <m:mo>-</m:mo>
+                    <m:msubsup>
+                      <m:mi>δ</m:mi>
+                      <m:mn>1</m:mn>
+                      <m:mn>2</m:mn>
+                    </m:msubsup>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mn>1</m:mn>
+                    <m:mo>-</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:msub>
+                      <m:mi>δ</m:mi>
+                      <m:mn>1</m:mn>
+                    </m:msub>
+                    <m:mo>-</m:mo>
+                    <m:msubsup>
+                      <m:mi>δ</m:mi>
+                      <m:mn>1</m:mn>
+                      <m:mn>2</m:mn>
+                    </m:msubsup>
+                  </m:mrow>
+                </m:mfrac>
+              </m:msqrt>
+              <m:mo>=</m:mo>
+              <m:msqrt>
+                <m:mrow>
+                  <m:msup>
+                    <m:mn>10</m:mn>
+                    <m:mrow>
+                      <m:mi>a</m:mi>
+                      <m:mo>/</m:mo>
+                      <m:mn>10</m:mn>
+                    </m:mrow>
+                  </m:msup>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msqrt>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid58">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>k</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mi>ϵ</m:mi>
+                <m:msqrt>
+                  <m:mrow>
+                    <m:mn>1</m:mn>
+                    <m:mo>/</m:mo>
+                    <m:msubsup>
+                      <m:mi>δ</m:mi>
+                      <m:mn>2</m:mn>
+                      <m:mn>2</m:mn>
+                    </m:msubsup>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:msqrt>
+              </m:mfrac>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mi>ϵ</m:mi>
+                <m:msqrt>
+                  <m:mrow>
+                    <m:msup>
+                      <m:mn>10</m:mn>
+                      <m:mrow>
+                        <m:mi>b</m:mi>
+                        <m:mo>/</m:mo>
+                        <m:mn>10</m:mn>
+                      </m:mrow>
+                    </m:msup>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:msqrt>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid59">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msubsup>
+                <m:mi>k</m:mi>
+                <m:mn>1</m:mn>
+                <m:mo>'</m:mo>
+              </m:msubsup>
+              <m:mo>=</m:mo>
+              <m:msqrt>
+                <m:mrow>
+                  <m:mn>1</m:mn>
+                  <m:mo>-</m:mo>
+                  <m:msubsup>
+                    <m:mi>k</m:mi>
+                    <m:mn>1</m:mn>
+                    <m:mn>2</m:mn>
+                  </m:msubsup>
+                </m:mrow>
+              </m:msqrt>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid60">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>k</m:mi>
+              <m:mo>=</m:mo>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mi>p</m:mi>
+              </m:msub>
+              <m:mo>/</m:mo>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mi>s</m:mi>
+              </m:msub>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:msup>
+                <m:mi>k</m:mi>
+                <m:mo>'</m:mo>
+              </m:msup>
+              <m:mo>=</m:mo>
+              <m:msqrt>
+                <m:mrow>
+                  <m:mn>1</m:mn>
+                  <m:mo>-</m:mo>
+                  <m:msup>
+                    <m:mi>k</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                </m:mrow>
+              </m:msqrt>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2262050">The order <m:math><m:mi>N</m:mi></m:math> is the smallest integer satisfying</para>
+        <equation id="uid61">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>N</m:mi>
+              <m:mo>≥</m:mo>
+              <m:mfrac>
+                <m:mrow>
+                  <m:mi>K</m:mi>
+                  <m:msubsup>
+                    <m:mi>K</m:mi>
+                    <m:mn>1</m:mn>
+                    <m:mo>'</m:mo>
+                  </m:msubsup>
+                </m:mrow>
+                <m:mrow>
+                  <m:msup>
+                    <m:mi>K</m:mi>
+                    <m:mo>'</m:mo>
+                  </m:msup>
+                  <m:msub>
+                    <m:mi>K</m:mi>
+                    <m:mn>1</m:mn>
+                  </m:msub>
+                </m:mrow>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2262112">This integer order <m:math><m:mi>N</m:mi></m:math> will not in general exactly satisfy <link target-id="uid30"/>,
+i.e., will not satisfy <link target-id="uid30"/> with equality. Either <m:math><m:mi>k</m:mi></m:math> or <m:math><m:msub><m:mi>k</m:mi><m:mn>1</m:mn></m:msub></m:math>
+must to recalculated to satisfy <link target-id="uid30"/> and <link target-id="uid61"/>. The various
+possibilities for this are developed below.</para>
+      </section>
+      <section id="uid62">
+        <title>Methods for Meeting Specifications</title>
+        <section id="uid63">
+          <title>Fixed Order, Passband Ripple, and Transition Band</title>
+          <para id="id2262185">Given <m:math><m:mi>N</m:mi></m:math> from <link target-id="uid61"/> and the specifications
+<m:math><m:msub><m:mi>δ</m:mi><m:mn>1</m:mn></m:msub></m:math>, <m:math><m:msub><m:mi>ω</m:mi><m:mi>p</m:mi></m:msub></m:math>, and <m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math>, the parameters <m:math><m:mi>ϵ</m:mi></m:math>
+and <m:math><m:mi>k</m:mi></m:math> are found from <link target-id="uid58"/> and (refcc50). From <m:math><m:mi>k</m:mi></m:math>, the
+complete elliptic integrals K and K' are calculated <link target-id="bid6"/>.
+From <link target-id="uid30"/>, the ratio <m:math><m:mrow><m:mi>K</m:mi><m:mo>/</m:mo><m:msup><m:mi>K</m:mi><m:mo>'</m:mo></m:msup></m:mrow></m:math> determines the ratio
+<m:math><m:mrow><m:msubsup><m:mi>K</m:mi><m:mn>1</m:mn><m:mo>'</m:mo></m:msubsup><m:mo>/</m:mo><m:msub><m:mi>K</m:mi><m:mn>1</m:mn></m:msub></m:mrow></m:math>. Using numerical methods from <link target-id="bid5"/>, <m:math><m:msub><m:mi>k</m:mi><m:mn>1</m:mn></m:msub></m:math> is
+calculated. This gives the desired <m:math><m:msub><m:mi>δ</m:mi><m:mn>1</m:mn></m:msub></m:math>, <m:math><m:msub><m:mi>ω</m:mi><m:mi>p</m:mi></m:msub></m:math>, and
+<m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math> and minimizes the stopband ripple <m:math><m:msub><m:mi>δ</m:mi><m:mn>2</m:mn></m:msub></m:math> (or
+maximizes the stopband attenuation <m:math><m:mi>b</m:mi></m:math>).</para>
+          <para id="id2262431">Using these parameters, the zeros are calculated from (refcc31)
+and the poles from (refcc39). Note the zero locations do not depend on
+<m:math><m:mi>ϵ</m:mi></m:math> or <m:math><m:msub><m:mi>k</m:mi><m:mn>1</m:mn></m:msub></m:math>, but only on <m:math><m:mi>N</m:mi></m:math> and <m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math>. This makes the
+tradeoff between stop and passband occur in (refcc48) and only affects
+the calculation of <m:math><m:mrow><m:mi>n</m:mi><m:msub><m:mi>u</m:mi><m:mn>0</m:mn></m:msub></m:mrow></m:math> in (refcc38)</para>
+          <para id="id2262503">This approach which minimizes the stopband ripple is used in
+the IIR filter design program in the appendix of this book.</para>
+        </section>
+        <section id="uid64">
+          <title>Fixed Order, Stopband Rejection, and Transition Band</title>
+          <para id="id2262517">Given <m:math><m:mi>N</m:mi></m:math> from <link target-id="uid61"/> and the specifications <m:math><m:msub><m:mi>δ</m:mi><m:mn>2</m:mn></m:msub></m:math>, <m:math><m:msub><m:mi>ω</m:mi><m:mi>p</m:mi></m:msub></m:math>, and <m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math>,
+the parameter k is found from (refcc50). From k, the complete elliptic
+integrals K and K' are calculated <link target-id="bid6"/>. From <link target-id="uid30"/>, the ratio K/K'
+determines the ratio <m:math><m:mrow><m:msubsup><m:mi>K</m:mi><m:mn>1</m:mn><m:mo>'</m:mo></m:msubsup><m:mo>/</m:mo><m:msub><m:mi>K</m:mi><m:mn>1</m:mn></m:msub></m:mrow></m:math> . Using numerical methods from
+<link target-id="bid5"/>, <m:math><m:msub><m:mi>k</m:mi><m:mn>1</m:mn></m:msub></m:math> is calculated. From <m:math><m:msub><m:mi>k</m:mi><m:mn>1</m:mn></m:msub></m:math> and <m:math><m:msub><m:mi>δ</m:mi><m:mn>2</m:mn></m:msub></m:math>, <m:math><m:mi>ϵ</m:mi></m:math>
+and <m:math><m:msub><m:mi>δ</m:mi><m:mn>1</m:mn></m:msub></m:math> are found from</para>
+          <equation id="uid65">
+            <m:math mode="display">
+              <m:mrow>
+                <m:mi>ϵ</m:mi>
+                <m:mo>=</m:mo>
+                <m:msub>
+                  <m:mi>k</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:msqrt>
+                  <m:mrow>
+                    <m:mn>1</m:mn>
+                    <m:mo>/</m:mo>
+                    <m:msubsup>
+                      <m:mi>δ</m:mi>
+                      <m:mn>2</m:mn>
+                      <m:mn>2</m:mn>
+                    </m:msubsup>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:msqrt>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2262741">and</para>
+          <equation id="uid66">
+            <m:math mode="display">
+              <m:mrow>
+                <m:msub>
+                  <m:mi>δ</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:mo>=</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>-</m:mo>
+                <m:mfrac>
+                  <m:mn>1</m:mn>
+                  <m:msqrt>
+                    <m:mrow>
+                      <m:mn>1</m:mn>
+                      <m:mo>+</m:mo>
+                      <m:msup>
+                        <m:mi>ϵ</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msup>
+                    </m:mrow>
+                  </m:msqrt>
+                </m:mfrac>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2262791">This set of parameters gives the desired <m:math><m:msub><m:mi>ω</m:mi><m:mi>p</m:mi></m:msub></m:math>, <m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math>, and
+stopband ripple and minimizes the passband ripple. The zero and pole
+locations are found as above.</para>
+        </section>
+        <section id="uid67">
+          <title>Fixed Order, Stopband, and Passband Ripple</title>
+          <para id="id2262833">Given <m:math><m:mi>N</m:mi></m:math> from <link target-id="uid61"/> and the specifications <m:math><m:msub><m:mi>δ</m:mi><m:mn>1</m:mn></m:msub></m:math>, <m:math><m:msub><m:mi>δ</m:mi><m:mn>2</m:mn></m:msub></m:math>, and
+either <m:math><m:msub><m:mi>ω</m:mi><m:mi>p</m:mi></m:msub></m:math> or <m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math>, the parameters <m:math><m:mi>ϵ</m:mi></m:math> and
+<m:math><m:msub><m:mi>k</m:mi><m:mn>1</m:mn></m:msub></m:math> are found from <link target-id="uid58"/> and (refcc48). From <m:math><m:msub><m:mi>k</m:mi><m:mn>1</m:mn></m:msub></m:math>, the
+complete elliptic integrals <m:math><m:msub><m:mi>K</m:mi><m:mn>1</m:mn></m:msub></m:math> and <m:math><m:msubsup><m:mi>K</m:mi><m:mn>1</m:mn><m:mo>'</m:mo></m:msubsup></m:math> are calculated
+<link target-id="bid6"/>. From <link target-id="uid30"/>, the ratio <m:math><m:mrow><m:msub><m:mi>K</m:mi><m:mn>1</m:mn></m:msub><m:mo>/</m:mo><m:msubsup><m:mi>K</m:mi><m:mn>1</m:mn><m:mo>'</m:mo></m:msubsup></m:mrow></m:math> determines
+the ratio <m:math><m:mrow><m:msup><m:mi>K</m:mi><m:mo>'</m:mo></m:msup><m:mo>/</m:mo><m:mi>K</m:mi></m:mrow></m:math>. Using numerical methods from <link target-id="bid5"/>, <m:math><m:mi>k</m:mi></m:math> is
+calculated. This gives the desired passband and stopband ripple and
+minimizes the transition-band width. The pole and zero locations are
+found as above.</para>
+        </section>
+        <section id="uid68">
+          <title> An Approximation</title>
+          <para id="id2263073">In many filter design programs, after the order <m:math><m:mi>N</m:mi></m:math> is found
+from <link target-id="uid61"/>, the design proceeds using the original e, <m:math><m:mi>k</m:mi></m:math>, and
+<m:math><m:msub><m:mi>k</m:mi><m:mn>1</m:mn></m:msub></m:math>, even though they do not satisfy <link target-id="uid30"/>. The resulting design
+has the desired transition band, but both pass and stopband ripple
+are smaller than specified. This avoids the calculation of the
+modulus <m:math><m:mi>k</m:mi></m:math> or <m:math><m:msub><m:mi>k</m:mi><m:mn>1</m:mn></m:msub></m:math> from a ratio of complete elliptic integrals as
+was necessary in all three cases above, but produces results that
+are difficult to exactly predict.</para>
+<example id="fs-id1163829703082">
+<title>Design of a Third-Order
+Elliptic-Function Filter
+</title>
+          <para id="id2263163">A lowpass elliptic-function filter is desired with a maximum
+passband ripple of <m:math><m:mrow><m:msub><m:mi>δ</m:mi><m:mn>1</m:mn></m:msub><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>.</m:mo><m:mn>1</m:mn></m:mrow></m:math> or <m:math><m:mrow><m:mi>a</m:mi><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>.</m:mo><m:mn>91515</m:mn></m:mrow></m:math> dB, a maximum
+stopband ripple of <m:math><m:mrow><m:msub><m:mi>δ</m:mi><m:mn>2</m:mn></m:msub><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>.</m:mo><m:mn>1</m:mn></m:mrow></m:math> or <m:math><m:mrow><m:mi>b</m:mi><m:mo>=</m:mo><m:mn>20</m:mn></m:mrow></m:math> dB rejection, and a
+normalized stopband edge of <m:math><m:mrow><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub><m:mo>=</m:mo><m:mn>1</m:mn><m:mo>.</m:mo><m:mn>3</m:mn></m:mrow></m:math> radians per second. The
+first step is to determine the order of the filter.</para>
+          <para id="id2263279">From <m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math>, the modulus <m:math><m:mi>k</m:mi></m:math> is calculated and then the
+complimentary modulus using the relations in (refcc50). Special
+numerical algorithms illustrated in Program 8 are then used to find
+the complete elliptic integrals <m:math><m:mi>K</m:mi></m:math> and <m:math><m:msup><m:mi>K</m:mi><m:mo>'</m:mo></m:msup></m:math><link target-id="bid6"/>.</para>
+          <equation id="id2263338">
+            <m:math mode="display">
+              <m:mrow>
+                <m:mi>k</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>/</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>3</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>769231</m:mn>
+                <m:mo>,</m:mo>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:msup>
+                  <m:mi>k</m:mi>
+                  <m:mo>'</m:mo>
+                </m:msup>
+                <m:mo>=</m:mo>
+                <m:msqrt>
+                  <m:mrow>
+                    <m:mn>1</m:mn>
+                    <m:mo>-</m:mo>
+                    <m:msup>
+                      <m:mi>k</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                  </m:mrow>
+                </m:msqrt>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>638971</m:mn>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <equation id="id2263418">
+            <m:math mode="display">
+              <m:mrow>
+                <m:mi>K</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>940714</m:mn>
+                <m:mo>,</m:mo>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:msup>
+                  <m:mi>K</m:mi>
+                  <m:mo>'</m:mo>
+                </m:msup>
+                <m:mo>=</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>783308</m:mn>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2263473">From <m:math><m:msub><m:mi>δ</m:mi><m:mn>1</m:mn></m:msub></m:math>, <m:math><m:mi>ϵ</m:mi></m:math> is calculated using <link target-id="uid58"/>, and from <m:math><m:mi>ϵ</m:mi></m:math> and <m:math><m:msub><m:mi>δ</m:mi><m:mn>2</m:mn></m:msub></m:math>, <m:math><m:msub><m:mi>k</m:mi><m:mn>1</m:mn></m:msub></m:math>
+is calculated from (refcc48). <m:math><m:msubsup><m:mi>k</m:mi><m:mn>1</m:mn><m:mo>'</m:mo></m:msubsup></m:math>, <m:math><m:msub><m:mi>K</m:mi><m:mn>1</m:mn></m:msub></m:math>, and <m:math><m:msubsup><m:mi>K</m:mi><m:mn>1</m:mn><m:mo>'</m:mo></m:msubsup></m:math> are then
+calculated.</para>
+          <equation id="id2263595">
+            <m:math mode="display">
+              <m:mrow>
+                <m:mi>ϵ</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>4843221</m:mn>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4.pt"/>
+                <m:mtext>as</m:mtext>
+                <m:mspace width="4.pt"/>
+                <m:mtext>for</m:mtext>
+                <m:mspace width="4.pt"/>
+                <m:mtext>the</m:mtext>
+                <m:mspace width="4.pt"/>
+                <m:mtext>Chebyshev</m:mtext>
+                <m:mspace width="4.pt"/>
+                <m:mtext>example.</m:mtext>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <equation id="id2263656">
+            <m:math mode="display">
+              <m:mrow>
+                <m:msub>
+                  <m:mi>k</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>0486762</m:mn>
+                <m:mo>,</m:mo>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:msubsup>
+                  <m:mi>k</m:mi>
+                  <m:mn>1</m:mn>
+                  <m:mo>'</m:mo>
+                </m:msubsup>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>9988146</m:mn>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <equation id="id2263716">
+            <m:math mode="display">
+              <m:mrow>
+                <m:msub>
+                  <m:mi>K</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:mo>=</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>571727</m:mn>
+                <m:mo>,</m:mo>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:msubsup>
+                  <m:mi>K</m:mi>
+                  <m:mn>1</m:mn>
+                  <m:mo>'</m:mo>
+                </m:msubsup>
+                <m:mo>=</m:mo>
+                <m:mn>4</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>4108715</m:mn>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2263777">The order is obtained from <link target-id="uid30"/> by calculating</para>
+          <equation id="uid69">
+            <m:math mode="display">
+              <m:mrow>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mi>K</m:mi>
+                    <m:mspace width="4pt"/>
+                    <m:msup>
+                      <m:mi>K</m:mi>
+                      <m:mo>'</m:mo>
+                    </m:msup>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:msup>
+                      <m:mi>K</m:mi>
+                      <m:mo>'</m:mo>
+                    </m:msup>
+                    <m:mspace width="4pt"/>
+                    <m:msub>
+                      <m:mi>K</m:mi>
+                      <m:mn>1</m:mn>
+                    </m:msub>
+                  </m:mrow>
+                </m:mfrac>
+                <m:mo>=</m:mo>
+                <m:mn>3</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>0541</m:mn>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2263842">This is close enough to 3 to set <m:math><m:mrow><m:mi>N</m:mi><m:mo>=</m:mo><m:mn>3</m:mn></m:mrow></m:math>. Rather than recalculate
+<m:math><m:mi>k</m:mi></m:math> and <m:math><m:msub><m:mi>k</m:mi><m:mn>1</m:mn></m:msub></m:math>, the already calculated values are used as discussed
+in the design method D in this section. The zeros are found from
+(refcc31) using only <m:math><m:mi>N</m:mi></m:math> and <m:math><m:mi>k</m:mi></m:math> from above.</para>
+          <equation id="uid70">
+            <m:math mode="display">
+              <m:mrow>
+                <m:msub>
+                  <m:mi>ω</m:mi>
+                  <m:mi>z</m:mi>
+                </m:msub>
+                <m:mo>=</m:mo>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mo>±</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mi>k</m:mi>
+                    <m:mspace width="4pt"/>
+                    <m:mi>s</m:mi>
+                    <m:mi>n</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:mi>K</m:mi>
+                    <m:mo>/</m:mo>
+                    <m:mi>N</m:mi>
+                    <m:mo>,</m:mo>
+                    <m:mi>k</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mfrac>
+                <m:mo>=</m:mo>
+                <m:mo>±</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>430207</m:mn>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2263973">To find the pole locations requires the calculation of <m:math><m:msub><m:mi>ν</m:mi><m:mn>0</m:mn></m:msub></m:math>
+from (refcc38) which is somewhat complicated. It is carried out
+using the algorithms in Program 8 in the appendix.</para>
+          <equation id="uid71">
+            <m:math mode="display">
+              <m:mrow>
+                <m:msub>
+                  <m:mi>ν</m:mi>
+                  <m:mn>0</m:mn>
+                </m:msub>
+                <m:mo>=</m:mo>
+                <m:mfrac>
+                  <m:mi>K</m:mi>
+                  <m:mrow>
+                    <m:mi>N</m:mi>
+                    <m:mspace width="4pt"/>
+                    <m:msub>
+                      <m:mi>K</m:mi>
+                      <m:mn>1</m:mn>
+                    </m:msub>
+                  </m:mrow>
+                </m:mfrac>
+                <m:mi>s</m:mi>
+                <m:msup>
+                  <m:mi>c</m:mi>
+                  <m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:msup>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>/</m:mo>
+                  <m:mi>ϵ</m:mi>
+                  <m:mo>,</m:mo>
+                  <m:msubsup>
+                    <m:mi>k</m:mi>
+                    <m:mn>1</m:mn>
+                    <m:mo>'</m:mo>
+                  </m:msubsup>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>6059485</m:mn>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2264081">From this value of <m:math><m:msub><m:mi>ν</m:mi><m:mn>0</m:mn></m:msub></m:math>, and <m:math><m:mi>k</m:mi></m:math> and <m:math><m:mi>N</m:mi></m:math> above, the elliptic
+functions in (refcc40) are calculated to give</para>
+          <equation id="id2264119">
+            <m:math mode="display">
+              <m:mrow>
+                <m:mi>s</m:mi>
+                <m:msup>
+                  <m:mi>n</m:mi>
+                  <m:mo>'</m:mo>
+                </m:msup>
+                <m:mo>=</m:mo>
+                <m:mo>.</m:mo>
+                <m:mn>557986</m:mn>
+                <m:mo>,</m:mo>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:mi>c</m:mi>
+                <m:msup>
+                  <m:mi>n</m:mi>
+                  <m:mo>'</m:mo>
+                </m:msup>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>829850</m:mn>
+                <m:mo>,</m:mo>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:mi>d</m:mi>
+                <m:msup>
+                  <m:mi>n</m:mi>
+                  <m:mo>'</m:mo>
+                </m:msup>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>934281</m:mn>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2264205">which, for the single real pole corresponding to i = 0 in
+(refcc39), gives</para>
+          <equation id="id2264211">
+            <m:math mode="display">
+              <m:mrow>
+                <m:msub>
+                  <m:mi>s</m:mi>
+                  <m:mi>p</m:mi>
+                </m:msub>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>672393</m:mn>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2264238">For the complex conjugate pair of poles corresponding to <m:math><m:mrow><m:mi>i</m:mi><m:mo>=</m:mo><m:mn>2</m:mn></m:mrow></m:math>,
+the other elliptic functions in (refcc40) are</para>
+          <equation id="id2264258">
+            <m:math mode="display">
+              <m:mrow>
+                <m:mi>s</m:mi>
+                <m:mi>n</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>908959</m:mn>
+                <m:mo>,</m:mo>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:mi>c</m:mi>
+                <m:mi>n</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>416886</m:mn>
+                <m:mo>,</m:mo>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:mspace width="4pt"/>
+                <m:mi>d</m:mi>
+                <m:mi>n</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>714927</m:mn>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2264329">which gives from (refcc39) for the poles</para>
+          <equation id="id2264334">
+            <m:math mode="display">
+              <m:mrow>
+                <m:msub>
+                  <m:mi>s</m:mi>
+                  <m:mi>p</m:mi>
+                </m:msub>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>164126</m:mn>
+                <m:mo>±</m:mo>
+                <m:mi>j</m:mi>
+                <m:mn>1</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>009942</m:mn>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2264373">The complete transfer function is</para>
+          <equation id="uid72">
+            <m:math mode="display">
+              <m:mrow>
+                <m:mi>F</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>s</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>=</m:mo>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:msup>
+                      <m:mi>s</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                    <m:mo>+</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:mo>.</m:mo>
+                    <m:mn>045492</m:mn>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>s</m:mi>
+                      <m:mo>+</m:mo>
+                      <m:mn>0</m:mn>
+                      <m:mo>.</m:mo>
+                      <m:mn>672393</m:mn>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:msup>
+                        <m:mi>s</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msup>
+                      <m:mo>+</m:mo>
+                      <m:mn>0</m:mn>
+                      <m:mo>.</m:mo>
+                      <m:mn>328252</m:mn>
+                      <m:mi>s</m:mi>
+                      <m:mo>+</m:mo>
+                      <m:mn>1</m:mn>
+                      <m:mo>.</m:mo>
+                      <m:mn>046920</m:mn>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mrow>
+                </m:mfrac>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2264470">This design should be compared to the Chebyshev and inverse-
+Chebyshev designs.</para>
+          </example>
+        </section>
+      </section>
+    </section>
+  </content>
+  <bib:file>
+    <bib:entry id="bid5">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Abramowitz, M. and Stegun, I. A.</bib:author>
+        <bib:title>Handbook of Mathematical Functions</bib:title>
+        <bib:publisher>Dover Publications</bib:publisher>
+        <bib:year>1965</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid6">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Bulirsch, R.</bib:author>
+        <bib:title>Numerical Calculation of Elliptic Integrals and Elliptic Functions</bib:title>
+        <bib:journal>Numer. Math.</bib:journal>
+        <bib:year>1965</bib:year>
+<!--optional fields-->
+        <bib:volume>7</bib:volume>
+        <bib:number/>
+        <bib:pages>78–90</bib:pages>
+        <bib:month/>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid4">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Gold, B. and Rader, C. M.</bib:author>
+        <bib:title>Digital Processing of Signals</bib:title>
+        <bib:publisher>McGraw-Hill</bib:publisher>
+        <bib:year>1969</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid2">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Mitra, Sanjit K.</bib:author>
+        <bib:title>Digital Signal Processing, A Computer-Based Approach</bib:title>
+        <bib:publisher>McGraw-Hill</bib:publisher>
+        <bib:year>2006</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition>Third</bib:edition>
+        <bib:month/>
+        <bib:note>First edition in 1998, second in 2001</bib:note>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid1">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Oppenheim, A. V. and Schafer, R. W.</bib:author>
+        <bib:title>Discrete-Time Signal Processing</bib:title>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1999</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Englewood Cliffs, NJ</bib:address>
+        <bib:edition>Second</bib:edition>
+        <bib:month/>
+        <bib:note>Earlier editions in 1975 and 1989</bib:note>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid0">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Parks, T. W. and Burrus, C. S.</bib:author>
+        <bib:title>Digital Filter Design</bib:title>
+        <bib:publisher>John Wiley &amp; Sons</bib:publisher>
+        <bib:year>1987</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid3">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Valkenburg, M.E. Van</bib:author>
+        <bib:title>Analog Filter Design</bib:title>
+        <bib:publisher>Holt, Rinehart, and Winston</bib:publisher>
+        <bib:year>1982</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+  </bib:file>
+</document>

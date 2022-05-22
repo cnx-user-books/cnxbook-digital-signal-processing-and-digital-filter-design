@@ -1,0 +1,2362 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:bib="http://bibtexml.sf.net/">
+  <title>Discrete-Time Systems</title>
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m16883</md:content-id>
+  <md:title>Discrete-Time Systems</md:title>
+  <md:abstract/>
+  <md:uuid>acfd7f45-9375-48e1-920b-e12d1dfe5a00</md:uuid>
+</metadata>
+  <content>
+    <para id="id2255546">In the context of discussing signal processing, the most general
+definition of a system is similar to that of a function. A system is a
+device, formula, rule, or some process that assigns an output signal from
+some given class to each possible input signal chosen from some allowed
+class. From this definition one can pose three interesting and practical
+problems.</para>
+    <list id="id2255556" list-type="enumerated"><item id="uid1"><emphasis>Analysis</emphasis>:
+ If the input signal and the system are given,
+find the output signal.
+</item>
+      <item id="uid2"><emphasis>Control</emphasis>:
+ If the system and the output signal are given,
+find the input signal.
+</item>
+      <item id="uid3"><emphasis>Synthesis</emphasis>:
+ If the input signal and output signal are given,
+find the system.
+</item>
+    </list>
+    <para id="id2255607">The definition of input and output signal can be quite diverse. They
+could be scalars, vectors, functions, functionals, or other objects.</para>
+    <para id="id2255613">All three of these problems are important, but analysis is probably the
+most basic and its study usually precedes that of the other two. Analysis
+usually results in a unique solution. Control is often unique but there
+are some problems where several inputs would give the same output.
+Synthesis is seldom unique. There are usually many possible systems that
+will give the same output for a given input.</para>
+    <para id="id2255623">In order to develop tools for analysis, control, and design of
+discrete-time systems, specific definitions, restrictions, and
+classifications must be made. It is the explicit statement of what a
+system is, not what it isn't, that allows a descriptive theory and design
+methods to be developed.</para>
+    <section id="uid5">
+      <title>Classifications</title>
+      <para id="id2255638">The basic classifications of signal processing systems are defined and
+listed here. We will restrict ourselves to discrete-time systems that
+have ordered sequences of real or complex numbers as inputs and outputs
+and will denote the input sequence by <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> and the output sequence by
+<m:math><m:mrow><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> and show the process of the system by <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>→</m:mo><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>.
+Although the independent variable <m:math><m:mi>n</m:mi></m:math> could represent any physical
+variable, our most common usages causes us to generically call it time but
+the results obtained certainly are not restricted to this interpretation.</para>
+      <list id="id2255722" list-type="enumerated"><item id="uid6"><emphasis effect="bold">Linear,</emphasis> A system is classified as linear if two conditions are
+true.
+<list id="id2255740" list-type="bulleted"><item id="uid7">If <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>→</m:mo><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> then <m:math><m:mrow><m:mi>a</m:mi><m:mspace width="0.166667em"/><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>→</m:mo><m:mi>a</m:mi><m:mspace width="0.166667em"/><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>
+for all <m:math><m:mi>a</m:mi></m:math>. This property is called homogeneity or scaling.
+</item><item id="uid8">If <m:math><m:mrow><m:msub><m:mi>x</m:mi><m:mn>1</m:mn></m:msub><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>→</m:mo><m:msub><m:mi>y</m:mi><m:mn>1</m:mn></m:msub><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> and <m:math><m:mrow><m:msub><m:mi>x</m:mi><m:mn>2</m:mn></m:msub><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>→</m:mo><m:msub><m:mi>y</m:mi><m:mn>2</m:mn></m:msub><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>,
+then <m:math><m:mrow><m:mrow><m:mo>(</m:mo><m:msub><m:mi>x</m:mi><m:mn>1</m:mn></m:msub><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:msub><m:mi>x</m:mi><m:mn>2</m:mn></m:msub><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>)</m:mo></m:mrow><m:mo>→</m:mo><m:mrow><m:mo>(</m:mo><m:msub><m:mi>y</m:mi><m:mn>1</m:mn></m:msub><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:msub><m:mi>y</m:mi><m:mn>2</m:mn></m:msub><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>)</m:mo></m:mrow></m:mrow></m:math> for all
+<m:math><m:msub><m:mi>x</m:mi><m:mn>1</m:mn></m:msub></m:math> and <m:math><m:msub><m:mi>x</m:mi><m:mn>2</m:mn></m:msub></m:math>. This property is called superposition or
+additivity.
+</item></list>
+If a system does not satisfy both of these conditions for all inputs, it
+is classified as nonlinear. For most practical systems, one of these
+conditions implies the other. Note that a linear system must give a zero
+output for a zero input.
+</item>
+        <item id="uid10"><emphasis effect="bold">Time Invariant</emphasis>
+, also called index invariant or shift invariant.
+A system is classified as time invariant if <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>+</m:mo><m:mi>k</m:mi><m:mo>)</m:mo><m:mo>→</m:mo><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>+</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math> for any integer <m:math><m:mi>k</m:mi></m:math>. This states that the system responds the same
+way regardless of when the input is applied. In most cases, the system
+itself is not a function of time.
+</item>
+        <item id="uid12"><emphasis effect="bold">Stable</emphasis>
+. A system is called bounded-input bounded-output stable
+if for all bounded inputs, the corresponding outputs are bounded. This
+means that the output must remain bounded even for inputs artificially
+constructed to maximize a particular system's output.
+</item>
+        <item id="uid14"><emphasis effect="bold">Causal</emphasis>
+. A system is classified as causal if the output of a
+system does not precede the input. For linear systems this means that the
+impulse response of a system is zero for time before the input. This
+concept implies the interpretation of <m:math><m:mi>n</m:mi></m:math> as time even though it may not
+be. A system is semi-causal if after a finite shift in time, the impulse
+response is zero for negative time. If the impulse response is nonzero
+for <m:math><m:mrow><m:mi>n</m:mi><m:mo>→</m:mo><m:mo>-</m:mo><m:mi>∞</m:mi></m:mrow></m:math>, the system is absolutely non-causal. Delays
+are simple to realize in discrete-time systems and semi-causal systems can
+often be made realizable if a time delay can be tolerated.
+</item>
+        <item id="uid16"><emphasis effect="bold">Real-Time</emphasis>
+. A discrete-time system can operate in “real-time" if
+an output value in the output sequence can be calculated by the system
+before the next input arrives. If this is not possible, the input and
+output must be stored in blocks and the system operates in “batch" mode.
+In batch mode, each output value can depend on all of the input values and
+the concept of causality does not apply.
+</item>
+      </list>
+      <para id="id2256212">These definitions will allow a powerful class of analysis and design
+methods to be developed and we start with convolution.</para>
+    </section>
+    <section id="uid18">
+      <title>Convolution</title>
+      <para id="id2256228">The most basic and powerful operation for linear discrete-time system
+analysis, control, and design is discrete-time convolution. We first
+define the discrete-time unit impulse, also known as the Kronecker delta
+function, as </para>
+      <equation id="id2256238">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>δ</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mfenced separators="" open="{" close="">
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd columnalign="left">
+                    <m:mn>1</m:mn>
+                  </m:mtd>
+                  <m:mtd columnalign="left">
+                    <m:mrow>
+                      <m:mspace width="4.pt"/>
+                      <m:mtext>for</m:mtext>
+                      <m:mspace width="4.pt"/>
+                      <m:mrow>
+                        <m:mi>n</m:mi>
+                        <m:mo>=</m:mo>
+                        <m:mn>0</m:mn>
+                      </m:mrow>
+                    </m:mrow>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd columnalign="left">
+                    <m:mn>0</m:mn>
+                  </m:mtd>
+                  <m:mtd columnalign="left">
+                    <m:mrow>
+                      <m:mspace width="4.pt"/>
+                      <m:mtext>otherwise.</m:mtext>
+                    </m:mrow>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mfenced>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256311">If a system is linear and time-invariant, and <m:math><m:mrow><m:mi>δ</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>→</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>, the output <m:math><m:mrow><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> can be calculated from its input <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> by the
+operation called convolution denoted and defined by</para>
+      <equation id="uid21"><m:math mode="display">
+          <m:mrow>
+            <m:mi>y</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>*</m:mo>
+            <m:mi>x</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>m</m:mi>
+                <m:mo>=</m:mo>
+                <m:mo>-</m:mo>
+                <m:mi>∞</m:mi>
+              </m:mrow>
+              <m:mi>∞</m:mi>
+            </m:munderover>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>-</m:mo>
+              <m:mi>m</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mi>x</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>m</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256705">It is informative to methodically develop this equation from the basic
+properties of a linear system.</para>
+      <section id="uid22">
+        <title>Derivation of the Convolution Sum</title>
+        <para id="id2256721">We first define a complete set of orthogonal basis functions by
+<m:math><m:mrow><m:mi>δ</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>-</m:mo><m:mi>m</m:mi><m:mo>)</m:mo></m:mrow></m:math> for <m:math><m:mrow><m:mi>m</m:mi><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>2</m:mn><m:mo>,</m:mo><m:mo>⋯</m:mo><m:mo>,</m:mo><m:mi>∞</m:mi></m:mrow></m:math>. The input <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is
+broken down into a set of inputs by taking an inner product of the input
+with each of the basis functions. This produces a set of input
+components, each of which is a single impulse weighted by a single value
+of the input sequence <m:math><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>,</m:mo><m:mi>δ</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>-</m:mo><m:mi>m</m:mi><m:mo>)</m:mo><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>m</m:mi><m:mo>)</m:mo><m:mi>δ</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>-</m:mo><m:mi>m</m:mi><m:mo>)</m:mo></m:mrow></m:math>. Using the
+time invariant property of the system, <m:math><m:mrow><m:mi>δ</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>-</m:mo><m:mi>m</m:mi><m:mo>)</m:mo><m:mo>→</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>-</m:mo><m:mi>m</m:mi><m:mo>)</m:mo></m:mrow></m:math>
+and using the scaling property of a linear system, this gives an output
+of <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>m</m:mi><m:mo>)</m:mo><m:mi>δ</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>-</m:mo><m:mi>M</m:mi><m:mo>)</m:mo><m:mo>→</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>m</m:mi><m:mo>)</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>-</m:mo><m:mi>m</m:mi><m:mo>)</m:mo></m:mrow></m:math>. We now calculate the
+output due to <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> by adding outputs due to each of the resolved inputs
+using the superposition property of linear systems. This is illustrated
+by the following diagram:</para>
+        <equation id="uid23">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mfenced separators="" open="{" close="}">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mi>x</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>)</m:mo>
+                        <m:mi>δ</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mo>=</m:mo>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mi>x</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mn>0</m:mn>
+                        <m:mo>)</m:mo>
+                        <m:mi>δ</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mo>→</m:mo>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mi>x</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mn>0</m:mn>
+                        <m:mo>)</m:mo>
+                        <m:mi>h</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mi>x</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>)</m:mo>
+                        <m:mi>δ</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:mn>1</m:mn>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mo>=</m:mo>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mi>x</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mn>1</m:mn>
+                        <m:mo>)</m:mo>
+                        <m:mi>δ</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:mn>1</m:mn>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mo>→</m:mo>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mi>x</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mn>1</m:mn>
+                        <m:mo>)</m:mo>
+                        <m:mi>h</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:mn>1</m:mn>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mi>x</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>)</m:mo>
+                        <m:mi>δ</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:mn>2</m:mn>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mo>=</m:mo>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mi>x</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mn>2</m:mn>
+                        <m:mo>)</m:mo>
+                        <m:mi>δ</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:mn>2</m:mn>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mo>→</m:mo>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mi>x</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mn>2</m:mn>
+                        <m:mo>)</m:mo>
+                        <m:mi>h</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:mn>2</m:mn>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd columnalign="left">
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd columnalign="left">
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mi>x</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>)</m:mo>
+                        <m:mi>δ</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:mi>m</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mo>=</m:mo>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mi>x</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mi>m</m:mi>
+                        <m:mo>)</m:mo>
+                        <m:mi>δ</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:mi>m</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mo>→</m:mo>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mi>x</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mi>m</m:mi>
+                        <m:mo>)</m:mo>
+                        <m:mi>h</m:mi>
+                        <m:mo>(</m:mo>
+                        <m:mi>n</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:mi>m</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mo>=</m:mo>
+              <m:mi>y</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257362">or</para>
+        <equation id="id2257367"><m:math mode="display">
+            <m:mrow>
+              <m:mi>y</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>m</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mo>-</m:mo>
+                  <m:mi>∞</m:mi>
+                </m:mrow>
+                <m:mi>∞</m:mi>
+              </m:munderover>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>m</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>-</m:mo>
+                <m:mi>m</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257433">and changing variables gives</para>
+        <equation id="id2257439"><m:math mode="display">
+            <m:mrow>
+              <m:mi>y</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>m</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mo>-</m:mo>
+                  <m:mi>∞</m:mi>
+                </m:mrow>
+                <m:mi>∞</m:mi>
+              </m:munderover>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>-</m:mo>
+                <m:mi>m</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>m</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257506">If the system is linear but time varying, we denote the response to
+an impulse at <m:math><m:mrow><m:mi>n</m:mi><m:mo>=</m:mo><m:mi>m</m:mi></m:mrow></m:math> by <m:math><m:mrow><m:mi>δ</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>-</m:mo><m:mi>m</m:mi><m:mo>)</m:mo><m:mo>→</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>,</m:mo><m:mi>m</m:mi><m:mo>)</m:mo></m:mrow></m:math>. In other
+words, each impulse response may be different depending on when the
+impulse is applied. From the development above, it is easy to see
+where the time-invariant property was used and to derive a
+convolution equation for a time-varying system as</para>
+        <equation id="id2257566"><m:math mode="display">
+            <m:mrow>
+              <m:mi>y</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>,</m:mo>
+                <m:mi>m</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>*</m:mo>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>m</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mo>-</m:mo>
+                  <m:mi>∞</m:mi>
+                </m:mrow>
+                <m:mi>∞</m:mi>
+              </m:munderover>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>,</m:mo>
+                <m:mi>m</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>m</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257660">Unfortunately, relaxing the linear constraint destroys the basic structure
+of the convolution sum and does not result in anything of this form that
+is useful.</para>
+        <para id="id2257668">By a change of variables, one can easily show that the convolution sum can
+also be written</para>
+        <equation id="id2257673"><m:math mode="display">
+            <m:mrow>
+              <m:mi>y</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>*</m:mo>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>m</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mo>-</m:mo>
+                  <m:mi>∞</m:mi>
+                </m:mrow>
+                <m:mi>∞</m:mi>
+              </m:munderover>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>m</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>-</m:mo>
+                <m:mi>m</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257762">If the system is causal, <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math> for <m:math><m:mrow><m:mi>n</m:mi><m:mo>&lt;</m:mo><m:mn>0</m:mn></m:mrow></m:math> and the upper limit on the
+summation in <link document="m16881" target-id="uid4">Equation 2 from Discrete Time Signals</link> becomes <m:math><m:mrow><m:mi>m</m:mi><m:mo>=</m:mo><m:mi>n</m:mi></m:mrow></m:math>. If the input signal is causal, the
+lower limit on the summation becomes zero. The form of the convolution
+sum for a linear, time-invariant, causal discrete-time system with a
+causal input is</para>
+        <equation id="id2257820"><m:math mode="display">
+            <m:mrow>
+              <m:mi>y</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>*</m:mo>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>m</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mi>n</m:mi>
+              </m:munderover>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>-</m:mo>
+                <m:mi>m</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>m</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257905">or, showing the operations commute</para>
+        <equation id="id2257911"><m:math mode="display">
+            <m:mrow>
+              <m:mi>y</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>*</m:mo>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>m</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mi>n</m:mi>
+              </m:munderover>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>m</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>-</m:mo>
+                <m:mi>m</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257998">Convolution is used analytically to analyze linear systems and it can also
+be used to calculate the output of a system by only knowing its impulse
+response. This is a very powerful tool because it does not require any
+detailed knowledge of the system itself. It only uses one experimentally
+obtainable response. However, this summation cannot only be used to
+analyze or calculate the response of a given system, it can <emphasis>be</emphasis> an
+implementation of the system. This summation can be implemented in
+hardware or programmed on a computer and become the signal processor.</para>
+      </section>
+      <section id="uid24">
+        <title>The Matrix Formulation of Convolution</title>
+        <para id="id2258029">Some of the properties and characteristics of convolution and of the
+systems it represents can be better described by a matrix formulation than
+by the summation notation. The first <m:math><m:mi>L</m:mi></m:math> values of the discrete-time
+convolution defined above can be written as a matrix operator on a vector
+of inputs to give a vector of the output values.</para>
+        <equation id="uid26">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mrow>
+                          <m:mi>L</m:mi>
+                          <m:mo>-</m:mo>
+                          <m:mn>1</m:mn>
+                        </m:mrow>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mo>=</m:mo>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mo>⋯</m:mo>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mrow>
+                          <m:mi>L</m:mi>
+                          <m:mo>-</m:mo>
+                          <m:mn>1</m:mn>
+                        </m:mrow>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd>
+                      <m:mo>⋯</m:mo>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mrow>
+                          <m:mi>L</m:mi>
+                          <m:mo>-</m:mo>
+                          <m:mn>1</m:mn>
+                        </m:mrow>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258298">If the input sequence <m:math><m:mi>x</m:mi></m:math> is of length <m:math><m:mi>N</m:mi></m:math> and the operator signal <m:math><m:mi>h</m:mi></m:math> is of
+length <m:math><m:mi>M</m:mi></m:math>, the output is of length <m:math><m:mrow><m:mi>L</m:mi><m:mo>=</m:mo><m:mi>N</m:mi><m:mo>+</m:mo><m:mi>M</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math>. This is shown for <m:math><m:mrow><m:mi>N</m:mi><m:mo>=</m:mo><m:mn>4</m:mn></m:mrow></m:math> and <m:math><m:mrow><m:mi>M</m:mi><m:mo>=</m:mo><m:mn>3</m:mn></m:mrow></m:math> by the rectangular matrix operation</para>
+        <equation id="id2258391">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>3</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>4</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>5</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mo>=</m:mo>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>3</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258671">It is clear that if the system is causal (<m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math> for <m:math><m:mrow><m:mi>n</m:mi><m:mo>&lt;</m:mo><m:mn>0</m:mn></m:mrow></m:math>), the <m:math><m:mi>H</m:mi></m:math>
+matrix is lower triangular. It is also easy to see that the system being
+time-invariant is equivalent to the matrix being Toeplitz <link target-id="bid0"/>.
+This formulation makes it obvious that if a certain output were desired
+from a length 4 input, only 4 of the 6 values could be specified and the
+other 2 would be controlled by them.</para>
+        <para id="id2258733">Although the formulation of constructing the matrix from the impulse
+response of the system and having it operate on the input vector seems
+most natural, the matrix could have been formulated from the input and the
+vector would have been the impulse response. Indeed, this might the
+appropriate formulation if one were specifying the input and output and
+designing the system.</para>
+        <para id="id2258742">The basic convolution defined in <link target-id="uid21"/>, derived in <link target-id="uid23"/>,
+and given in matrix form in <link target-id="uid26"/> relates the input to the
+output for linear systems. This is
+the form of convolution that is related to multiplication of the DTFT and
+z-transform of signals. However, it is cyclic convolution that is
+fundamentally related to the DFT and that will be efficiently calculated
+by the fast Fourier transform (FFT) developed in Part III of these notes.
+Matrix formulation of length-L cyclic convolution is given by</para>
+        <equation id="id2255372">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mrow>
+                          <m:mi>L</m:mi>
+                          <m:mo>-</m:mo>
+                          <m:mn>1</m:mn>
+                        </m:mrow>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mo>=</m:mo>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mrow>
+                          <m:mi>L</m:mi>
+                          <m:mo>-</m:mo>
+                          <m:mn>1</m:mn>
+                        </m:mrow>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mrow>
+                          <m:mi>L</m:mi>
+                          <m:mo>-</m:mo>
+                          <m:mn>2</m:mn>
+                        </m:mrow>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mo>⋯</m:mo>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mrow>
+                          <m:mi>L</m:mi>
+                          <m:mo>-</m:mo>
+                          <m:mn>1</m:mn>
+                        </m:mrow>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>3</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mrow>
+                          <m:mi>L</m:mi>
+                          <m:mo>-</m:mo>
+                          <m:mn>1</m:mn>
+                        </m:mrow>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd>
+                      <m:mo>⋯</m:mo>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mrow>
+                          <m:mi>L</m:mi>
+                          <m:mo>-</m:mo>
+                          <m:mn>1</m:mn>
+                        </m:mrow>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259205">This matrix description makes it clear that the matrix operator is always
+square and the three signals, <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>, <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>, and <m:math><m:mrow><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>, are necessarily
+of the same length.</para>
+        <para id="id2259260">There are several useful conclusions that can be drawn from linear algebra
+<link target-id="bid0"/>. The eigenvalues of the non-cyclic are all the same since
+the eigenvalues of a lower triangular matrix are simply the values on the
+diagonal.</para>
+        <para id="id2259272">Although it is less obvious, the eigenvalues of the cyclic convolution
+matrix are the <m:math><m:mi>N</m:mi></m:math> values of the DFT of <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> and the eigenvectors are
+the basis functions of the DFT which are the column vectors of the DFT
+matrix. The eigenvectors are completely controlled by the structure of
+<m:math><m:mi>H</m:mi></m:math> being a cyclic convolution matrix and are not at all a function of the
+values of <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>. The DFT matrix equation from <link target-id="uid26"/> is given by</para>
+        <equation id="id2259334">
+          <m:math mode="display">
+            <m:mtable>
+              <m:mtr>
+                <m:mtd>
+                  <m:mrow>
+                    <m:mi mathvariant="bold">X</m:mi>
+                    <m:mo>=</m:mo>
+                    <m:mi mathvariant="bold">Fx</m:mi>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mtext>and</m:mtext>
+                </m:mtd>
+                <m:mtd>
+                  <m:mrow>
+                    <m:mi mathvariant="bold">Y</m:mi>
+                    <m:mo>=</m:mo>
+                    <m:mi mathvariant="bold">Fy</m:mi>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id2259374">where <m:math><m:mi mathvariant="bold">X</m:mi></m:math> is the length-N vector of the DFT values, <m:math><m:mi mathvariant="bold">H</m:mi></m:math> is the
+matrix operator for the DFT, and <m:math><m:mi mathvariant="bold">x</m:mi></m:math> is the length-N
+vector of the signal <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> values. The same is true for the comparable
+terms in <m:math><m:mi>y</m:mi></m:math>.</para>
+        <para id="id2259443">The matrix form of the length-N cyclic convolution in <link target-id="uid26"/> is written</para>
+        <equation id="id2259447">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi mathvariant="bold">y</m:mi>
+              <m:mo>=</m:mo>
+              <m:mi mathvariant="bold">Hx</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259468">Taking the DFT both sides and using the IDFT on <m:math><m:mi>x</m:mi></m:math> gives</para>
+        <equation id="id2259481">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi mathvariant="bold">Fy</m:mi>
+              <m:mo>=</m:mo>
+              <m:mi mathvariant="bold">Y</m:mi>
+              <m:mo>=</m:mo>
+              <m:mi mathvariant="bold">FHx</m:mi>
+              <m:mo>=</m:mo>
+              <m:msup>
+                <m:mi mathvariant="bold">FHF</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn mathvariant="bold">1</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mi mathvariant="bold">X</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259530">If we define the diagonal matrix <m:math><m:msub><m:mi mathvariant="bold">H</m:mi><m:mi mathvariant="bold">d</m:mi></m:msub></m:math> as an <m:math><m:mi>L</m:mi></m:math> by <m:math><m:mi>L</m:mi></m:math> matrix with
+the values of the DFT of <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> on its diagonal, the convolution property
+of the DFT becomes</para>
+        <equation id="id2259592">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi mathvariant="bold">Y</m:mi>
+              <m:mo>=</m:mo>
+              <m:msub>
+                <m:mi mathvariant="bold">H</m:mi>
+                <m:mi mathvariant="bold">d</m:mi>
+              </m:msub>
+              <m:mi mathvariant="bold">X</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259625">This implies</para>
+        <equation id="id2259630">
+          <m:math mode="display">
+            <m:mtable>
+              <m:mtr>
+                <m:mtd>
+                  <m:mrow>
+                    <m:msub>
+                      <m:mi mathvariant="bold">H</m:mi>
+                      <m:mi mathvariant="bold">d</m:mi>
+                    </m:msub>
+                    <m:mo>=</m:mo>
+                    <m:msup>
+                      <m:mi mathvariant="bold">FHF</m:mi>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mn mathvariant="bold">1</m:mn>
+                      </m:mrow>
+                    </m:msup>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd>
+                  <m:mtext>and</m:mtext>
+                </m:mtd>
+                <m:mtd>
+                  <m:mrow>
+                    <m:mi mathvariant="bold">H</m:mi>
+                    <m:mo>=</m:mo>
+                    <m:msup>
+                      <m:mi mathvariant="bold">F</m:mi>
+                      <m:mrow>
+                        <m:mo>-</m:mo>
+                        <m:mn mathvariant="bold">1</m:mn>
+                      </m:mrow>
+                    </m:msup>
+                    <m:msub>
+                      <m:mi mathvariant="bold">H</m:mi>
+                      <m:mi mathvariant="bold">d</m:mi>
+                    </m:msub>
+                    <m:mi mathvariant="bold">F</m:mi>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:math>
+        </equation>
+        <para id="id2259717">which is the basis of the earlier statement that the eigenvalues of the
+cyclic convolution matrix are the values of the DFT of <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> and the
+eigenvectors are the orthogonal columns of <m:math><m:mi mathvariant="bold">F</m:mi></m:math>. The DFT matrix
+diagonalizes the cyclic convolution matrix. This is probably the most
+concise statement of the relation of the DFT to convolution and to linear
+systems.</para>
+        <para id="id2259756">An important practical question is how one calculates the non-cyclic
+convolution needed by system analysis using the cyclic convolution of the
+DFT. The answer is easy to see using the matrix description of <m:math><m:mi>H</m:mi></m:math>. The
+length of the output of non-cyclic convolution is <m:math><m:mrow><m:mi>N</m:mi><m:mo>+</m:mo><m:mi>M</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math>. If <m:math><m:mrow><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math> zeros
+are appended to the end of <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>M</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math> zeros are appended to the end of
+<m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>, the cyclic convolution of these two augmented signals will produce
+exactly the same <m:math><m:mrow><m:mi>N</m:mi><m:mo>+</m:mo><m:mi>M</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math> values as non-cyclic convolution would. This is
+illustrated for the example considered before.</para>
+        <equation id="id2259876">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>3</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>4</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>y</m:mi>
+                        <m:mn>5</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mo>=</m:mo>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>3</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2260234">Just enough zeros were appended so that the nonzero terms in the upper
+right-hand corner of <m:math><m:mi mathvariant="bold">H</m:mi></m:math> are multiplied by the zeros in the lower
+part of <m:math><m:mi mathvariant="bold">x</m:mi></m:math> and, therefore, do not contribute to <m:math><m:mi mathvariant="bold">y</m:mi></m:math>.
+This does require convolving longer signals but the output is exactly what
+we want and we calculated it with the DFT-compatible cyclic convolution.
+Note that more zeros could have been appended to <m:math><m:mi>h</m:mi></m:math> and <m:math><m:mi>x</m:mi></m:math> and the first
+<m:math><m:mrow><m:mi>N</m:mi><m:mo>+</m:mo><m:mi>M</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math> terms of the output would have been the same only more
+calculations would have been necessary. This is sometimes done in order
+to use forms of the FFT that require that the length be a power of two.</para>
+        <para id="id2260320">If fewer zeros or none had been appended to <m:math><m:mi>h</m:mi></m:math> and <m:math><m:mi>x</m:mi></m:math>, the nonzero
+terms in the upper right-hand corner of <m:math><m:mi mathvariant="bold">H</m:mi></m:math>, which are the “tail" of
+<m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>, would have added the values that would have been at the end of the
+non-cyclic output of <m:math><m:mrow><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> to the values at the beginning. This is a
+natural part of cyclic convolution but is destructive if non-cyclic
+convolution is desired and is called aliasing or folding for obvious
+reasons. Aliasing is a phenomenon that occurs in several arenas of DSP
+and the matrix formulation makes it easy to understand.</para>
+      </section>
+    </section>
+    <section id="uid27">
+      <title>The Z-Transform Transfer Function</title>
+      <para id="id2260406">Although the time-domain convolution is the most basic relationship of the
+input to the output for linear systems, the z-transform is a close second
+in importance. It gives different insight and a different set of tools
+for analysis and design of linear time-invariant discrete-time systems.</para>
+      <para id="id2260414">If our system in linear and time-invariant, we have seen that its output
+is given by convolution.</para>
+      <equation id="id2260419"><m:math mode="display">
+          <m:mrow>
+            <m:mi>y</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>m</m:mi>
+                <m:mo>=</m:mo>
+                <m:mo>-</m:mo>
+                <m:mi>∞</m:mi>
+              </m:mrow>
+              <m:mi>∞</m:mi>
+            </m:munderover>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>-</m:mo>
+              <m:mi>m</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mi>x</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>m</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2260483">Assuming that <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is such that the summation converges properly, we can
+calculate the output to an input that we already know has a special
+relation with discrete-time transforms. Let <m:math><m:mrow><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:msup><m:mi>z</m:mi><m:mi>n</m:mi></m:msup></m:mrow></m:math> which gives</para>
+      <equation id="id2260536"><m:math mode="display">
+          <m:mrow>
+            <m:mi>y</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>m</m:mi>
+                <m:mo>=</m:mo>
+                <m:mo>-</m:mo>
+                <m:mi>∞</m:mi>
+              </m:mrow>
+              <m:mi>∞</m:mi>
+            </m:munderover>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>-</m:mo>
+              <m:mi>m</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:msup>
+              <m:mi>z</m:mi>
+              <m:mi>m</m:mi>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2260598">With the change of variables of <m:math><m:mrow><m:mi>k</m:mi><m:mo>=</m:mo><m:mi>n</m:mi><m:mo>-</m:mo><m:mi>m</m:mi></m:mrow></m:math>, we have</para>
+      <equation id="id2260623"><m:math mode="display">
+          <m:mrow>
+            <m:mi>y</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>k</m:mi>
+                <m:mo>=</m:mo>
+                <m:mo>-</m:mo>
+                <m:mi>∞</m:mi>
+              </m:mrow>
+              <m:mi>∞</m:mi>
+            </m:munderover>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:msup>
+              <m:mi>z</m:mi>
+              <m:mrow>
+                <m:mi>n</m:mi>
+                <m:mo>-</m:mo>
+                <m:mi>k</m:mi>
+              </m:mrow>
+            </m:msup>
+            <m:mo>=</m:mo>
+            <m:mrow>
+              <m:mo>[</m:mo>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>k</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mo>-</m:mo>
+                  <m:mi>∞</m:mi>
+                </m:mrow>
+                <m:mi>∞</m:mi>
+              </m:munderover>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:msup>
+                <m:mi>z</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:msup>
+              <m:mo>]</m:mo>
+            </m:mrow>
+            <m:msup>
+              <m:mi>z</m:mi>
+              <m:mi>n</m:mi>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2260740">or</para>
+      <equation id="id2260745">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>y</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:msup>
+              <m:mi>z</m:mi>
+              <m:mi>n</m:mi>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2260784">We have the remarkable result that for an input of <m:math><m:mrow><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:msup><m:mi>z</m:mi><m:mi>n</m:mi></m:msup></m:mrow></m:math>, we get an
+output of exactly the same form but multiplied by a constant that depends
+on <m:math><m:mi>z</m:mi></m:math> and this constant is the z-transform of the impulse response of the
+system. In other words, if the system is thought of as a matrix or
+operator, <m:math><m:msup><m:mi>z</m:mi><m:mi>n</m:mi></m:msup></m:math> is analogous to an eigenvector of the system and <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> is
+analogous to the corresponding eigenvalue.</para>
+      <para id="id2260863">We also know from the properties of the z-transform that convolution in
+the <m:math><m:mi>n</m:mi></m:math> domain corresponds to multiplication in the <m:math><m:mi>z</m:mi></m:math> domain. This
+means that the z-transforms of <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> are related by the simple
+equation</para>
+      <equation id="id2260920">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>Y</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>z</m:mi>
+            <m:mo>)</m:mo>
+            <m:mo>=</m:mo>
+            <m:mi>H</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>z</m:mi>
+            <m:mo>)</m:mo>
+            <m:mi>X</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>z</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2260958">The z-transform decomposes <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> into its various components along <m:math><m:msup><m:mi>z</m:mi><m:mi>n</m:mi></m:msup></m:math>
+which passing through the system simply multiplies that value time <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math>
+and the inverse z-transform recombines the components to give the output.
+This explains why the z-transform is such a powerful operation in linear
+discrete-time system theory. Its kernel is the eigenvector of these
+systems.</para>
+      <para id="id2261017">The z-transform of the impulse response of a system is called its transfer
+function (it transfers the input to the output) and multiplying it times
+the z-transform of the input gives the z-transform of the output for any
+system and signal where there is a common region of convergence for the
+transforms.</para>
+    </section>
+    <section id="uid29">
+      <title>Frequency Response of Discrete-Time Systems</title>
+      <para id="id2261041">The frequency response of a Discrete-Time system is something
+experimentally measurable and something that is a complete description of
+a linear, time-invariant system in the same way that the impulse response
+is. The frequency response of a linear, time-invariant system is defined
+as the magnitude and phase of the sinusoidal output of the system with a
+sinusoidal input. More precisely, if</para>
+      <equation id="id2261050">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>x</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+            <m:mo>=</m:mo>
+            <m:mo form="prefix">cos</m:mo>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2261085">and the output of the system is expressed as</para>
+      <equation id="id2261092">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>y</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+            <m:mo>=</m:mo>
+            <m:mi>M</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+            <m:mo form="prefix">cos</m:mo>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mi>n</m:mi>
+            <m:mo>+</m:mo>
+            <m:mi>φ</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+            <m:mo>)</m:mo>
+            <m:mo>+</m:mo>
+            <m:mi>T</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2261156">where <m:math><m:mrow><m:mi>T</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> contains no components at <m:math><m:mi>ω</m:mi></m:math>, then <m:math><m:mrow><m:mi>M</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is
+called the magnitude frequency response and <m:math><m:mrow><m:mi>φ</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is called the
+phase frequency response. If the system is causal, linear,
+time-invariant, and stable, <m:math><m:mrow><m:mi>T</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> will approach zero as <m:math><m:mrow><m:mi>n</m:mi><m:mo>→</m:mo><m:mi>∞</m:mi></m:mrow></m:math> and the only output will be the pure sinusoid at the same
+frequency as the input. This is because a sinusoid is a special case of
+<m:math><m:msup><m:mi>z</m:mi><m:mi>n</m:mi></m:msup></m:math> and, therefore, an eigenvector.</para>
+      <para id="id2261274">If <m:math><m:mi>z</m:mi></m:math> is a complex variable of the special form</para>
+      <equation id="id2261286">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>z</m:mi>
+            <m:mo>=</m:mo>
+            <m:msup>
+              <m:mi>e</m:mi>
+              <m:mrow>
+                <m:mi>j</m:mi>
+                <m:mi>ω</m:mi>
+              </m:mrow>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2261311">then using Euler's relation of <m:math><m:mrow><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mi>x</m:mi></m:mrow></m:msup><m:mo>=</m:mo><m:mo form="prefix">cos</m:mo><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mi>j</m:mi><m:mo form="prefix">sin</m:mo><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>, one has</para>
+      <equation id="id2261367">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>x</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:msup>
+              <m:mi>e</m:mi>
+              <m:mrow>
+                <m:mi>j</m:mi>
+                <m:mi>ω</m:mi>
+                <m:mi>n</m:mi>
+              </m:mrow>
+            </m:msup>
+            <m:mo>=</m:mo>
+            <m:mo form="prefix">cos</m:mo>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>+</m:mo>
+            <m:mi>j</m:mi>
+            <m:mo form="prefix">sin</m:mo>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2261436">and therefore, the sinusoidal input of (3.22) is simply the real part of <m:math><m:msup><m:mi>z</m:mi><m:mi>n</m:mi></m:msup></m:math>
+for a particular value of <m:math><m:mi>z</m:mi></m:math>, and, therefore, the output being sinusoidal
+is no surprise.</para>
+    </section>
+    <section id="uid31">
+      <title>Fundamental Theorem of Linear, Time-Invariant Systems</title>
+      <para id="id2261480">The fundamental theorem of calculus states that an integral defined
+as an inverse derivative and one defined as an area under a curve
+are the same. The fundamental theorem of algebra states that a
+polynomial given as a sum of weighted powers of the independent
+variable and as a product of first factors of the zeros are the
+same. The fundamental theorem of arithmetic states that an integer
+expressed as a sum of weighted units, tens, hundreds, etc. or as the
+product of its prime factors is the same.</para>
+      <para id="id2261492">These fundamental theorems all state equivalences of different ways
+of expressing or calculating something. The fundamental theorem of
+linear, time-invariant systems states calculating the output of a
+system can be done with the impulse response by convolution or with
+the frequency response (or z-transform) with transforms. Stated
+another way, it says the frequency response can be found from
+directly calculating the output from a sinusoidal input or by
+evaluating the z-transform on the unit circle.</para>
+      <equation id="id2261503">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mrow>
+                <m:mi mathvariant="script">Z</m:mi>
+                <m:mrow>
+                  <m:mo>{</m:mo>
+                  <m:mi>h</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>n</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>}</m:mo>
+                </m:mrow>
+                <m:mo>|</m:mo>
+              </m:mrow>
+              <m:mrow>
+                <m:mi>z</m:mi>
+                <m:mo>=</m:mo>
+                <m:msup>
+                  <m:mi>e</m:mi>
+                  <m:mrow>
+                    <m:mi>j</m:mi>
+                    <m:mi>ω</m:mi>
+                  </m:mrow>
+                </m:msup>
+              </m:mrow>
+            </m:msub>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mi>A</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="4pt"/>
+            <m:msup>
+              <m:mi>e</m:mi>
+              <m:mrow>
+                <m:mi>j</m:mi>
+                <m:mi>Θ</m:mi>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+    </section>
+    <section id="uid33">
+      <title>Pole-Zero Plots</title>
+      <section id="uid34">
+        <title>Relation of PZ Plots, FR Plots, Impulse R</title>
+        <para id="id2261612"/>
+      </section>
+    </section>
+    <section id="uid35">
+      <title>State Variable Formulation</title>
+      <section id="uid37">
+        <title>Difference Equations</title>
+        <para id="id2261633"/>
+      </section>
+      <section id="uid38">
+        <title>Flow Graph Representation</title>
+        <para id="id2261643"/>
+      </section>
+    </section>
+    <section id="uid39">
+      <title>Standard Structures</title>
+      <section id="uid41">
+        <title>FIR and IIR Structures</title>
+        <para id="id2261663"/>
+      </section>
+    </section>
+    <section id="uid42">
+      <title>Quantization Effects</title>
+      <para id="id2261673"/>
+    </section>
+    <section id="uid43">
+      <title>Multidimensional Systems</title>
+      <para id="id2261692"/>
+    </section>
+  </content>
+  <bib:file>
+    <bib:entry id="bid0">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Coleman, Thomas F. and Van Loan, Charles</bib:author>
+        <bib:title>Handbook for Matrix Computation</bib:title>
+        <bib:publisher>SIAM</bib:publisher>
+        <bib:year>1988</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Philadelphia, PA</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+  </bib:file>
+</document>

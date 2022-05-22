@@ -1,0 +1,606 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:bib="http://bibtexml.sf.net/">
+  <title>Properties of IIR Filters</title>
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m16898</md:content-id>
+  <md:title>Properties of IIR Filters</md:title>
+  <md:abstract/>
+  <md:uuid>c7ced268-e974-40a6-a2d5-d1a730579d07</md:uuid>
+</metadata>
+  <content>
+    <para id="id2255546">Digital filters with an Infinite-duration Impulse Response
+(IIR) have characteristics that make them useful in many
+applications. This section develops and discusses the properties and
+characteristics of these filters<link target-id="bid0"/>.</para>
+    <para id="id2255559">Because of the feedback necessary in an implementation, the
+Infinite Impulse Response (IIR) filter is also called a recursive
+filter or, sometimes, an autoregressive moving-average filter
+(ARMA). In contrast to the FIR filter with a polynomial transfer
+function, the IIR filter has a rational transfer function. The
+transfer function being a ratio of polynomials means it has finite
+poles as well as zeros, and the frequency-domain design problem
+becomes a rational-function approximation problem in contrast to the
+polynomial approximation for the FIR filter<link target-id="bid1"/>. This gives considerably
+more flexibility and power, but brings with it certain problems in
+both design and implementation<link target-id="bid0"/>, <link target-id="bid2"/>, <link target-id="bid3"/>.</para>
+    <para id="id2255594">The defining relationship between the input and output
+variables for the IIR filter is given by</para>
+    <equation id="uid1"><m:math mode="display">
+        <m:mrow>
+          <m:mi>y</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mo>=</m:mo>
+          <m:munderover>
+<m:mrow>
+            <m:mo>∑</m:mo>
+</m:mrow>        
+    <m:mrow>
+              <m:mi>k</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>1</m:mn>
+            </m:mrow>
+            <m:mi>N</m:mi>
+          </m:munderover>
+          <m:mi>a</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>k</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mi>y</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>-</m:mo>
+            <m:mi>k</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mo>+</m:mo>
+          <m:munderover>
+<m:mrow>         
+   <m:mo>∑</m:mo>
+</m:mrow>        
+    <m:mrow>
+              <m:mi>m</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+            </m:mrow>
+            <m:mi>M</m:mi>
+          </m:munderover>
+          <m:mi>b</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>m</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mi>x</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>-</m:mo>
+            <m:mi>m</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mo>.</m:mo>
+        </m:mrow>
+      </m:math>
+    </equation>
+    <para id="id2255950">The second summation in <link target-id="uid1"/> is exactly the same
+moving average of the present plus past <m:math><m:mi>M</m:mi></m:math> values of the input that
+occurs in the definition of the FIR filter. The difference arises
+from the first summation, which is a weighted sum of the previous
+<m:math><m:mi>N</m:mi></m:math> output values. This is the feedback or recursive part which
+causes the response to an impulse input theoretically to endure
+forever. The calculation of each output term y(n) from <link target-id="uid1"/>
+requires <m:math><m:mrow><m:mi>N</m:mi><m:mo>+</m:mo><m:mi>M</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:math> multiplications and <m:math><m:mrow><m:mi>N</m:mi><m:mo>+</m:mo><m:mi>M</m:mi></m:mrow></m:math> additions. There are
+other algorithms or structures for calculating <m:math><m:mrow><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> that may
+require more or less arithmetic.</para>
+    <para id="id2256039">In addition to the number of calculations required to calculate each
+output term being a measure of efficiency, the amount of storage for
+coefficients and intermediate calculations is important. DSP chips
+are designed to efficiently implement calculations such as <link target-id="uid1"/>
+by having a single cycle operation that multiplies a variable by a
+constant and accumulates it. In parallel with that operation, it is
+simultaneously calculating the address of the next variable.</para>
+    <para id="id2256054">Just as in the case of the FIR filter, the output of an IIR
+filter can also be calculated by convolution.</para>
+    <equation id="uid2"><m:math mode="display">
+        <m:mrow>
+          <m:mi>y</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mo>=</m:mo>
+          <m:munderover>
+<m:mrow>
+            <m:mo>∑</m:mo>
+</m:mrow>        
+    <m:mrow>
+              <m:mi>k</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+            </m:mrow>
+            <m:mi>∞</m:mi>
+          </m:munderover>
+          <m:mi>h</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>k</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mi>x</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>-</m:mo>
+            <m:mi>k</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:mrow>
+      </m:math>
+    </equation>
+    <para id="id2256123">In this case, the duration of the impulse response
+<m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is infinite and, therefore, the number of terms in <link target-id="uid2"/>
+is infinite. The <m:math><m:mrow><m:mi>N</m:mi><m:mo>+</m:mo><m:mi>M</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:math> operations required in <link target-id="uid1"/> are
+clearly preferable to the infinite number required by <link target-id="uid2"/>.
+This gives a hint as to why the IIR filter is very efficient. The
+details will become clear as the characteristics of the IIR filter
+are developed in this section.</para>
+    <section id="uid3">
+      <title>Frequency-Domain Formulation of IIR Filters</title>
+      <para id="id2256187">The transfer function of a filter is defined as the ratio
+<m:math><m:mrow><m:mi>Y</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo><m:mo>/</m:mo><m:mi>X</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math>, where <m:math><m:mrow><m:mi>Y</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>X</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> are the z-transforms of the
+output <m:math><m:mrow><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> and input <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>, respectively. It is also the
+z-transform of the impulse response. Using the definition of the
+z-transform in <link document="m16881" target-id="uid76">Equation 32 from Discrete-Time Signals</link>, the transfer function of the IIR filter
+defined in <link target-id="uid1"/> is</para>
+      <equation id="uid4"><m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>n</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+              </m:mrow>
+              <m:mi>∞</m:mi>
+            </m:munderover>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:msup>
+              <m:mi>z</m:mi>
+              <m:mrow>
+                <m:mo>-</m:mo>
+                <m:mi>n</m:mi>
+              </m:mrow>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256353">This transfer function is also the ratio of the
+z-transforms of the <m:math><m:mrow><m:mi>a</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>b</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> terms.</para>
+      <equation id="uid5">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:msubsup>
+                  <m:mo>∑</m:mo>
+                  <m:mrow>
+                    <m:mi>n</m:mi>
+                    <m:mo>=</m:mo>
+                    <m:mn>0</m:mn>
+                  </m:mrow>
+                  <m:mi>M</m:mi>
+                </m:msubsup>
+                <m:mi>b</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:mi>n</m:mi>
+                  </m:mrow>
+                </m:msup>
+              </m:mrow>
+              <m:mrow>
+                <m:msubsup>
+                  <m:mo>∑</m:mo>
+                  <m:mrow>
+                    <m:mi>n</m:mi>
+                    <m:mo>=</m:mo>
+                    <m:mn>0</m:mn>
+                  </m:mrow>
+                  <m:mi>N</m:mi>
+                </m:msubsup>
+                <m:mi>a</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:mi>n</m:mi>
+                  </m:mrow>
+                </m:msup>
+              </m:mrow>
+            </m:mfrac>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:mi>B</m:mi>
+                <m:mo>(</m:mo>
+                <m:mi>z</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mrow>
+                <m:mi>A</m:mi>
+                <m:mo>(</m:mo>
+                <m:mi>z</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256517">The frequency response of the filter is found by
+setting <m:math><m:mrow><m:mi>z</m:mi><m:mo>=</m:mo><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mi>ω</m:mi></m:mrow></m:msup></m:mrow></m:math>, which gives <link target-id="uid1"/> the form</para>
+      <equation id="uid6"><m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>n</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+              </m:mrow>
+              <m:mi>∞</m:mi>
+            </m:munderover>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:msup>
+              <m:mi>e</m:mi>
+              <m:mrow>
+                <m:mo>-</m:mo>
+                <m:mi>j</m:mi>
+                <m:mi>ω</m:mi>
+                <m:mi>n</m:mi>
+              </m:mrow>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256615">It should be recalled that this form assumes a
+sampling rate of <m:math><m:mrow><m:mi>T</m:mi><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow></m:math>. To simplify notation, <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is used
+to denote the frequency response rather than <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mi>ω</m:mi></m:mrow></m:msup></m:mrow><m:mo>)</m:mo></m:math>.</para>
+      <para id="id2256675">This frequency-response function is complex-valued and
+consists of a magnitude and phase. Even though the impulse response
+is a function of the discrete variable n, the frequency response is
+a function of the continuous-frequency variable <m:math><m:mi>ω</m:mi></m:math> and is
+periodic with period <m:math><m:mrow><m:mn>2</m:mn><m:mi>π</m:mi></m:mrow></m:math>.</para>
+      <para id="id2256703">Unlike the FIR filter case, exactly linear phase is impossible
+for the IIR filter. It has been shown that linear phase is
+equivalent to symmetry of the impulse response. This is clearly
+impossible for the IIR filter with an impulse response that is zero
+for <m:math><m:mrow><m:mi>n</m:mi><m:mo>&lt;</m:mo><m:mn>0</m:mn></m:mrow></m:math> and nonzero for n going to infinity.</para>
+      <para id="id2256725">The FIR linear-phase filter allowed removing the phase from
+the design process. The resulting problem was a real-valued
+approximation problem requiring the solution of linear equations.
+The IIR filter design problem is more complicated. Linear phase is
+not possible, and the equations to be solved are generally
+nonlinear. The most common technique is to approximate the
+magnitude of the transfer function and let the phase take care of
+itself. If the phase is important, it becomes part of the
+approximation problem, which then is often difficult to solve.</para>
+    </section>
+    <section id="uid7">
+      <title>Calculation of the IIR Filter Frequency Response</title>
+      <para id="id2256746">As shown in another module, <m:math><m:mi>L</m:mi></m:math> equally spaced samples of
+<m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> can be approximately calculated by taking an <m:math><m:mi>L</m:mi></m:math>-length
+DFT of <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> given in <link target-id="uid6"/>. However, unlike for the FIR
+filter, this requires that the infinitely long impulse response be
+truncated to at least length-L. A more satisfactory alternative is
+to use the DFT to evaluate the numerator and denominator of
+<link target-id="uid5"/> separately rather than to approximately evaluate
+<link target-id="uid6"/>. This is accomplished by appending <m:math><m:mrow><m:mi>L</m:mi><m:mo>-</m:mo><m:mi>N</m:mi></m:mrow></m:math> zeros to the
+<m:math><m:mrow><m:mi>a</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>L</m:mi><m:mo>-</m:mo><m:mi>M</m:mi></m:mrow></m:math> zeros to the <m:math><m:mrow><m:mi>b</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> from <link target-id="uid1"/>, and taking
+length-L DFTs of both to give</para>
+      <equation id="uid8">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mn>2</m:mn>
+              <m:mi>π</m:mi>
+              <m:mi>k</m:mi>
+              <m:mo>/</m:mo>
+              <m:mi>L</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:mi mathvariant="script">DFT</m:mi>
+                <m:mo>{</m:mo>
+                <m:mi>b</m:mi>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+                <m:mo>}</m:mo>
+              </m:mrow>
+              <m:mrow>
+                <m:mi mathvariant="script">DFT</m:mi>
+                <m:mo>{</m:mo>
+                <m:mi>a</m:mi>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+                <m:mo>}</m:mo>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256954">where the division is a term-wise division of each of the <m:math><m:mi>L</m:mi></m:math> values
+of the DFTs as a function of <m:math><m:mi>k</m:mi></m:math>. This direct method of calculation
+is a straightforward and flexible technique that does not involve
+truncation of <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> and the resulting error. Even nonuniform
+spacing of the frequency samples can be achieved by altering the DFT
+as was suggested for the FIR filter. Because IIR filters are
+generally lower in order than FIR filters, direct use of the DFT is
+usually efficient enough and use of the FFT is not necessary. Since
+the <m:math><m:mrow><m:mi>a</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>b</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> do not generally have the symmetries of the
+FIR <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>, the DFTs cannot be made real and, therefore, the
+shifting and stretching techniques of other modules are not
+applicable.</para>
+      <para id="id2257051">As an example, the frequency-response plot of a third-order
+elliptic-function lowpass filter with a transfer function of</para>
+      <equation id="uid9">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:mn>0</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>1335</m:mn>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mn>3</m:mn>
+                </m:msup>
+                <m:mo>+</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>056</m:mn>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mo>+</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>056</m:mn>
+                <m:mi>z</m:mi>
+                <m:mo>+</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>1335</m:mn>
+              </m:mrow>
+              <m:mrow>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mn>3</m:mn>
+                </m:msup>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>507</m:mn>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mo>+</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>2646</m:mn>
+                <m:mi>z</m:mi>
+                <m:mo>-</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>3786</m:mn>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257176">is given in <link target-id="uid10"/>a. The details for designing this
+filter are discussed in elsewhere. A similar performance for the
+magnitude response would require a length of 18 for a linear-phase
+FIR filter.</para>
+      <figure id="uid10" orient="horizontal"><media id="id1164335468914" alt="Figure one contains two graphs. The first is titled third order elliptic digital filter. Its horizontal axis is labeled, normalized frequency, ranging in value from 0 to 1 in increments of 0.2. Its vertical axis is labeled, magnitude response, and ranges in value from 0 to 1 in increments of 0.2. There is one curve on the first graph. It begins at (0, 1), decreasing slightly to a trough at (0.2, 0.7). After the trough, the graph increases to a peak at approximately (0.3, 1). After the peak, the graph decreases sharply to a kink at (0.4, 0). After the kink. the graph increases sharply to a peak around (0.55, 0.1), and then shallowly decreases to (1, 0). The second graph is titled pole-zero locations on a z Plane. The horizontal axis is labeled, Real part of z, and ranges in value from -2 to 2 in increments of 1. The vertical axis is labeled, imaginary part of z, and ranges in value from -1.5 to 1.5. The graph contains a circle of radius one, centered at the origin. There are three evenly-spaced small circles located on the edges of the big circle, with one of the circles anchored at (-1, 0). There are three x-marks that are spaced vertically inside the right half of the circle, at approximately a horizontal value of 0.5, and vertical values of -0.6, 0, and 0.6."><image src="../../media/figIIR1.png" mime-type="image/png" width="567"/><image for="pdf" src="../../media/figIIR1.eps" mime-type="application/postscript"/></media>
+        
+      <caption>Frequency Response and Pole-Zero Locations of a Third-Order IIR Filter</caption></figure>
+    </section>
+    <section id="uid11">
+      <title>Pole-Zero Locations for IIR Filters</title>
+      <para id="id2257210">The possible locations of the zeros of the transfer function of an
+FIR linear-phase filter were analyzed elsewhere. For the IIR filter,
+there are poles as well as zeros. For most applications, the
+coefficients <m:math><m:mrow><m:mi>a</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>b</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> are real and, therefore, the poles
+and zeros occur in complex conjugate pairs or are real. A filter is
+stable if for any bounded input, the output is bounded. This implies
+the poles of the transfer function must be strictly inside the unit
+circle of the complex <m:math><m:mi>z</m:mi></m:math> plane. Indeed, the possibility of an
+unstable filter is a serious problem in IIR filter design, which
+does not exist for FIR filters. An important characteristic of any
+design procedure is the guarantee of stable designs, and an
+important ability in the analysis of a given filter is the
+determination of stability. For a linear filter analysis, this
+involves the zeros of the denominator polynomial of <link target-id="uid5"/>. The
+location of the zeros of the numerator, which are the zeros of
+<m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math>, are important to the performance of the filter, but have no
+effect on stability.</para>
+      <para id="id2257292">If both the poles and zeros of a transfer function are all
+inside or on the unit circle of the <m:math><m:mi>z</m:mi></m:math>-plane, the filter is called
+minimum phase. The effects of a pole or zero at a radius of <m:math><m:mi>r</m:mi></m:math> from
+the origin of the <m:math><m:mi>z</m:mi></m:math>-plane on the magnitude of the transfer
+function are exactly the same as one at the same angle but at a
+radius of <m:math><m:mrow><m:mn>1</m:mn><m:mo>/</m:mo><m:mi>r</m:mi></m:mrow></m:math>. However, the effect on the phase characteristics is
+different. Since only stable filters are generally used in practice,
+all the poles must be inside the unit circle. For a given magnitude
+response, there are two possible locations for each zero that is not
+on the unit circle. The location that is inside gives the least
+phase shift, hence the name “minimum- phase" filter.</para>
+      <para id="id2257354">The locations of the poles and zeros of the example in <link target-id="uid9"/>
+are given in <link target-id="uid10"/>b.</para>
+      <para id="id2257367">Since evaluating the frequency response of a transfer function is
+the same as evaluating <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> around the unit circle in the
+<m:math><m:mi>z</m:mi></m:math>-plane, a comparison of the frequency-response plot in <link target-id="uid10"/>a
+and the pole-zero locations in <link target-id="uid10"/>b gives insight into the
+effects of pole and zero location on the frequency response. In the
+case where it is desirable to reject certain bands of frequencies,
+zeros of the transfer function will be located on the unit circle at
+locations corresponding to those frequencies.</para>
+      <para id="id2257414">By having both poles and zeros to describe an IIR filter, much
+more can be done than in the FIR filter case where only zeros
+exist. Indeed, an FIR filter is a special case of an IIR filter
+with a zero-order denominator. This generality and flexibility does
+not come without a price. The poles are more difficult to realize
+than the zeros, and the design is more complicated.</para>
+    </section>
+    <section id="uid12">
+      <title>Summary</title>
+      <para id="id2255380">This section has given the basic definition of the IIR or recursive
+digital filter and shown it to a generalization of the FIR filter
+described in the previous chapters. The feedback terms in the IIR
+filter cause the transfer function to be a rational function with
+poles as well as zeros. This feedback and the resulting poles of the
+transfer function give a more versatile filter requiring fewer
+coefficients to be stored and less arithmetic. Unfortunately, it
+also destroys the possibility of linear phase and introduces the
+possibility of instability and greater sensitivity to the effects of
+quantization. The design methods, which are more complicated than
+for the FIR filter, are discussed in another section, and the
+implementation, which also is more complicated, is discussed in
+still another section.</para>
+      
+    </section>
+  </content>
+  <bib:file>
+    <bib:entry id="bid3">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Mitra, Sanjit K.</bib:author>
+        <bib:title>Digital Signal Processing, A Computer-Based Approach</bib:title>
+        <bib:publisher>McGraw-Hill</bib:publisher>
+        <bib:year>2006</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition>Third</bib:edition>
+        <bib:month/>
+        <bib:note>First edition in 1998, second in 2001</bib:note>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid2">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Oppenheim, A. V. and Schafer, R. W.</bib:author>
+        <bib:title>Discrete-Time Signal Processing</bib:title>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1999</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Englewood Cliffs, NJ</bib:address>
+        <bib:edition>Second</bib:edition>
+        <bib:month/>
+        <bib:note>Earlier editions in 1975 and 1989</bib:note>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid0">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Parks, T. W. and Burrus, C. S.</bib:author>
+        <bib:title>Digital Filter Design</bib:title>
+        <bib:publisher>John Wiley &amp; Sons</bib:publisher>
+        <bib:year>1987</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid1">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Rader, Charles M.</bib:author>
+        <bib:title>The Rise and Fall of Recursive Digital Filters</bib:title>
+        <bib:journal>IEEE Signal Processing Magazine</bib:journal>
+        <bib:year>2006</bib:year>
+<!--optional fields-->
+        <bib:volume>23</bib:volume>
+        <bib:number>6</bib:number>
+        <bib:pages>46–49</bib:pages>
+        <bib:month>November</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+  </bib:file>
+</document>

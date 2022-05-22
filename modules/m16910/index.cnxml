@@ -1,0 +1,85 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:bib="http://bibtexml.sf.net/">
+  <title>Optimality of the Four Classical Filter Designs</title>
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m16910</md:content-id>
+  <md:title>Optimality of the Four Classical Filter Designs</md:title>
+  <md:abstract/>
+  <md:uuid>c802e911-4153-4a66-a15e-e3bb783d5f0f</md:uuid>
+</metadata>
+  <content>
+    <para id="id2255546">It is important in designing filters to choose the
+particular type that is appropriate. Since in all cases, the
+filters are optimal, it is necessary to understand in what sense
+they are optimal.</para>
+    <para id="id2255553">The classical Butterworth filter is optimal in the sense
+that it is the best Taylor's series approximation to the ideal
+lowpass filter magnitude at both <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math> and <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mi>∞</m:mi></m:mrow></m:math>.</para>
+    <para id="id2255589">The Chebyshev filter gives the smallest maximum magnitude
+error over the entire passband of any filter that is also a Taylor's
+series approximation at <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mi>∞</m:mi></m:mrow></m:math> to the ideal magnitude
+characteristic.</para>
+    <para id="id2255609">The Inverse-Chebyshev filter is a Taylor's series
+approximation to the ideal magnitude response at <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math> and
+minimizes the maximum error in the approximation to zero over the
+stopband. This can also be stated as maximizing the minimum
+rejection of the filter over the stopband.</para>
+    <para id="id2255631">The elliptic-function filter (Cauer filter) considers the
+four parameters of the filter: the passband ripple, the
+transition-band width, the stopband ripple, and the order of the
+filter. For given values of any three of the four, the fourth is
+minimized.</para>
+    <para id="id2255639">It should be remembered that all four of these filter
+designs are magnitude approximations and do not address the phase
+frequency response or the time-domain characteristics. For most
+designs, the Butterworth filter has the smoothest phase curve,
+followed by the inverse-Chebyshev, then the Chebyshev, and
+finally the elliptic-function filter having the least smooth
+phase response.</para>
+    <para id="id2255649">Recall that in addition to the four filters described in
+this section, the more general Taylor's series method allows an
+arbitrary zero locations to be specified but retains
+the optimal character at <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math>. A design similar to this can
+be obtained by replacing <m:math><m:mi>ω</m:mi></m:math> by <m:math><m:mrow><m:mn>1</m:mn><m:mo>/</m:mo><m:mi>ω</m:mi></m:mrow></m:math>, which allows
+setting <m:math><m:msup><m:mrow><m:mo>|</m:mo><m:mi>F</m:mi><m:mrow><m:mo>(</m:mo><m:mi>w</m:mi><m:mo>)</m:mo></m:mrow><m:mo>|</m:mo></m:mrow><m:mn>2</m:mn></m:msup></m:math> equal unity at arbitrary frequencies in the
+passband and having a Taylor's series approximation to zero at
+<m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mi>∞</m:mi></m:mrow></m:math><link target-id="bid0"/>.</para>
+    <para id="id2255745">These basic normalized lowpass filters can have the passband
+edge moved from unity to any desired value by a simple change of frequency
+variable, <m:math><m:mi>ω</m:mi></m:math> replaced with <m:math><m:mrow><m:mi>k</m:mi><m:mi>ω</m:mi></m:mrow></m:math>. They can be converted to
+highpass filters or bandpass or band reject filters by various changes
+such as <m:math><m:mi>ω</m:mi></m:math> with <m:math><m:mrow><m:mi>k</m:mi><m:mo>/</m:mo><m:mi>ω</m:mi></m:mrow></m:math> or <m:math><m:mi>ω</m:mi></m:math> with <m:math><m:mrow><m:mi>a</m:mi><m:mi>ω</m:mi><m:mo>+</m:mo><m:mi>b</m:mi><m:mo>/</m:mo><m:mi>ω</m:mi></m:mrow></m:math>. In
+all of these cases the optimality is maintained, because the basic lowpass
+approximation is to a piecewise constant ideal. An approximation to a
+nonpiecewise constant ideal, such as a differentiator, may not be optimal
+after a frequency change of variables .</para>
+    <para id="id2255830">In some cases, especially where time-domain characteristics
+are important, ripples in the frequency response cause
+irregularities, such as echoes in the time response. For that
+reason, the Butterworth and Chebyshev II filters are more desirable
+than their frequency response alone might indicate. A fifth
+approximation has been developed <link target-id="bid0"/> that is similar to the
+Butterworth. It does not require a Taylor's series approximation at
+<m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math>, but only requires that the response monotonically
+decrease in the passband, thus giving a narrower transition region
+than the Butterworth, but without the ripples of the Cheybshev.</para>
+    
+  </content>
+  <bib:file>
+    <bib:entry id="bid0">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Parks, T. W. and Burrus, C. S.</bib:author>
+        <bib:title>Digital Filter Design</bib:title>
+        <bib:publisher>John Wiley &amp; Sons</bib:publisher>
+        <bib:year>1987</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+  </bib:file>
+</document>

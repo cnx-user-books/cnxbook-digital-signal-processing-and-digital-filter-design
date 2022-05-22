@@ -1,0 +1,1583 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:bib="http://bibtexml.sf.net/">
+  <title>Conversion of Analog to Digital Transfer Functions</title>
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m16908</md:content-id>
+  <md:title>Conversion of Analog to Digital Transfer Functions</md:title>
+  <md:abstract/>
+  <md:uuid>b049313d-fe8d-4fd3-b70f-385721a7f287</md:uuid>
+</metadata>
+
+<content>
+    <para id="id2255546">For mathematical convenience, the four classical IIR filter
+transfer functions were developed in terms of the Laplace transform rather
+than the z-transform. The prototype Laplace-transform transfer functions
+are descriptions of analog filters. In this section they are converted to
+z-transform transfer functions for implementation as IIR digital filters.</para>
+    <para id="id2255555">There have been several different methods of converting
+analog systems to digital described over the history of digital
+filters. Two have proven to be useful for most applications.
+The first is called the impulse-invariant method and results in a
+digital filter with an impulse response exactly equal to samples
+of the prototype analog filter. The second method uses a
+frequency mapping to convert the analog filter to a digital
+filter. It has the desirable property of preserving the
+optimality of the four classical approximations developed in the
+last section. This section will develop the theory and design
+formulas to implement both of these conversion approaches.</para>
+    <section id="uid1">
+      <title>The Impulse-Invariant Method</title>
+      <para id="id2255577">Although the transfer functions in <link document="m16892" target-id="uid28">Continuous Frequency Definition of Error</link> were designed
+with criteria in the frequency domain, the impulse-invariant method will
+convert them into digital transfer functions using a time-domain
+constraint <link target-id="bid0"/>, <link target-id="bid1"/>, <link target-id="bid2"/>. The digital filter designed by the
+impulse-invariant method is required to have an impulse response that is
+exactly equal to equally spaced samples of the impulse response of the
+prototype analog filter. If the analog filter has a transfer function
+<m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>)</m:mo></m:mrow></m:math> with an impulse response <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>, the impulse response of the
+digital filter <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is required to match the samples of <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>. For
+samples at <m:math><m:mi>T</m:mi></m:math> second intervals, the impulse response is</para>
+      <equation id="uid2">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mrow>
+                <m:mi>h</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>=</m:mo>
+                <m:mi>F</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>T</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>|</m:mo>
+              </m:mrow>
+              <m:mrow>
+                <m:mi>t</m:mi>
+                <m:mo>=</m:mo>
+                <m:mi>T</m:mi>
+                <m:mi>n</m:mi>
+              </m:mrow>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:mi>F</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>T</m:mi>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2254917">The transfer function of the digital filter is the z-transform of the
+impulse response of the filter, which is given by</para>
+      <equation id="uid3"><m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>n</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+              </m:mrow>
+              <m:mi>∞</m:mi>
+            </m:munderover>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:msup>
+              <m:mi>z</m:mi>
+              <m:mrow>
+                <m:mo>-</m:mo>
+                <m:mi>n</m:mi>
+              </m:mrow>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256052">The transfer function of the prototype analog filter is always a
+rational function written as</para>
+      <equation id="uid4">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>F</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>s</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:mi>B</m:mi>
+                <m:mo>(</m:mo>
+                <m:mi>s</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mrow>
+                <m:mi>A</m:mi>
+                <m:mo>(</m:mo>
+                <m:mi>s</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256102">where <m:math><m:mrow><m:mi>B</m:mi><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>)</m:mo></m:mrow></m:math> is the numerator polynomial with roots that are the
+zeros of <m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>)</m:mo></m:mrow></m:math>, and <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>)</m:mo></m:mrow></m:math> is the denominator with roots that are
+the poles of <m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>)</m:mo></m:mrow></m:math>. If <m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>)</m:mo></m:mrow></m:math> is expanded in terms of partial
+fractions, it can be written as</para>
+      <equation id="uid5"><m:math mode="display">
+          <m:mrow>
+            <m:mi>F</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>s</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>i</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+              <m:mi>N</m:mi>
+            </m:munderover>
+            <m:mfrac>
+              <m:msub>
+                <m:mi>K</m:mi>
+                <m:mi>i</m:mi>
+              </m:msub>
+              <m:mrow>
+                <m:mi>s</m:mi>
+                <m:mo>+</m:mo>
+                <m:msub>
+                  <m:mi>s</m:mi>
+                  <m:mi>i</m:mi>
+                </m:msub>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256250">The impulse response of this filter is the inverse-Laplace
+transform of <link target-id="uid5"/>, which is</para>
+      <equation id="uid6"><m:math mode="display">
+          <m:mrow>
+            <m:mi>f</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>t</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>i</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+              <m:mi>N</m:mi>
+            </m:munderover>
+            <m:mi>K</m:mi>
+            <m:mspace width="4pt"/>
+            <m:msup>
+              <m:mi>e</m:mi>
+              <m:mrow>
+                <m:msub>
+                  <m:mi>s</m:mi>
+                  <m:mi>i</m:mi>
+                </m:msub>
+                <m:mi>t</m:mi>
+              </m:mrow>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256319">Sampling this impulse response every <m:math><m:mi>T</m:mi></m:math> seconds gives</para>
+      <equation id="uid7"><m:math mode="display">
+          <m:mrow>
+            <m:mi>f</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mi>T</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>i</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+              <m:mi>N</m:mi>
+            </m:munderover>
+            <m:msub>
+              <m:mi>K</m:mi>
+              <m:mi>i</m:mi>
+            </m:msub>
+            <m:mspace width="4pt"/>
+            <m:msup>
+              <m:mi>e</m:mi>
+              <m:mrow>
+                <m:mo>-</m:mo>
+                <m:msub>
+                  <m:mi>s</m:mi>
+                  <m:mi>i</m:mi>
+                </m:msub>
+                <m:mi>n</m:mi>
+                <m:mi>T</m:mi>
+              </m:mrow>
+            </m:msup>
+            <m:mo>=</m:mo>
+            <m:munderover>
+<m:mrow>         
+     <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>i</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+              <m:mi>N</m:mi>
+            </m:munderover>
+            <m:msub>
+              <m:mi>K</m:mi>
+              <m:mi>i</m:mi>
+            </m:msub>
+            <m:msup>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msup>
+                  <m:mi>e</m:mi>
+                  <m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:msub>
+                      <m:mi>s</m:mi>
+                      <m:mi>i</m:mi>
+                    </m:msub>
+                    <m:mi>T</m:mi>
+                  </m:mrow>
+                </m:msup>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mi>n</m:mi>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256462">The basic requirement of <link target-id="uid2"/> gives</para>
+      <equation id="id2256470"><m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow> 
+             <m:mrow>
+                <m:mi>n</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+              </m:mrow>
+              <m:mi>∞</m:mi>
+            </m:munderover>
+            <m:mrow>
+              <m:mo>[</m:mo>
+              <m:munderover>
+<m:mrow>         
+       <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>i</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+                <m:mi>N</m:mi>
+              </m:munderover>
+              <m:msub>
+                <m:mi>K</m:mi>
+                <m:mi>i</m:mi>
+              </m:msub>
+              <m:msup>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:msup>
+                    <m:mi>e</m:mi>
+                    <m:mrow>
+                      <m:mo>-</m:mo>
+                      <m:mi>s</m:mi>
+                      <m:mi>I</m:mi>
+                      <m:mi>T</m:mi>
+                    </m:mrow>
+                  </m:msup>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mi>n</m:mi>
+              </m:msup>
+              <m:mo>]</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <equation id="uid8"><m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>i</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+              <m:mi>N</m:mi>
+            </m:munderover>
+            <m:mfrac>
+              <m:mrow>
+                <m:msub>
+                  <m:mi>K</m:mi>
+                  <m:mi>i</m:mi>
+                </m:msub>
+                <m:mi>z</m:mi>
+              </m:mrow>
+              <m:mrow>
+                <m:mi>z</m:mi>
+                <m:mo>-</m:mo>
+                <m:msup>
+                  <m:mi>e</m:mi>
+                  <m:mrow>
+                    <m:mi>s</m:mi>
+                    <m:mi>I</m:mi>
+                    <m:mi>T</m:mi>
+                  </m:mrow>
+                </m:msup>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256633">which is clearly a rational function of <m:math><m:mi>z</m:mi></m:math> and is the transfer function
+of the digital filter, which has samples of the prototype analog filter as
+its impulse response.</para>
+      <para id="id2256647">This method has its requirements set in the time domain, but the frequency
+response is important. In most cases, the prototype analog filter is one
+of the classical types, which is optimal in the frequency domain. If the
+frequency response of the analog filter is denoted by <m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>j</m:mi><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> and the
+frequency response of the digital filter designed by the impulse-
+invariant method is <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math>, it can be shown in a development similar
+to that used for the sampling theorem</para>
+      <equation id="uid9"><m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>/</m:mo>
+              <m:mi>T</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>k</m:mi>
+                <m:mo>=</m:mo>
+                <m:mo>-</m:mo>
+                <m:mi>∞</m:mi>
+              </m:mrow>
+              <m:mi>∞</m:mi>
+            </m:munderover>
+            <m:mi>F</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>j</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>-</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>π</m:mi>
+                <m:mi>k</m:mi>
+                <m:mo>/</m:mo>
+                <m:mi>T</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256775">The frequency response of the digital filter is a periodically
+repeated version of the frequency response of the analog filter.
+This results in an overlapping of the analog response, thus
+not preserving optimality in the same sense the analog prototype
+was optimal. It is a similar phenomenon to the aliasing that
+occurs when sampling a continuous-time signal to obtain a digital
+signal in A-to-D conversion. If <m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>j</m:mi><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is an analog lowpass filter
+that goes to zero as <m:math><m:mi>ω</m:mi></m:math> goes to infinity, the effects of the
+folding can be made small by high sampling rates (small T).</para>
+      <para id="id2256815">The impulse-invariant design method can be summarized in the
+following steps:</para>
+      <list id="id2256820" list-type="enumerated">
+        <item id="uid10">Design a prototype analog filter with transfer function
+<m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>j</m:mi><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math>.
+</item>
+        <item id="uid11">Make a partial fraction expansion of <m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>j</m:mi><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> to obtain the
+<m:math><m:mi>N</m:mi></m:math> values for <m:math><m:msub><m:mi>K</m:mi><m:mi>i</m:mi></m:msub></m:math> and <m:math><m:msub><m:mi>s</m:mi><m:mi>i</m:mi></m:msub></m:math>.
+</item>
+        <item id="uid12">Form the digital transfer function <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> from <link target-id="uid8"/> to
+give the desired design.
+</item>
+      </list>
+      <para id="id2256948">The characteristics of the designed filter are the following:</para>
+      <list id="id2256953" list-type="bulleted">
+        <item id="uid13">It has N poles, the same as the analog filter.
+</item>
+        <item id="uid14">It is stable if the analog filter was stable. This is
+seen from the change of variables in the denominator of
+(6.70) which maps the left-half s-plane inside the unit
+circle in the z-plane.
+</item>
+        <item id="uid15">The frequency response is a folded version of the analog
+filter, and the optimal properties of the analog filter
+are not preserved.
+</item>
+        <item id="uid16">The cascade of two impulse-invariant designed filters
+are not impulse-invariant with the cascade of the two
+analog prototypes. In other words, the filter must be
+designed in one step.
+</item>
+      </list>
+      <para id="id2257004">This method is sometimes used to design digital filters, but
+because the relation of the analog and digital system is
+specified in the time domain, it is more useful in designing a
+digital simulation of an analog system. Unfortunately, the
+properties of this class of filters depend on the input. If a
+filter is designed so that its impulse response is the sampled
+impulse response of the analog filter, its step response will not
+be the sampled step response of the analog filter.</para>
+      <para id="id2257015">A step-invariant filter can be designed by first multiplying
+the analog filter transfer function <m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>)</m:mo></m:mrow></m:math> by <m:math><m:mrow><m:mn>1</m:mn><m:mo>/</m:mo><m:mi>s</m:mi></m:mrow></m:math>, which is the Laplace
+transform of a step function. This product is then expanded in partial
+fraction just as <m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>)</m:mo></m:mrow></m:math> was in <link target-id="uid5"/> and the same substitution made
+as in <link target-id="uid8"/> giving a z-transform. After the z-transform of a step
+is removed, the digital filter has the step-invariant property. This idea
+can be extended to other input functions, but the impulse-invariant
+version is the most common. Another modification to the impulse-invariant
+method is known as the matched z transform covered in <link target-id="bid0"/>, but it is
+less useful.</para>
+      <para id="id2257088">There can be a problem with the classical impulse-invariant method when
+the number of finite zeros is too large. This is addressed in
+<link target-id="bid3"/>, <link target-id="bid4"/>.</para>
+      <para id="id2257104">An example of a Butterworth lowpass filter used to design a
+digital filter by the impulse-invariant method can be shown. Note that
+the frequency response does not go to zero at the highest frequency of <m:math><m:mrow><m:mi>w</m:mi><m:mo>=</m:mo><m:mi>p</m:mi></m:mrow></m:math>. It can be made as small as desired by increasing the sampling rate,
+but this is more expensive to implement. Because the frequency response
+of the prototype analog filter for an inverse-Chebyshev or
+elliptic-function filter does not necessarily go to zero as w goes to
+infinity, the effects of folding on the digital frequency response are
+poor. No amount of sampling rate increase will change this. The same
+problem exists for a highpass filter. This shows the care that must be
+exercised in using the impulse-invariant design method.</para>
+    </section>
+    <section id="uid17">
+      <title>The Bilinear Transformation</title>
+      <para id="id2257141">A second method for converting an analog prototype filter
+into a desired digital filter is the bilinear transformation.
+This method is entirely a frequency-domain method, and as a
+result, some of the optimal properties of the analog filter are
+preserved. As was the case with the impulse-invariant method, the
+time interval is not normalized to one, but is explicitly denoted
+by the sampling interval <m:math><m:mi>T</m:mi></m:math> with units of seconds. The bilinear
+transformation is a change of variables (a mapping) that is
+linear in both the numerator and denominator <link target-id="bid0"/>, <link target-id="bid1"/>, <link target-id="bid5"/>, <link target-id="bid6"/>. The usual
+form is</para>
+      <equation id="uid18">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>s</m:mi>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mn>2</m:mn>
+              <m:mi>T</m:mi>
+            </m:mfrac>
+            <m:mfrac>
+              <m:mrow>
+                <m:mi>z</m:mi>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+              <m:mrow>
+                <m:mi>z</m:mi>
+                <m:mo>+</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257223">The <m:math><m:mi>z</m:mi></m:math>-transform transfer function of the digital filter <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> is
+obtained from the Laplace transform transfer function <m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>)</m:mo></m:mrow></m:math> of the
+prototype filter by substituting for <m:math><m:mi>s</m:mi></m:math> the bilinear form of
+<link target-id="uid18"/>.</para>
+      <equation id="uid19">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mi>F</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mfrac>
+                <m:mrow>
+                  <m:mn>2</m:mn>
+                  <m:mo>(</m:mo>
+                  <m:mi>z</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>T</m:mi>
+                  <m:mo>(</m:mo>
+                  <m:mi>z</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mfrac>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257343">This operation can be reversed by solving <link target-id="uid18"/> for z and
+substituting this into <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> to obtain <m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>)</m:mo></m:mrow></m:math>. This reverse operation is
+also bilinear of the form</para>
+      <equation id="uid20">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>z</m:mi>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:mn>2</m:mn>
+                <m:mo>/</m:mo>
+                <m:mi>T</m:mi>
+                <m:mo>+</m:mo>
+                <m:mi>s</m:mi>
+              </m:mrow>
+              <m:mrow>
+                <m:mn>2</m:mn>
+                <m:mo>/</m:mo>
+                <m:mi>T</m:mi>
+                <m:mo>-</m:mo>
+                <m:mi>s</m:mi>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257426">To consider the frequency response, the Laplace variable s is
+evaluated on the imaginary axis and the z-transform variable z is
+evaluated on the unit circle. This is achieved by</para>
+      <equation id="uid21">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>s</m:mi>
+            <m:mo>=</m:mo>
+            <m:mi>j</m:mi>
+            <m:mi>u</m:mi>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mtext>and</m:mtext>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mi>z</m:mi>
+            <m:mo>=</m:mo>
+            <m:msup>
+              <m:mi>e</m:mi>
+              <m:mrow>
+                <m:mi>j</m:mi>
+                <m:mi>ω</m:mi>
+                <m:mi>T</m:mi>
+              </m:mrow>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257490">which gives the relation of the analog frequency variable u to
+the digital frequency variable <m:math><m:mi>ω</m:mi></m:math> from <link target-id="uid21"/> and <link target-id="uid18"/> to be</para>
+      <equation id="uid22">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>u</m:mi>
+            <m:mo>=</m:mo>
+            <m:mo>(</m:mo>
+            <m:mn>2</m:mn>
+            <m:mo>/</m:mo>
+            <m:mi>T</m:mi>
+            <m:mo>)</m:mo>
+            <m:mo form="prefix">tan</m:mo>
+            <m:mo>(</m:mo>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mi>T</m:mi>
+            <m:mo>)</m:mo>
+            <m:mo>/</m:mo>
+            <m:mn>2</m:mn>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257560">The bilinear transform maps the infinite imaginary axis in
+the-s plane onto the unit circle in the <m:math><m:mi>z</m:mi></m:math>-plane. It maps the infinite
+interval of <m:math><m:mrow><m:mo>-</m:mo><m:mi>∞</m:mi><m:mo>&lt;</m:mo><m:mi>u</m:mi><m:mo>&lt;</m:mo><m:mi>∞</m:mi></m:mrow></m:math> of the analog frequency axis on to the
+finite interval of <m:math><m:mrow><m:mo>-</m:mo><m:mi>π</m:mi><m:mo>/</m:mo><m:mn>2</m:mn><m:mo>&lt;</m:mo><m:mi>ω</m:mi><m:mo>&lt;</m:mo><m:mi>π</m:mi><m:mo>/</m:mo><m:mn>2</m:mn></m:mrow></m:math> of the digital frequency
+axis. This is illustrated in <link target-id="uid23"/>.</para>
+      <figure id="uid23" orient="horizontal"><media id="id5715230" alt="Figure one is a graph titled, bilinear transform from analog to digital. The horizontal axis is labeled frequency, ω, and ranges in value from 0 to 6 in increments of 1. The vertical axis is unlabeled, but it ranges in value from 0 to 5 in increments of 1. From (0, 4) to (1.1, 4), and then from (1.1,4) to (1.1, 3) are two blue line segments. From (0, 3) to (5, 3) is a horizontal blue line segment. Above this line segment is a box containing the phrase Analog Prototype. At the end of the line segment to the right is a small zig-zag. Below the long line segment is a box containing the phrase Digital Filter. There is an arrow drawn vertically downward from the Analog prototype box pointing to the digital filter box. From (0, 1) to (1, 1) and then from  (1, 1) to (1, 0) is a horizontal and vertical blue line segment. There is an arrow drawn pointing downward from (1.1, 3) to (1, 1). There is a blue horizontal segment drawn from (0, 0) to (4, 0), and another two segments drawn from (3, 0) to (3, 1) and (3, 1) to (4, 1). Pointing at (2, 0) is an arrow labeled π/T, and pointing at (4, 0) is an arrow labeled 2π/T. Two more arrows pointing downward reach across the figure from (6, 3) to (2.2, 1) and from (2.2, 1) to (2, 0)."><image src="../../media/figIIR16.png" mime-type="image/png" width="417"/><image for="pdf" src="../../media/figIIR16.eps" mime-type="application/postscript"/></media>
+        
+      <caption>The Frequency Map of the Bilinear Transform</caption></figure>
+      <para id="id2257644">There is no folding or aliasing of the prototype frequency response, but
+there is a compression of the frequency axis, which becomes extreme at
+high frequencies. This is shown in <link target-id="uid24"/> from the relation
+of <link target-id="uid22"/>.</para>
+      <figure id="uid24" orient="horizontal"><media id="id1169454542873" alt="Figure two is a graph titled, Frequency Warping. The horizontal axis is labeled Digital frequency, ω, and ranges in value from 0 to 3 in increments of 0.5. The vertical axis is labeled Analog frequency, and ranges in value from 0 to 7 in increments of 1. There is one blue curve on the graph, beginning at (0, 0) and increasing slowly at first, and further across the page to the right, it begins increasing at an increasing rate, until it terminates with a nearly vertical slope at approximately (2.6, 7)."><image src="../../media/figIIR19.png" mime-type="image/png" width="403"/><image for="pdf" src="../../media/figIIR19.eps" mime-type="application/postscript"/></media>
+        
+      <caption>The Frequency Mapping of the Bilinear Transform</caption></figure>
+      <para id="id2257676">Near zero frequency, the relation of <m:math><m:mi>u</m:mi></m:math> and <m:math><m:mi>ω</m:mi></m:math> is essentially
+linear. The compression increases as the digital frequency w nears
+<m:math><m:mrow><m:mi>π</m:mi><m:mo>/</m:mo><m:mn>2</m:mn></m:mrow></m:math>. This nonlinear compression is called frequency warping. The
+conversion of <m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>)</m:mo></m:mrow></m:math> to <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> with the bilinear transformation does not
+change the values of the frequency response, but it changes the
+frequencies where the values occur.</para>
+      <para id="id2257751">In the design of a digital filter, the effects of the
+frequency warping must be taken into account. The prototype
+filter frequency scale must be prewarped so that after the
+bilinear transform, the critical frequencies are in the correct
+places. This prewarping or scaling of the prototype frequency
+scale is done by replacing s with Ks. Because the bilinear
+transform is also a change of variables, both can be performed in
+one step if that is desirable.</para>
+      <para id="id2257762">If the critical frequency for the prototype filter is <m:math><m:msub><m:mi>u</m:mi><m:mi>o</m:mi></m:msub></m:math> and
+the desired critical frequency for the digital filter is <m:math><m:msub><m:mi>ω</m:mi><m:mi>o</m:mi></m:msub></m:math>, the
+two frequency responses are related by</para>
+      <equation id="uid25">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>F</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>j</m:mi>
+              <m:msub>
+                <m:mi>u</m:mi>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:msup>
+              <m:mi>F</m:mi>
+              <m:mo>*</m:mo>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257853">The prewarping scaling is given by</para>
+      <equation id="uid26">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi>u</m:mi>
+              <m:mn>0</m:mn>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mn>2</m:mn>
+              <m:mi>T</m:mi>
+            </m:mfrac>
+            <m:mo form="prefix">tan</m:mo>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mfrac>
+                <m:mrow>
+                  <m:msub>
+                    <m:mi>ω</m:mi>
+                    <m:mn>0</m:mn>
+                  </m:msub>
+                  <m:mi>T</m:mi>
+                </m:mrow>
+                <m:mn>2</m:mn>
+              </m:mfrac>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257913">Combining the prewarping scale and the bilinear transformation
+give</para>
+      <equation id="uid27">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi>u</m:mi>
+              <m:mn>0</m:mn>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:mn>2</m:mn>
+                <m:mi>K</m:mi>
+              </m:mrow>
+              <m:mi>T</m:mi>
+            </m:mfrac>
+            <m:mo form="prefix">tan</m:mo>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mfrac>
+                <m:mrow>
+                  <m:msub>
+                    <m:mi>ω</m:mi>
+                    <m:mn>0</m:mn>
+                  </m:msub>
+                  <m:mi>T</m:mi>
+                </m:mrow>
+                <m:mn>2</m:mn>
+              </m:mfrac>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257976">Solving for <m:math><m:mi>K</m:mi></m:math> and combining with <link target-id="uid18"/> give</para>
+      <equation id="uid28">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>s</m:mi>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:msub>
+                <m:mi>u</m:mi>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:mrow>
+                <m:mo form="prefix">tan</m:mo>
+                <m:mo>(</m:mo>
+                <m:msub>
+                  <m:mi>ω</m:mi>
+                  <m:mn>0</m:mn>
+                </m:msub>
+                <m:mi>T</m:mi>
+                <m:mo>/</m:mo>
+                <m:mn>2</m:mn>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mfrac>
+            <m:mfrac>
+              <m:mrow>
+                <m:mi>z</m:mi>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+              <m:mrow>
+                <m:mi>z</m:mi>
+                <m:mo>+</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2258063">All of the optimal filters developed in <link document="m16892" target-id="uid28">Continuous Frequency Definition of Error</link> and most other
+prototype filters are designed with a normalized critical frequency
+of <m:math><m:mrow><m:msub><m:mi>u</m:mi><m:mn>0</m:mn></m:msub><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow></m:math>. Recall that <m:math><m:msub><m:mi>ω</m:mi><m:mn>0</m:mn></m:msub></m:math> is in radians per second. Most
+specifications are given in terms of frequency <m:math><m:mi>f</m:mi></m:math> in Hertz (cycles
+per second) which is related to <m:math><m:mi>ω</m:mi></m:math> or <m:math><m:mi>u</m:mi></m:math> by</para>
+      <equation id="uid29">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>ω</m:mi>
+            <m:mo>=</m:mo>
+            <m:mn>2</m:mn>
+            <m:mi>π</m:mi>
+            <m:mi>f</m:mi>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2258158">Care must be taken with the elliptic-function filter where there
+are two critical frequencies that determine the transition
+region. Both frequencies must be prewarped.</para>
+      <para id="id2258166">The characteristics of the bilinear transform are the
+following:</para>
+      <list id="id2258170" list-type="bulleted"><item id="uid30">The order of the digital filter is the same as
+the prototype filter.
+</item>
+        <item id="uid31">The left-half s-plane is mapped into the
+unit circle on
+the z-plane. This means stability is preserved.
+</item>
+        <item id="uid32">Optimal approximations to piecewise constant prototype
+filters, such as the four cases in <link document="m16892" target-id="uid28">Continuous Frequency Definition of Error</link>, transform
+into optimal digital filters.
+</item>
+        <item id="uid33">The cascade of sections designed by the bilinear transform
+is the same as obtained by transforming the total system.
+</item>
+      </list>
+      <para id="id2258222">The bilinear transform is probably the most used method of
+converting a prototype Laplace transform transfer function into a
+digital transfer function. It is the one used in most popular filter
+design programs <link target-id="bid7"/>, because of characteristic 3 above
+that states optimality is preserved. The maximally flat prototype is
+transformed into a maximally flat digital filter. This property only
+holds for approximations to piecewise constant ideal frequency
+responses, because the frequency warping does not change the shape
+of a constant. If the prototype is an optimal approximation to a
+differentiator or to a linear-phase characteristic, the bilinear
+transform will destroy the optimality. Those approximations have to
+be made directly in the digital frequency domain.</para>
+<example id="fs-id1169455381467">
+      <title>The Bilinear Transformation</title>
+      <para id="id2258255">To illustrate the bilinear transformation, the third-order
+Butterworth lowpass filter designed in the Example is converted into a
+digital filter. The prototype filter transfer function is</para>
+      <equation id="uid34">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>F</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>s</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mn>1</m:mn>
+              <m:mrow>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>s</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:msup>
+                    <m:mi>s</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>+</m:mo>
+                  <m:mi>s</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2258327">The prototype analog filter has a passband edge at <m:math><m:mrow><m:msub><m:mi>u</m:mi><m:mn>0</m:mn></m:msub><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow></m:math>. A data
+rate of 1000 samples per second corresponding to <m:math><m:mrow><m:mi>T</m:mi><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>.</m:mo><m:mn>001</m:mn></m:mrow></m:math> seconds
+is assumed. If the desired digital passband edge is <m:math><m:mrow><m:msub><m:mi>f</m:mi><m:mn>0</m:mn></m:msub><m:mo>=</m:mo><m:mn>200</m:mn></m:mrow></m:math> Hz,
+then <m:math><m:mrow><m:msub><m:mi>ω</m:mi><m:mn>0</m:mn></m:msub><m:mo>=</m:mo><m:mrow><m:mo>(</m:mo><m:mn>2</m:mn><m:mi>π</m:mi><m:mo>)</m:mo></m:mrow><m:mrow><m:mo>(</m:mo><m:mn>200</m:mn><m:mo>)</m:mo></m:mrow></m:mrow></m:math> radians per second, and the total
+prewarped bilinear transformation from <link target-id="uid28"/> is</para>
+      <equation id="uid35">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>s</m:mi>
+            <m:mo>=</m:mo>
+            <m:mn>1</m:mn>
+            <m:mo>.</m:mo>
+            <m:mn>376382</m:mn>
+            <m:mfrac>
+              <m:mrow>
+                <m:mi>z</m:mi>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+              <m:mrow>
+                <m:mi>z</m:mi>
+                <m:mo>+</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2258472">The digital transfer function in <link target-id="uid34"/> becomes</para>
+      <equation id="uid36">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:mn>0</m:mn>
+                <m:mo>.</m:mo>
+                <m:mn>09853116</m:mn>
+                <m:msup>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>z</m:mi>
+                    <m:mo>+</m:mo>
+                    <m:mn>1</m:mn>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mn>3</m:mn>
+                </m:msup>
+              </m:mrow>
+              <m:mrow>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>z</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>0</m:mn>
+                  <m:mo>.</m:mo>
+                  <m:mn>158384</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:msup>
+                    <m:mi>z</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>-</m:mo>
+                  <m:mn>0</m:mn>
+                  <m:mo>.</m:mo>
+                  <m:mn>418856</m:mn>
+                  <m:mi>z</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>0</m:mn>
+                  <m:mo>.</m:mo>
+                  <m:mn>355447</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2258582">Note the locations of the poles and zeros in the z-plane. Zeros at
+infinity in the s-plane always map into the z = -1 point. The example
+illustrate a third-order elliptic-function filter designed using the
+bilinear transform.</para>
+</example>
+    </section>
+    <section id="uid37">
+      <title>Frequency Transformations</title>
+      <para id="id2258597">For the design of highpass, bandpass, and band reject
+filters, a particularly powerful combination consists of using the
+frequency transformations described in Section elsewhere together with the
+bilinear transformation. When using this combination, some care must be
+taken in scaling the specifications properly. This is illustrated by
+considering the steps in the design of a bandpass filter:</para>
+      <list id="id2258607" list-type="enumerated"><item id="uid38">First, the lower and upper digital bandedge
+frequencies are specified as <m:math><m:msub><m:mi>ω</m:mi><m:mn>1</m:mn></m:msub></m:math> and or <m:math><m:msub><m:mi>ω</m:mi><m:mn>1</m:mn></m:msub></m:math>, <m:math><m:msub><m:mi>ω</m:mi><m:mn>2</m:mn></m:msub></m:math>, <m:math><m:msub><m:mi>ω</m:mi><m:mn>3</m:mn></m:msub></m:math>,
+and <m:math><m:msub><m:mi>ω</m:mi><m:mn>4</m:mn></m:msub></m:math> if an elliptic-function approximation is used.
+</item>
+        <item id="uid39">These frequencies are prewarped using <link target-id="uid26"/> to
+give theband edges of the prototype bandpass analog
+filter.
+</item>
+        <item id="uid40">These frequencies are converted into a single band-
+edge <m:math><m:msub><m:mi>ω</m:mi><m:mi>p</m:mi></m:msub></m:math> or <m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math> for the Butterworth and Chebyshev and
+into <m:math><m:msub><m:mi>ω</m:mi><m:mi>p</m:mi></m:msub></m:math> and <m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math> for the elliptic-function approximation
+of the prototype lowpass filter by using <link document="m16913" target-id="uid7">Equation 2 from Frequency Transformations</link> and
+<link document="m16913" target-id="uid9">Equation 4 from Frequency Transformations</link>.
+</item>
+        <item id="uid41">The lowpass filter is designed for this <m:math><m:msub><m:mi>ω</m:mi><m:mi>p</m:mi></m:msub></m:math> and/or
+<m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math> by using one of the four approximations in the sections in
+<link document="m16892" target-id="uid28">Continuous Frequency Definition of Error</link> or some other method.
+</item>
+        <item id="uid42">This lowpass analog filter is converted into a
+bandpass analog filter with the frequency transformation
+<link document="m16913" target-id="uid11">Equation 6 from Frequency Transformations</link>.
+</item>
+        <item id="uid43">The bandpass analog filter is then transformed into
+the desired bandpass digital filter using the bilinear
+transformation <link target-id="uid18"/>.
+</item>
+      </list>
+      <para id="id2258861">This is the procedure used in the design Program 8 in the
+appendix.</para>
+      <para id="id2258865">When designing a bandpass elliptic-function filter, four
+frequencies must be specified: the lower stopband edge, the lower
+passband edge, the upper passband edge, and the upper stopband
+edge. All four must be prewarped to the equivalent analog values.
+A problem occurs when the two transition bands of the bandpass
+filter are converted into the single transition band of the
+lowpass prototype filter. In general they will be inconsistant;
+therefore, the narrower of the two transition bands should be
+used to specify the lowpass filter. The same problem occurs in
+designing a bandreject elliptic-function filter. Program 8 in
+the appendix should be studied to understand how this is carried
+out.</para>
+      <para id="id2258880">An alternative to the process of converting a lowpass analog
+into a bandpass analog filter which is then converted into a digital
+filter, is to first convert the prototype lowpass analog filter into
+a lowpass digital filter and then make the conversion into a
+bandpass filter. If the prototype digital filter transfer function
+is <m:math><m:mrow><m:msub><m:mi>H</m:mi><m:mi>p</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> and the frequency transformation is <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math>, the
+desired transformed digital filter is described by</para>
+      <equation id="uid44">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:msub>
+              <m:mi>H</m:mi>
+              <m:mi>p</m:mi>
+            </m:msub>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>f</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>z</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2258976">Since the frequency response of both <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:msub><m:mi>H</m:mi><m:mi>p</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is obtained by
+evaluating them on the unit circle in the-<m:math><m:mi>z</m:mi></m:math> plane, <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> should map the
+unit circle onto the unit circle <m:math><m:mrow><m:mo>(</m:mo><m:mo>|</m:mo><m:mi>z</m:mi><m:mo>|</m:mo><m:mo>=</m:mo><m:mn>1</m:mn><m:mo>=</m:mo><m:mo>&gt;</m:mo><m:mo>|</m:mo><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo><m:mo>|</m:mo><m:mo>=</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:math>. Both <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> and
+<m:math><m:mrow><m:msub><m:mi>H</m:mi><m:mi>p</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> should be stable; therefore, <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> should map the interior of
+the unit circle into the interior of the unit circle <m:math><m:mrow><m:mo>(</m:mo><m:mo>|</m:mo><m:mi>z</m:mi><m:mo>|</m:mo><m:mo>&lt;</m:mo><m:mn>1</m:mn><m:mo>=</m:mo><m:mo>&gt;</m:mo><m:mo>|</m:mo><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo><m:mo>|</m:mo><m:mo>&lt;</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:math>. If <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> were viewed as a filter, it would be an “all-pass"
+filter with a unity magnitude frequency response of the form</para>
+      <equation id="uid45">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>f</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:mi>p</m:mi>
+                <m:mo>(</m:mo>
+                <m:mi>z</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mrow>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mi>n</m:mi>
+                </m:msup>
+                <m:mi>p</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>/</m:mo>
+                  <m:mi>z</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mrow>
+            </m:mfrac>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:msub>
+                  <m:mi>a</m:mi>
+                  <m:mi>n</m:mi>
+                </m:msub>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mi>n</m:mi>
+                </m:msup>
+                <m:mo>+</m:mo>
+                <m:msub>
+                  <m:mi>a</m:mi>
+                  <m:mrow>
+                    <m:mi>n</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:msub>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mrow>
+                    <m:mi>n</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:msup>
+                <m:mo>+</m:mo>
+                <m:mo>⋯</m:mo>
+                <m:mo>+</m:mo>
+                <m:msub>
+                  <m:mi>a</m:mi>
+                  <m:mn>0</m:mn>
+                </m:msub>
+              </m:mrow>
+              <m:mrow>
+                <m:msub>
+                  <m:mi>a</m:mi>
+                  <m:mn>0</m:mn>
+                </m:msub>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mi>n</m:mi>
+                </m:msup>
+                <m:mo>+</m:mo>
+                <m:msub>
+                  <m:mi>a</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mrow>
+                    <m:mi>n</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:msup>
+                <m:mo>+</m:mo>
+                <m:mo>⋯</m:mo>
+                <m:mo>+</m:mo>
+                <m:msub>
+                  <m:mi>a</m:mi>
+                  <m:mi>n</m:mi>
+                </m:msub>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2259387">The prototype digital lowpass filter is usually designed with
+bandedges at <m:math><m:mrow><m:mo>±</m:mo><m:mi>π</m:mi><m:mo>/</m:mo><m:mn>2</m:mn></m:mrow></m:math>. Determining the frequency transformation
+then becomes the problem of solving the <m:math><m:mrow><m:mi>n</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:math> equations</para>
+      <equation id="uid46">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>f</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:msub>
+                    <m:mi>ω</m:mi>
+                    <m:mi>i</m:mi>
+                  </m:msub>
+                </m:mrow>
+              </m:msup>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:msup>
+              <m:mi>e</m:mi>
+              <m:mrow>
+                <m:mo>±</m:mo>
+                <m:mi>j</m:mi>
+                <m:mi>π</m:mi>
+                <m:mo>/</m:mo>
+                <m:mn>2</m:mn>
+              </m:mrow>
+            </m:msup>
+            <m:mo>=</m:mo>
+            <m:msup>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mi>i</m:mi>
+            </m:msup>
+            <m:mi>j</m:mi>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2259499">for the unknown <m:math><m:msub><m:mi>a</m:mi><m:mi>k</m:mi></m:msub></m:math> where <m:math><m:mrow><m:mi>i</m:mi><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>2</m:mn><m:mo>,</m:mo><m:mo>⋯</m:mo><m:mi>n</m:mi></m:mrow></m:math> and
+the <m:math><m:msub><m:mi>ω</m:mi><m:mi>i</m:mi></m:msub></m:math> are the bandedges of the desired transformed frequency
+response put in ascending order. The resulting simultaneous equations
+have a special structure that allow a recursive solution. Details of this
+approach can be found in <link target-id="bid6"/>.</para>
+      <para id="id2259573">This is an extremely general approach that allows multiple
+passbands of arbitrary width. If elliptic-function approximations
+are used, only one of the transition bandwidths can be independently
+specified. If more than one passband or rejectband is desired, f(z)
+will be higher order than second order and, therefore, the
+transformed transfer function <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo><m:mo>)</m:mo></m:mrow></m:math> will have to be factored
+using a root finder.</para>
+      <para id="id2259607">To illustrate the results of using transform methods to
+design filters, three examples are given which are designed with
+Program 8 from the appendix.</para>
+<example id="fs-id1169457589916">
+      <title>Design of an Chebyshev Highpass Filter
+</title>
+      <para id="id2259624">The specifications are given for a highpass Chebyshev
+frequency response with a passband edge at <m:math><m:mrow><m:msub><m:mi>f</m:mi><m:mi>p</m:mi></m:msub><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>.</m:mo><m:mn>3</m:mn></m:mrow></m:math> Hertz with a
+sampling rate of one sample per second. The order is set at <m:math><m:mrow><m:mi>N</m:mi><m:mo>=</m:mo><m:mn>5</m:mn></m:mrow></m:math>
+and the passband ripple at 0.91515 dB. The transfer function is</para>
+      <equation id="uid47">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>z</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:msup>
+                    <m:mi>z</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>-</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mi>z</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:msup>
+                    <m:mi>z</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>-</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mi>z</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mrow>
+              <m:mrow>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>z</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>0</m:mn>
+                  <m:mo>.</m:mo>
+                  <m:mn>64334</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:msup>
+                    <m:mi>z</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>+</m:mo>
+                  <m:mn>0</m:mn>
+                  <m:mo>.</m:mo>
+                  <m:mn>97495</m:mn>
+                  <m:mi>z</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>0</m:mn>
+                  <m:mo>.</m:mo>
+                  <m:mn>55567</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:msup>
+                    <m:mi>z</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>+</m:mo>
+                  <m:mn>0</m:mn>
+                  <m:mo>.</m:mo>
+                  <m:mn>57327</m:mn>
+                  <m:mi>z</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>0</m:mn>
+                  <m:mo>.</m:mo>
+                  <m:mn>83827</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2259840">The frequency response plot is given in <link target-id="uid48"/>.</para>
+      <figure id="uid48" orient="horizontal"><media id="id4766093" alt="Figure three is titled chebyshev highpass filter. Its horizontal axis is labeled Normalized frequency, and ranges in value from 0 to 1 in increments of 0.2. Its vertical axis is labeled Magnitude Response and ranges in value from 0 to 1 in increments of 0.2. There are two blue curves on the graph. The first is a simple horizontal line extending from (0, 0) to (1, 0). The second stretches out from this horizontal axis at approximately (0.3, 0) and begins increasing at an increasing rate all the way up to nearly the top of the page at approximately (0.6, 1). At this point the curve peaks and continues downward sharply, then back up to another peak more shallowly that occurs at approximately (0.75, 1), then back down and up in an even more shallow fashion to its termination point at (1, 1)."><image src="../../media/figIIR20.png" mime-type="image/png" width="402"/><image for="pdf" src="../../media/figIIR20.eps" mime-type="application/postscript"/></media>
+        
+      <caption>Fifth Order Digital Chebyshev Highpass Filter</caption></figure>
+</example>
+<example id="fs-id3562187">
+      <title>Design of an Elliptic-Function Bandpass
+Filter
+</title>
+      <para id="id2259876">This filter requires a bandpass frequency response with an
+elliptic-function approximation. The maximum passpand ripple is one dB,
+the minimum stopband attenuation is 30 dB, the lower stopband edge <m:math><m:mrow><m:msub><m:mi>f</m:mi><m:mn>1</m:mn></m:msub><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>.</m:mo><m:mn>19</m:mn></m:mrow></m:math>, the lower passband edge <m:math><m:mrow><m:msub><m:mi>f</m:mi><m:mn>2</m:mn></m:msub><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>.</m:mo><m:mn>2</m:mn></m:mrow></m:math>, the upper passband edge <m:math><m:mrow><m:msub><m:mi>f</m:mi><m:mn>3</m:mn></m:msub><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>.</m:mo><m:mn>3</m:mn></m:mrow></m:math>, and the upper stopband edge <m:math><m:mrow><m:msub><m:mi>f</m:mi><m:mn>4</m:mn></m:msub><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>.</m:mo><m:mn>31</m:mn></m:mrow></m:math> Hertz with a sampling
+rate of one sample per second. The design program calculated a required
+prototype order of <m:math><m:mrow><m:mi>N</m:mi><m:mo>=</m:mo><m:mn>6</m:mn></m:mrow></m:math> and, therefore, a total order of 10. The
+frequency response plot is shown in <link target-id="uid49"/>.</para>
+      <figure id="uid49" orient="horizontal"><media id="id1169463025714" alt="Figure four is titled tenth-order elliptic function filter. The horizontal axis is labeled normalized frequency and ranges in value from 0 to 1 in increments of 0.2. The vertical axis is labeled magnitude response and ranges in value from 0 to 1 in increments of 0.2. There are two blue curves on this graph. The first is a simple horizontal line from (0, 0) across the figure to (1, 0). The second is a more complex, but symmetric, curve that begins from the left with a very shallow positive slope. It decreases back down to the horizontal axis and wavers at (0.4, 0), where it then increases sharply to (0.4, 1). At this point, the graph peaks and follows a sinusoidal chape of an amplitude of approximately 0.05 with an increasing wavelength. There are two troughs and a wide peak in the middle of the graph. At this peak, the graph moves to the right in a completely symmetric fashion, mirroring the aforementioned description."><image src="../../media/figIIR21.png" mime-type="image/png" width="364"/><image for="pdf" src="../../media/figIIR21.eps" mime-type="application/postscript"/></media>
+        
+      <caption>Tenth Order Digital Elliptic Bandpass Filter</caption></figure></example>
+<example id="fs-id1169466193656">
+      <title>Design of an Inverse-Chebyshev Bandreject
+Filter
+</title>
+      <para id="id2260032">The specifications are given for a bandreject Inverse-
+Chebyshev frequency response with bandedges at <m:math><m:mrow><m:msub><m:mi>f</m:mi><m:mi>s</m:mi></m:msub><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>.</m:mo><m:mn>1</m:mn></m:mrow></m:math> and <m:math><m:mrow><m:mn>0</m:mn><m:mo>.</m:mo><m:mn>2</m:mn></m:mrow></m:math>
+Hertz with a sampling rate of one sample per second. The order is set at
+<m:math><m:mrow><m:mi>N</m:mi><m:mo>=</m:mo><m:mn>11</m:mn></m:mrow></m:math> and the minimum stopband attenuation at 30 dB. The frequency
+response plot is given in <link target-id="uid50"/>.</para>
+<!--empty paragraphs get left behind.-->
+      <figure id="uid50" orient="horizontal"><media id="id4593555" alt="Figure five is a graph titled Inverse chebyshev band reject filter. The horizontal axis is labeled Normalized frequency, and ranges in value from 0 to 1 in increments of 0.2. The vertical axis is labeled Magnitude response and ranges in value from 0 to 1 in increments of 1. There are two blue curves on the graph. The first is a simple horizontal line from (0, 0) to (1, 0). The second begins at (0, 1) and extends to the right horizontally until just before (0.2, 1) where it sharply moves downward to (0.2, 0). At this point, the curve contains 10 peaks of a sinusoidal wave-shape of an extremely small amplitude. The wavelength of this section of the curve starts out small, then by the fifth  peak is its longest, then by the tenth peak is back to the wavelength of the first trough. This sinusoidal segment occurs horizontally from 0.2 to 0.4. After (0.4, 0), the curve returns sharply to the top of the figure at (0.4, 1), where it then continues horizontally to the right edge of the figure and terminates at (1, 1)."><image src="../../media/figIIR22.png" mime-type="image/png" width="419"/><image for="pdf" src="../../media/figIIR22.eps" mime-type="application/postscript"/></media>
+        
+      <caption>Twenty second Order Digital Inverse Chebyshev Band Reject Filter</caption></figure>
+</example>
+      <section id="uid51">
+        <title>Summary</title>
+        <para id="id2260126">This section has described the two most popular and useful
+methods for transforming a prototype analog filter into a digital
+filter. The analog frequency variable is used because a
+literature on analog filter design exists, but more importantly,
+many approximation theories are more straightforward in terms of
+the Laplace-transform variable than the z-transform variable. The
+impulse-invariant method is particularly valuable when time-
+domain characteristics are important. The bilinear-transform
+method is the most common when frequency-domain performance is
+the main interest. Use of the BLT warps the frequency scale and,
+therefore, the digital band edges must be prewarped to obtain the
+necessary band edges for the analog filter design. Formulas that
+transform the analog prototype filters into the desired digital
+filters and for prewarping specifications were derived.</para>
+        <para id="id2260144">The use of frequency transformations to convert lowpass
+filters into highpass, bandpass, and bandreject filters was
+discussed as a particularly useful combination with the bilinear
+transformation. These are implemented in Program 8 and design
+examples from this program were shown.</para>
+        <para id="id2260152">There are cases where no analytic results are possible or
+where the desired frequency response is not piecewise constant and
+transformation methods are not appropriate. Direct methods for these cases
+are developed in other sections.</para>
+        
+      </section>
+    </section>
+  </content>
+  <bib:file>
+    <bib:entry id="bid7">
+      <bib:book>
+<!--required fields-->
+        <bib:editor>DSP Committee, </bib:editor>
+        <bib:title>Programs for Digital Signal Processing</bib:title>
+        <bib:publisher>IEEE Press</bib:publisher>
+        <bib:year>1979</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid5">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Gold, B. and Rader, C. M.</bib:author>
+        <bib:title>Digital Processing of Signals</bib:title>
+        <bib:publisher>McGraw-Hill</bib:publisher>
+        <bib:year>1969</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid3">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Jackson, L. B.</bib:author>
+        <bib:title>A Correction to Impulse Invariance</bib:title>
+        <bib:journal>IEEE Signal Processing Letters</bib:journal>
+        <bib:year>2000</bib:year>
+<!--optional fields-->
+        <bib:volume>7</bib:volume>
+        <bib:number>10</bib:number>
+        <bib:pages>273–275</bib:pages>
+        <bib:month>October</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid4">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Mecklenbrauker, W. F. G.</bib:author>
+        <bib:title>Remarks on and Correction to the Impulse Invariant Method for the Design of IIR Digital Filters</bib:title>
+        <bib:journal>Signal Processing</bib:journal>
+        <bib:year>2000</bib:year>
+<!--optional fields-->
+        <bib:volume>80</bib:volume>
+        <bib:number/>
+        <bib:pages>1687–1690</bib:pages>
+        <bib:month>August</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid1">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Oppenheim, A. V. and Schafer, R. W.</bib:author>
+        <bib:title>Discrete-Time Signal Processing</bib:title>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1999</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Englewood Cliffs, NJ</bib:address>
+        <bib:edition>Second</bib:edition>
+        <bib:month/>
+        <bib:note>Earlier editions in 1975 and 1989</bib:note>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid6">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Parks, T. W. and Burrus, C. S.</bib:author>
+        <bib:title>Digital Filter Design</bib:title>
+        <bib:publisher>John Wiley &amp; Sons</bib:publisher>
+        <bib:year>1987</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid0">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Rabiner, L. R. and Gold, B.</bib:author>
+        <bib:title>Theory and Application of Digital Signal Processing</bib:title>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1975</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Englewood Cliffs, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid2">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Taylor, F. J.</bib:author>
+        <bib:title>Digital Filter Design Handbook</bib:title>
+        <bib:publisher>Marcel Dekker, Inc.</bib:publisher>
+        <bib:year>1983</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+  </bib:file>
+</document>

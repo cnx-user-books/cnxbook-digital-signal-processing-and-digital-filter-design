@@ -1,0 +1,3856 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:bib="http://bibtexml.sf.net/">
+  <title>Discrete-Time Signals</title>
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m16881</md:content-id>
+  <md:title>Discrete-Time Signals</md:title>
+  <md:abstract/>
+  <md:uuid>23585381-61fe-4e6b-8bdf-83951c93d0fc</md:uuid>
+</metadata>
+  <content>
+    <para id="id2255546">Although the discrete-time signal <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> could be any ordered
+sequence of numbers, they are usually samples of a continuous-time
+signal. In this case, the real or imaginary valued mathematical
+function <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> of the integer <m:math><m:mi>n</m:mi></m:math> is not used as an analogy of a
+physical signal, but as some representation of it (such as samples).
+In some cases, the term <emphasis>digital</emphasis> signal is used
+interchangeably with discrete-time signal, or the label digital
+signal may be use if the function is not real valued but takes
+values consistent with some hardware system.</para>
+    <para id="id2255608">Indeed, our very use of the term “discrete-time" indicates the
+probable origin of the signals when, in fact, the independent
+variable could be length or any other variable or simply an ordering
+index. The term “digital" indicates the signal is probably going to
+be created, processed, or stored using digital hardware. As in the
+continuous-time case, the Fourier transform will again be our
+primary tool <link target-id="bid0"/>, <link target-id="bid1"/>, <link target-id="bid2"/>.</para>
+    <para id="id2255638">Notation has been an important element in mathematics. In some
+cases, discrete-time signals are best denoted as a sequence of
+values, in other cases, a vector is created with elements which are
+the sequence values. In still other cases, a polynomial is formed
+with the sequence values as coefficients for a complex variable. The
+vector formulation allows the use of linear algebra and the
+polynomial formulation allows the use of complex variable theory.</para>
+    <section id="uid1">
+      <title>The Discrete Fourier Transform</title>
+      <para id="id2255660">The description of signals in terms of their sinusoidal frequency content
+has proven to be as powerful and informative for discrete-time signals as
+it has for continuous-time signals. It is also probably the most powerful
+computational tool we will use. We now develop the basic
+discrete-time methods starting with the discrete Fourier transform (DFT)
+applied to finite length signals, followed by the discrete-time Fourier
+transform (DTFT) for infinitely long signals, and ending with the
+z-transform which uses the powerful tools of complex variable theory.</para>
+      <section id="uid3">
+        <title>Definition of the DFT</title>
+        <para id="id2255679">It is assumed that the signal <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> to be analyzed is a sequence of <m:math><m:mi>N</m:mi></m:math>
+real or complex values which are a function of the integer variable <m:math><m:mi>n</m:mi></m:math>.
+The DFT of <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>, also called the spectrum of <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>, is a length <m:math><m:mi>N</m:mi></m:math>
+sequence of complex numbers denoted <m:math><m:mrow><m:mi>C</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math> and defined by</para>
+        <equation id="uid4"><m:math mode="display">
+            <m:mrow>
+              <m:mi>C</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                    </m:mrow>
+                    <m:mi>N</m:mi>
+                  </m:mfrac>
+                  <m:mi>n</m:mi>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:msup>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2255875">using the usual engineering notation: <m:math><m:mrow><m:mi>j</m:mi><m:mo>=</m:mo><m:msqrt><m:mrow><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:msqrt></m:mrow></m:math>. The inverse
+transform (IDFT) which retrieves <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> from <m:math><m:mrow><m:mi>C</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math> is given
+by</para>
+        <equation id="uid5"><m:math mode="display">
+            <m:mrow>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mi>N</m:mi>
+              </m:mfrac>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>         
+       <m:mrow>
+                  <m:mi>k</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:mi>C</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                    </m:mrow>
+                    <m:mi>N</m:mi>
+                  </m:mfrac>
+                  <m:mi>n</m:mi>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:msup>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256024">which is easily verified by substitution into <link target-id="uid4"/>. Indeed, this
+verification will require using the orthogonality of the basis function of
+the DFT which is</para>
+        <equation id="uid6"><m:math mode="display">
+            <m:mrow>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>k</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                    </m:mrow>
+                    <m:mi>N</m:mi>
+                  </m:mfrac>
+                  <m:mi>m</m:mi>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:msup>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                    </m:mrow>
+                    <m:mi>N</m:mi>
+                  </m:mfrac>
+                  <m:mi>n</m:mi>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:msup>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mfenced separators="" open="{" close="">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd columnalign="left">
+                      <m:mi>N</m:mi>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mtext>if</m:mtext>
+                        <m:mspace width="4.pt"/>
+                        <m:mrow>
+                          <m:mi>n</m:mi>
+                          <m:mo>=</m:mo>
+                          <m:mi>m</m:mi>
+                        </m:mrow>
+                      </m:mrow>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd columnalign="left">
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mtext>if</m:mtext>
+                        <m:mspace width="4.pt"/>
+                        <m:mrow>
+                          <m:mi>n</m:mi>
+                          <m:mo>≠</m:mo>
+                          <m:mi>m</m:mi>
+                        </m:mrow>
+                        <m:mo>.</m:mo>
+                      </m:mrow>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256416">The exponential basis functions, <m:math><m:msup><m:mi>e</m:mi><m:mrow><m:mo>-</m:mo><m:mi>j</m:mi><m:mfrac><m:mrow><m:mn>2</m:mn><m:mi>π</m:mi></m:mrow><m:mi>N</m:mi></m:mfrac><m:mi>k</m:mi></m:mrow></m:msup></m:math>, for <m:math><m:mrow><m:mi>k</m:mi><m:mo>∈</m:mo><m:mo>{</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>}</m:mo></m:mrow></m:math>, are the <m:math><m:mi>N</m:mi></m:math> values of the <m:math><m:mi>N</m:mi></m:math>th roots of unity (the N zeros of
+the polynomial <m:math><m:msup><m:mrow><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow><m:mi>N</m:mi></m:msup></m:math>). This property
+is what connects the DFT to convolution and allows efficient algorithms
+for calculation to be developed <link target-id="bid3"/>. They are used so often that the
+following notation is defined by</para>
+        <equation id="uid7">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>W</m:mi>
+                <m:mi>N</m:mi>
+              </m:msub>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                    </m:mrow>
+                    <m:mi>N</m:mi>
+                  </m:mfrac>
+                </m:mrow>
+              </m:msup>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256573">with the subscript being omitted if the sequence length is obvious from
+context. Using this notation, the DFT becomes</para>
+        <equation id="uid8"><m:math mode="display">
+            <m:mrow>
+              <m:mi>C</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:msubsup>
+                <m:mi>W</m:mi>
+                <m:mi>N</m:mi>
+                <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:msubsup>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256658">One should notice that with the finite summation of the DFT, there is no
+question of convergence or of the ability to interchange the order of
+summation. No “delta functions” are needed and the <m:math><m:mi>N</m:mi></m:math> transform values
+can be calculated exactly (within the accuracy of the computer or
+calculator used) from the <m:math><m:mi>N</m:mi></m:math> signal values with a finite number of
+arithmetic operations.</para>
+      </section>
+      <section id="uid9">
+        <title>Matrix Formulation of the DFT</title>
+        <para id="id2256696">There are several advantages to using a matrix formulation of the DFT.
+This is given by writing <link target-id="uid4"/> or <link target-id="uid8"/> in matrix operator form as</para>
+        <equation id="uid10">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>C</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>C</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>C</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>C</m:mi>
+                        <m:mrow>
+                          <m:mi>N</m:mi>
+                          <m:mo>-</m:mo>
+                          <m:mn>1</m:mn>
+                        </m:mrow>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msup>
+                        <m:mi>W</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msup>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msup>
+                        <m:mi>W</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msup>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msup>
+                        <m:mi>W</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msup>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mo>⋯</m:mo>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msup>
+                        <m:mi>W</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msup>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msup>
+                        <m:mi>W</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msup>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msup>
+                        <m:mi>W</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msup>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msup>
+                        <m:mi>W</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msup>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msup>
+                        <m:mi>W</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msup>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msup>
+                        <m:mi>W</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msup>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msup>
+                        <m:mi>W</m:mi>
+                        <m:mn>4</m:mn>
+                      </m:msup>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msup>
+                        <m:mi>W</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msup>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd>
+                      <m:mo>⋯</m:mo>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd>
+                      <m:msup>
+                        <m:mi>W</m:mi>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:mi>N</m:mi>
+                          <m:mo>-</m:mo>
+                          <m:mn>1</m:mn>
+                          <m:mo>)</m:mo>
+                          <m:mo>(</m:mo>
+                          <m:mi>N</m:mi>
+                          <m:mo>-</m:mo>
+                          <m:mn>1</m:mn>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                      </m:msup>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mrow>
+                          <m:mi>N</m:mi>
+                          <m:mo>-</m:mo>
+                          <m:mn>1</m:mn>
+                        </m:mrow>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257001">or</para>
+        <equation id="uid11">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mrow>
+                <m:mi mathvariant="bold">C</m:mi>
+                <m:mspace width="0.277778em"/>
+                <m:mo>=</m:mo>
+                <m:mspace width="0.277778em"/>
+                <m:mi mathvariant="bold">Fx</m:mi>
+              </m:mrow>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257037">The orthogonality of the basis function in <link target-id="uid4"/> shows up in this matrix
+formulation by the columns of <m:math><m:mi>F</m:mi></m:math>
+ being orthogonal to each other as
+are the rows. This means that <m:math><m:mrow><m:mrow><m:msup><m:mi mathvariant="bold">F</m:mi><m:mi mathvariant="bold">T</m:mi></m:msup><m:mi mathvariant="bold">F</m:mi><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/></m:mrow><m:mi>k</m:mi><m:mi mathvariant="bold">I</m:mi></m:mrow></m:math>, where <m:math><m:mi>k</m:mi></m:math> is a
+scalar constant, and, therefore, <m:math><m:mrow><m:mrow><m:msup><m:mi mathvariant="bold">F</m:mi><m:mi mathvariant="bold">T</m:mi></m:msup><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/></m:mrow><m:mi>k</m:mi><m:msup><m:mi mathvariant="bold">F</m:mi><m:mrow><m:mo>-</m:mo><m:mn mathvariant="bold">1</m:mn></m:mrow></m:msup></m:mrow></m:math>. This is
+called a unitary operator.</para>
+        <para id="id2257152">The definition of the DFT in <link target-id="uid4"/> emphasizes the fact that each of
+the <m:math><m:mi>N</m:mi></m:math> DFT values are the sum of <m:math><m:mi>N</m:mi></m:math> products. The matrix formulation in
+<link target-id="uid10"/> has two interpretations. Each <m:math><m:mi>k</m:mi></m:math>-th DFT term is the inner
+product of two vectors, <m:math><m:mi>k</m:mi></m:math>-th row of <m:math><m:mi mathvariant="bold">F</m:mi></m:math> and <m:math><m:mi mathvariant="bold">x</m:mi></m:math>; or, the DFT
+vector, <m:math><m:mi mathvariant="bold">C</m:mi></m:math> is a weighted sum of the <m:math><m:mi>N</m:mi></m:math> columns of <m:math><m:mi mathvariant="bold">F</m:mi></m:math> with
+weights being the elements of the signal vector <m:math><m:mi mathvariant="bold">x</m:mi></m:math>. A third view
+of the DFT is the operator view which is simply the single matrix equation
+<link target-id="uid11"/>.</para>
+        <para id="id2257272">It is instructive at this point to write a computer program to calculate
+the DFT of a signal. In Matlab <link target-id="bid4"/>, there is a pre-programmed
+function to calculate the DFT, but that hides the scalar operations. One
+should program the transform in the scalar interpretive language of Matlab
+or some other lower level language such as FORTRAN, C, BASIC, Pascal, etc.
+This will illustrate how many multiplications and additions and
+trigonometric evaluations are required and how much memory is needed. Do
+not use a complex data type which also hides arithmetic, but use Euler's
+relations</para>
+        <equation id="uid12">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mi>x</m:mi>
+                </m:mrow>
+              </m:msup>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>x</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>+</m:mo>
+              <m:mi>j</m:mi>
+              <m:mo form="prefix">sin</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>x</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257348">to explicitly calculate the real and imaginary part of <m:math><m:mrow><m:mi>C</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math>.</para>
+        <para id="id2257370">If Matlab is available, first program the DFT using only scalar
+operations. It will require two nested loops and will run rather
+slowly because the execution of loops is interpreted. Next, program
+it using vector inner products to calculate each <m:math><m:mrow><m:mi>C</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math> which will
+require only one loop and will run faster. Finally, program it
+using a single matrix multiplication requiring no loops and running
+much faster. Check the memory requirements of the three approaches.</para>
+        <para id="id2257398">The DFT and IDFT are a completely well-defined, legitimate transform pair
+with a sound theoretical basis that do not need to be derived from or
+interpreted as an approximation to the continuous-time Fourier series or
+integral. The discrete-time and continuous-time transforms and other
+tools are related and have parallel properties, but neither depends on the
+other.</para>
+        <para id="id2257407">The notation used here is consistent with most of the literature and with
+the standards given in <link target-id="bid5"/>. The independent index variable
+<m:math><m:mi>n</m:mi></m:math> of the signal <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is an integer, but it is usually interpreted as
+time or, occasionally, as distance. The independent index variable <m:math><m:mi>k</m:mi></m:math> of
+the DFT <m:math><m:mrow><m:mi>C</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math> is also an integer, but it is generally considered as
+frequency. The DFT is called the spectrum of the signal and the magnitude
+of the complex valued DFT is called the magnitude of that spectrum and the
+angle or argument is called the phase.</para>
+      </section>
+      <section id="uid13">
+        <title>Extensions of x(n)</title>
+        <para id="id2257495">Although the finite length signal <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is defined only over the
+interval <m:math><m:mrow><m:mo>{</m:mo><m:mn>0</m:mn><m:mo>≤</m:mo><m:mi>n</m:mi><m:mo>≤</m:mo><m:mo>(</m:mo><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>)</m:mo><m:mo>}</m:mo></m:mrow></m:math>, the IDFT of <m:math><m:mrow><m:mi>C</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math> can be
+evaluated outside this interval to give well defined values. Indeed,
+this process gives the periodic property 4. There are two ways of
+formulating this phenomenon. One is to periodically extend <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> to
+<m:math><m:mrow><m:mo>-</m:mo><m:mi>∞</m:mi></m:mrow></m:math> and <m:math><m:mrow><m:mo>+</m:mo><m:mi>∞</m:mi></m:mrow></m:math> and work with this new signal. A second
+more general way is evaluate all indices <m:math><m:mi>n</m:mi></m:math> and <m:math><m:mi>k</m:mi></m:math> modulo <m:math><m:mi>N</m:mi></m:math>.
+Rather than considering the periodic extension of <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> on the line
+of integers, the finite length line is formed into a circle or a
+line around a cylinder so that after counting to <m:math><m:mrow><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math>, the next
+number is zero, not a periodic replication of it. The periodic
+extension is easier to visualize initially and is more commonly used
+for the definition of the DFT, but the evaluation of the indices by
+residue reduction modulo <m:math><m:mi>N</m:mi></m:math> is a more general definition and can be
+better utilized to develop efficient algorithms for calculating the
+DFT <link target-id="bid3"/>.</para>
+        <para id="id2257690">Since the indices are evaluated only over the basic interval, any
+values could be assigned <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> outside that interval. The periodic
+extension is the choice most consistent with the other properties of
+the transform, however, it could be assigned to zero <link target-id="bid0"/>. An
+interesting possibility is to artificially create a length <m:math><m:mrow><m:mn>2</m:mn><m:mi>N</m:mi></m:mrow></m:math>
+sequence by appending <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mo>-</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> to the end of <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>. This would
+remove the discontinuities of periodic extensions of this new length
+<m:math><m:mrow><m:mn>2</m:mn><m:mi>N</m:mi></m:mrow></m:math> signal and perhaps give a more accurate measure of the
+frequency content of the signal with no artifacts caused by “end
+effects". Indeed, this modification of the DFT gives what is called
+the discrete cosine transform (DCT) <link target-id="bid6"/>. We will assume the
+implicit periodic extensions to <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> with no special notation
+unless this characteristic is important, then we will use the
+notation <m:math><m:mrow><m:mover accent="true"><m:mi>x</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>.</para>
+      </section>
+      <section id="uid14">
+        <title>Convolution</title>
+        <para id="id2257845">Convolution is an important operation in signal processing that is
+in some ways more complicated in discrete-time signal processing
+than in continuous-time signal processing and in other ways easier.
+The basic input-output relation for a discrete-time system is given
+by so-called linear or non-cyclic convolution defined and denoted by</para>
+        <equation id="uid15"><m:math mode="display">
+            <m:mrow>
+              <m:mi>y</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>m</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mo>-</m:mo>
+                  <m:mi>∞</m:mi>
+                </m:mrow>
+                <m:mi>∞</m:mi>
+              </m:munderover>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>m</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>-</m:mo>
+                <m:mi>m</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>*</m:mo>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257961">where <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is the perhaps infinitely long input discrete-time signal,
+<m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is the perhaps infinitely long impulse response of the system, and
+<m:math><m:mrow><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is the output. The DFT is, however, intimately related to cyclic
+convolution, not non-cyclic convolution. Cyclic convolution is defined
+and denoted by</para>
+        <equation id="uid16"><m:math mode="display">
+            <m:mrow>
+              <m:mover accent="true">
+                <m:mi>y</m:mi>
+                <m:mo>˜</m:mo>
+              </m:mover>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>m</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:mover accent="true">
+                <m:mi>h</m:mi>
+                <m:mo>˜</m:mo>
+              </m:mover>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>m</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mover accent="true">
+                <m:mi>x</m:mi>
+                <m:mo>˜</m:mo>
+              </m:mover>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>-</m:mo>
+                <m:mi>m</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>∘</m:mo>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258151">where either all of the indices or independent integer variables are
+evaluated modulo <m:math><m:mi>N</m:mi></m:math> or all of the signals are periodically extended
+outside their length <m:math><m:mi>N</m:mi></m:math> domains.</para>
+        <para id="id2258178">This cyclic (sometimes called circular) convolution can be expressed as a
+matrix operation by converting the signal <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> into a matrix operator as</para>
+        <equation id="uid17">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi mathvariant="bold">H</m:mi>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mrow>
+                          <m:mi>L</m:mi>
+                          <m:mo>-</m:mo>
+                          <m:mn>1</m:mn>
+                        </m:mrow>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mrow>
+                          <m:mi>L</m:mi>
+                          <m:mo>-</m:mo>
+                          <m:mn>2</m:mn>
+                        </m:mrow>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:mo>⋯</m:mo>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mrow>
+                          <m:mi>L</m:mi>
+                          <m:mo>-</m:mo>
+                          <m:mn>1</m:mn>
+                        </m:mrow>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd/>
+                    <m:mtd>
+                      <m:mo>⋮</m:mo>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mrow>
+                          <m:mi>L</m:mi>
+                          <m:mo>-</m:mo>
+                          <m:mn>1</m:mn>
+                        </m:mrow>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd>
+                      <m:mo>⋯</m:mo>
+                    </m:mtd>
+                    <m:mtd/>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi>h</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mo>,</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258388">The cyclic convolution can then be written in matrix notation as</para>
+        <equation id="uid18">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi mathvariant="bold">Y</m:mi>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mi mathvariant="bold">H</m:mi>
+              <m:mi mathvariant="bold">X</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258430">where <m:math><m:mi mathvariant="bold">X</m:mi></m:math> and <m:math><m:mi mathvariant="bold">Y</m:mi></m:math> are column matrices or vectors of the input
+and output values respectively.</para>
+        <para id="id2258460">Because non-cyclic convolution is often what you want to do and cyclic
+convolution is what is related to the powerful DFT, we want to develop a
+way of doing non-cyclic convolution by doing cyclic convolution.</para>
+        <para id="id2258467">The convolution of a length <m:math><m:mi>N</m:mi></m:math> sequence with a length <m:math><m:mi>M</m:mi></m:math> sequence yields
+a length <m:math><m:mrow><m:mi>N</m:mi><m:mo>+</m:mo><m:mi>M</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math> output sequence. The calculation of non-cyclic
+convolution by using cyclic convolution requires modifying the signals by
+appending zeros to them. This will be developed later.</para>
+      </section>
+      <section id="uid19">
+        <title>Properties of the DFT</title>
+        <para id="id2258523">The properties of the DFT are extremely important in applying it to signal
+analysis and to interpreting it. The main properties are given here
+using the notation that the DFT of a length-<m:math><m:mi>N</m:mi></m:math> complex sequence <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is
+<m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>C</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math>.</para>
+        <list id="id2258598" list-type="enumerated"><item id="uid21">Linear Operator: <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>+</m:mo><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mo>+</m:mo><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>}</m:mo></m:mrow></m:math></item>
+          <item id="uid22">Unitary Operator: <m:math><m:mrow><m:mrow><m:msup><m:mi mathvariant="bold">F</m:mi><m:mrow><m:mo>-</m:mo><m:mn mathvariant="bold">1</m:mn></m:mrow></m:msup><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/></m:mrow><m:mfrac><m:mn>1</m:mn><m:mi>N</m:mi></m:mfrac><m:msup><m:mi mathvariant="bold">F</m:mi><m:mi mathvariant="bold">T</m:mi></m:msup></m:mrow></m:math></item>
+          <item id="uid23">Periodic Spectrum: <m:math><m:mrow><m:mi>C</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>C</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>+</m:mo><m:mi>N</m:mi><m:mo>)</m:mo></m:mrow></m:math></item>
+          <item id="uid24">Periodic Extensions of <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>: <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>+</m:mo><m:mi>N</m:mi><m:mo>)</m:mo></m:mrow></m:math></item>
+          <item id="uid25">Properties of Even and Odd Parts: <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>u</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>+</m:mo><m:mi>j</m:mi><m:mi>v</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> and
+<m:math><m:mrow><m:mi>C</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo><m:mo>+</m:mo><m:mi>j</m:mi><m:mi>B</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math><table id="id2258973" summary="A 5 by 6 table without any header rows.">
+<tgroup cols="6" colsep="0" rowsep="0"><colspec colnum="1" colsep="0"/>
+<colspec colnum="2" colsep="1"/>
+<colspec colnum="3" colsep="0"/>
+<colspec colnum="4" colsep="1"/>
+<colspec colnum="5" colsep="0"/>
+<colspec colnum="6" colsep="1"/>
+<tbody>
+<row rowsep="1"><entry><m:math><m:mi>u</m:mi></m:math></entry><entry><m:math><m:mi>v</m:mi></m:math></entry><entry><m:math><m:mi>A</m:mi></m:math></entry><entry><m:math><m:mi>B</m:mi></m:math></entry><entry><m:math><m:mrow><m:mo>|</m:mo><m:mi>C</m:mi><m:mo>|</m:mo></m:mrow></m:math></entry><entry><m:math><m:mi>θ</m:mi></m:math></entry></row><row><entry>even</entry><entry>0</entry><entry>even</entry><entry>0</entry><entry>even</entry><entry>0</entry></row><row><entry>odd</entry><entry>0</entry><entry>0</entry><entry>odd</entry><entry>even</entry><entry><m:math><m:mrow><m:mi>π</m:mi><m:mo>/</m:mo><m:mn>2</m:mn></m:mrow></m:math></entry></row><row><entry>0</entry><entry>even</entry><entry>0</entry><entry>even</entry><entry>even</entry><entry><m:math><m:mrow><m:mi>π</m:mi><m:mo>/</m:mo><m:mn>2</m:mn></m:mrow></m:math></entry></row><row><entry>0</entry><entry>odd</entry><entry>odd</entry><entry>0</entry><entry>even</entry><entry>0</entry></row></tbody>
+
+</tgroup>
+</table></item>
+          <item id="uid26">Cyclic Convolution: <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>∘</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>}</m:mo></m:mrow></m:math></item>
+          <item id="uid27">Multiplication: <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mo>∘</m:mo><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>}</m:mo></m:mrow></m:math></item>
+          <item id="uid28">Parseval: <m:math><m:mrow><m:msubsup><m:mo>∑</m:mo><m:mrow><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow><m:mrow><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:msubsup><m:msup><m:mrow><m:mo>|</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>|</m:mo></m:mrow><m:mn>2</m:mn></m:msup><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mfrac><m:mn>1</m:mn><m:mi>N</m:mi></m:mfrac><m:msubsup><m:mo>∑</m:mo><m:mrow><m:mi>k</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow><m:mrow><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:msubsup><m:msup><m:mrow><m:mo>|</m:mo><m:mi>C</m:mi><m:mrow><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow><m:mo>|</m:mo></m:mrow><m:mn>2</m:mn></m:msup></m:mrow></m:math></item>
+          <item id="uid29">Shift: <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mrow><m:mo>{</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>-</m:mo><m:mi>M</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>C</m:mi><m:mrow><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow><m:msup><m:mi>e</m:mi><m:mrow><m:mo>-</m:mo><m:mi>j</m:mi><m:mn>2</m:mn><m:mi>π</m:mi><m:mi>M</m:mi><m:mi>k</m:mi><m:mo>/</m:mo><m:mi>N</m:mi></m:mrow></m:msup></m:mrow></m:math></item>
+          <item id="uid30">Modulate: <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mn>2</m:mn><m:mi>π</m:mi><m:mi>K</m:mi><m:mi>n</m:mi><m:mo>/</m:mo><m:mi>N</m:mi></m:mrow></m:msup><m:mo>}</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>C</m:mi><m:mrow><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>-</m:mo><m:mi>K</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math></item>
+          <item id="uid31">Down Sample or Decimate: <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mrow><m:mo>{</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>K</m:mi><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mfrac><m:mn>1</m:mn><m:mi>K</m:mi></m:mfrac><m:msubsup><m:mo>∑</m:mo><m:mrow><m:mi>m</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow><m:mrow><m:mi>K</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:msubsup><m:mi>C</m:mi><m:mrow><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>+</m:mo><m:mi>L</m:mi><m:mi>m</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> where <m:math><m:mrow><m:mi>N</m:mi><m:mo>=</m:mo><m:mi>L</m:mi><m:mi>K</m:mi></m:mrow></m:math></item>
+          <item id="uid32">Up Sample or Stretch: If <m:math><m:mrow><m:msub><m:mi>x</m:mi><m:mi>s</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mn>2</m:mn><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> for integer <m:math><m:mi>n</m:mi></m:math> and
+zero otherwise,
+then <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:msub><m:mi>x</m:mi><m:mi>s</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>C</m:mi><m:mrow><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>,
+for <m:math><m:mrow><m:mi>k</m:mi><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>2</m:mn><m:mo>,</m:mo><m:mo>.</m:mo><m:mo>.</m:mo><m:mo>.</m:mo><m:mo>,</m:mo><m:mn>2</m:mn><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math></item>
+          <item id="uid33">N Roots of Unity: <m:math><m:mrow><m:msup><m:mrow><m:mo>(</m:mo><m:msubsup><m:mi>W</m:mi><m:mi>N</m:mi><m:mi>k</m:mi></m:msubsup><m:mo>)</m:mo></m:mrow><m:mi>N</m:mi></m:msup><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mn>1</m:mn></m:mrow></m:math> for <m:math><m:mrow><m:mi>k</m:mi><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mn>0</m:mn><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>2</m:mn><m:mo>,</m:mo><m:mo>.</m:mo><m:mo>.</m:mo><m:mo>.</m:mo><m:mo>,</m:mo><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math></item>
+          <item id="uid34">Orthogonality:
+<equation id="uid35"><m:math mode="display"><m:mrow><m:munderover><m:mrow><m:mo>∑</m:mo></m:mrow><m:mrow><m:mi>k</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow><m:mrow><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:munderover><m:msup><m:mi>e</m:mi><m:mrow><m:mo>-</m:mo><m:mi>j</m:mi><m:mn>2</m:mn><m:mi>π</m:mi><m:mi>m</m:mi><m:mi>k</m:mi><m:mo>/</m:mo><m:mi>N</m:mi></m:mrow></m:msup><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mn>2</m:mn><m:mi>π</m:mi><m:mi>n</m:mi><m:mi>k</m:mi><m:mo>/</m:mo><m:mi>N</m:mi></m:mrow></m:msup><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mfenced separators="" open="{" close=""><m:mtable><m:mtr><m:mtd columnalign="left"><m:mi>N</m:mi></m:mtd><m:mtd columnalign="left"><m:mrow><m:mtext>if</m:mtext><m:mspace width="4.pt"/><m:mrow><m:mi>n</m:mi><m:mo>=</m:mo><m:mi>m</m:mi></m:mrow></m:mrow></m:mtd></m:mtr><m:mtr><m:mtd columnalign="left"><m:mn>0</m:mn></m:mtd><m:mtd columnalign="left"><m:mrow><m:mtext>if</m:mtext><m:mspace width="4.pt"/><m:mrow><m:mi>n</m:mi><m:mo>≠</m:mo><m:mi>m</m:mi></m:mrow><m:mo>.</m:mo></m:mrow></m:mtd></m:mtr></m:mtable></m:mfenced></m:mrow></m:math></equation></item>
+          <item id="uid36">Diagonalization of Convolution: If cyclic convolution is expressed as a matrix
+operation by <m:math><m:mrow><m:mi mathvariant="bold">y</m:mi><m:mo>=</m:mo><m:mi mathvariant="bold">Hx</m:mi></m:mrow></m:math> with <m:math><m:mi mathvariant="bold">H</m:mi></m:math> given by <link target-id="uid17"/>,
+the DFT operator diagonalizes the convolution operator <m:math><m:mi mathvariant="bold">H</m:mi></m:math>, or
+<m:math><m:mrow><m:msup><m:mi mathvariant="bold">F</m:mi><m:mi mathvariant="bold">T</m:mi></m:msup><m:mi mathvariant="bold">HF</m:mi><m:mo>=</m:mo><m:msub><m:mi mathvariant="bold">H</m:mi><m:mi mathvariant="bold">d</m:mi></m:msub></m:mrow></m:math> where <m:math><m:msub><m:mi mathvariant="bold">H</m:mi><m:mi mathvariant="bold">d</m:mi></m:msub></m:math> is a diagonal matrix with
+the <m:math><m:mi>N</m:mi></m:math> values of the DFT of <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> on the diagonal. This is a matrix
+statement of <link target-id="uid26">Property 6</link>. Note the columns of <m:math><m:mi mathvariant="bold">F</m:mi></m:math> are the <m:math><m:mi>N</m:mi></m:math>
+eigenvectors of <m:math><m:mi mathvariant="bold">H</m:mi></m:math>, independent of the values of <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>.
+</item>
+        </list>
+        <para id="id2260446">One can show that any “kernel" of a transform that would support cyclic,
+length-N convolution must be the N roots of unity. This says the DFT is
+the only transform over the complex number field that will support
+convolution. However, if one considers various finite fields or rings, an
+interesting transform, called the Number Theoretic Transform, can be
+defined and used because the roots of unity are simply two raised to a
+powers which is a simple word shift for certain binary number
+representations <link target-id="bid7"/>, <link target-id="bid8"/>.</para>
+      </section>
+      <section id="uid37">
+        <title>Examples of the DFT</title>
+        <para id="id2260478">It is very important to develop insight and intuition into the DFT or
+spectral characteristics of various standard signals. A few DFT's of
+standard signals together with the above properties will give a fairly
+large set of results. They will also aid in quickly obtaining the DFT of
+new signals. The discrete-time impulse <m:math><m:mrow><m:mi>δ</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is defined by</para>
+        <equation id="uid38">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>δ</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mfenced separators="" open="{" close="">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd columnalign="left">
+                      <m:mn>1</m:mn>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mspace width="4.pt"/>
+                        <m:mtext>when</m:mtext>
+                        <m:mspace width="4.pt"/>
+                        <m:mrow>
+                          <m:mi>n</m:mi>
+                          <m:mo>=</m:mo>
+                          <m:mn>0</m:mn>
+                        </m:mrow>
+                      </m:mrow>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd columnalign="left">
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mspace width="4.pt"/>
+                        <m:mtext>otherwise</m:mtext>
+                      </m:mrow>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2260588">The discrete-time pulse <m:math><m:mrow><m:msub><m:mo>⊓</m:mo><m:mi>M</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is defined by</para>
+        <equation id="uid39">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mo>⊓</m:mo>
+                <m:mi>M</m:mi>
+              </m:msub>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mfenced separators="" open="{" close="">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd columnalign="left">
+                      <m:mn>1</m:mn>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mspace width="4.pt"/>
+                        <m:mtext>when</m:mtext>
+                        <m:mspace width="4.pt"/>
+                        <m:mrow>
+                          <m:mi>n</m:mi>
+                          <m:mo>=</m:mo>
+                          <m:mn>0</m:mn>
+                          <m:mo>,</m:mo>
+                          <m:mn>1</m:mn>
+                          <m:mo>,</m:mo>
+                          <m:mo>⋯</m:mo>
+                          <m:mo>,</m:mo>
+                          <m:mi>M</m:mi>
+                          <m:mo>-</m:mo>
+                          <m:mn>1</m:mn>
+                        </m:mrow>
+                      </m:mrow>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd columnalign="left">
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mspace width="4.pt"/>
+                        <m:mtext>otherwise</m:mtext>
+                      </m:mrow>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2260724">Several examples are:</para>
+        <list id="id2260730" list-type="bulleted"><item id="uid40"><m:math><m:mrow><m:mi>D</m:mi><m:mi>F</m:mi><m:mi>T</m:mi><m:mo>{</m:mo><m:mi>δ</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mn>1</m:mn></m:mrow></m:math>, The DFT of an impulse is a constant.
+</item>
+          <item id="uid41"><m:math><m:mrow><m:mi>D</m:mi><m:mi>F</m:mi><m:mi>T</m:mi><m:mo>{</m:mo><m:mn>1</m:mn><m:mo>}</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>N</m:mi><m:mi>δ</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math>, The DFT of a constant is an impulse.
+</item>
+          <item id="uid42">
+              <m:math>
+                <m:mrow>
+                  <m:mi>D</m:mi>
+                  <m:mi>F</m:mi>
+                  <m:mi>T</m:mi>
+                  <m:mrow>
+                    <m:mo>{</m:mo>
+                    <m:msup>
+                      <m:mi>e</m:mi>
+                      <m:mrow>
+                        <m:mi>j</m:mi>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                        <m:mi>K</m:mi>
+                        <m:mi>n</m:mi>
+                        <m:mo>/</m:mo>
+                        <m:mi>N</m:mi>
+                      </m:mrow>
+                    </m:msup>
+                    <m:mo>}</m:mo>
+                  </m:mrow>
+                  <m:mspace width="0.277778em"/>
+                  <m:mo>=</m:mo>
+                  <m:mspace width="0.277778em"/>
+                  <m:mi>N</m:mi>
+                  <m:mi>δ</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>k</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mi>K</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mrow>
+              </m:math>
+
+          </item>
+          <item id="uid43">
+              <m:math>
+                <m:mrow>
+                  <m:mi>D</m:mi>
+                  <m:mi>F</m:mi>
+                  <m:mi>T</m:mi>
+                  <m:mo>{</m:mo>
+                  <m:mo form="prefix">cos</m:mo>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:mi>π</m:mi>
+                    <m:mi>M</m:mi>
+                    <m:mi>n</m:mi>
+                    <m:mo>/</m:mo>
+                    <m:mi>N</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mspace width="0.277778em"/>
+                  <m:mo>=</m:mo>
+                  <m:mspace width="0.277778em"/>
+                  <m:mfrac>
+                    <m:mi>N</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:mfrac>
+                  <m:mrow>
+                    <m:mo>[</m:mo>
+                    <m:mi>δ</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>k</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mi>M</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>+</m:mo>
+                    <m:mi>δ</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>k</m:mi>
+                      <m:mo>+</m:mo>
+                      <m:mi>M</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>]</m:mo>
+                  </m:mrow>
+                </m:mrow>
+              </m:math>
+          </item>
+          <item id="uid44">
+              <m:math>
+                <m:mrow>
+                  <m:mi>D</m:mi>
+                  <m:mi>F</m:mi>
+                  <m:mi>T</m:mi>
+                  <m:mrow>
+                    <m:mo>{</m:mo>
+                    <m:msub>
+                      <m:mo>⊓</m:mo>
+                      <m:mi>M</m:mi>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>n</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>}</m:mo>
+                  </m:mrow>
+                  <m:mspace width="0.277778em"/>
+                  <m:mo>=</m:mo>
+                  <m:mspace width="0.277778em"/>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mo form="prefix">sin</m:mo>
+                      <m:mo>(</m:mo>
+                      <m:mfrac>
+                        <m:mi>π</m:mi>
+                        <m:mi>N</m:mi>
+                      </m:mfrac>
+                      <m:mi>M</m:mi>
+                      <m:mi>k</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mrow>
+                      <m:mo form="prefix">sin</m:mo>
+                      <m:mo>(</m:mo>
+                      <m:mfrac>
+                        <m:mi>π</m:mi>
+                        <m:mi>N</m:mi>
+                      </m:mfrac>
+                      <m:mi>k</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mfrac>
+                </m:mrow>
+              </m:math>
+          </item>
+        </list>
+        <para id="id2261098">These examples together with the properties can generate a still larger
+set of interesting and enlightening examples. Matlab can be used to
+experiment with these results and to gain insight and intuition.</para>
+      </section>
+    </section>
+    <section id="uid45">
+      <title>The Discrete-Time Fourier Transform</title>
+      <para id="id2261117">In addition to finite length signals, there are many practical problems
+where we must be able to analyze and process essentially infinitely long
+sequences. For continuous-time signals, the Fourier series is used for
+finite length signals and the Fourier transform or integral is used for
+infinitely long signals. For discrete-time signals, we have the DFT for
+finite length signals and we now present the discrete-time Fourier
+transform (DTFT) for infinitely long signals or signals that are longer
+than we want to specify <link target-id="bid0"/>. The DTFT can be developed as an
+extension of the DFT as <m:math><m:mi>N</m:mi></m:math> goes to infinity or the DTFT can be
+independently defined and then the DFT shown to be a special case of it.
+We will do the latter.</para>
+      <section id="uid47">
+        <title>Definition of the DTFT</title>
+        <para id="id2261154">The DTFT of a possibly infinitely long real (or complex) valued sequence
+<m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is defined to be</para>
+        <equation id="uid48"><m:math mode="display">
+            <m:mrow>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>∞</m:mi>
+                </m:mrow>
+                <m:mi>∞</m:mi>
+              </m:munderover>
+              <m:mi>f</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mi>ω</m:mi>
+                  <m:mi>n</m:mi>
+                </m:mrow>
+              </m:msup>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2261249">and its inverse denoted IDTFT is given by</para>
+        <equation id="uid49">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>f</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mrow>
+                  <m:mn>2</m:mn>
+                  <m:mi>π</m:mi>
+                </m:mrow>
+              </m:mfrac>
+              <m:msubsup>
+                <m:mo>∫</m:mo>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>π</m:mi>
+                </m:mrow>
+                <m:mi>π</m:mi>
+              </m:msubsup>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mi>ω</m:mi>
+                  <m:mi>n</m:mi>
+                </m:mrow>
+              </m:msup>
+              <m:mspace width="0.166667em"/>
+              <m:mi>d</m:mi>
+              <m:mi>ω</m:mi>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2261347">Verification by substitution is more difficult than for the DFT. Here
+convergence and the interchange of order of the sum and
+integral are serious questions and have been the topics of research over
+many years. Discussions of the Fourier transform and series for
+engineering applications can be found in <link target-id="bid1"/>, <link target-id="bid2"/>. It is necessary
+to allow distributions or delta functions to be used to gain the full
+benefit of the Fourier transform.</para>
+        <para id="id2261371">Note that the definition of the DTFT and IDTFT are the same as the
+definition of the IFS and FS respectively. Since the DTFT is a continuous
+periodic function of <m:math><m:mi>ω</m:mi></m:math>, its Fourier series is a discrete set of
+values which turn out to be the original signal. This duality can be
+helpful in developing properties and gaining insight into various
+problems. The conditions on a function to determine if it can be expanded
+in a FS are exactly the conditions on a desired frequency response or
+spectrum that will determine if a signal exists to realize or approximate
+it.</para>
+      </section>
+      <section id="uid50">
+        <title>Properties</title>
+        <para id="id2261400">The properties of the DTFT are similar to those for the DFT and are
+important in the analysis and interpretation of long signals. The main
+properties are given here using the notation that the DTFT of a
+complex sequence <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>X</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math>.</para>
+        <list id="id2261467" list-type="enumerated"><item id="uid51">Linear Operator: <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>+</m:mo><m:mi>y</m:mi><m:mo>}</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>}</m:mo><m:mo>+</m:mo><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>y</m:mi><m:mo>}</m:mo></m:mrow></m:math></item>
+          <item id="uid52">Periodic Spectrum: <m:math><m:mrow><m:mi>X</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>X</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>+</m:mo><m:mn>2</m:mn><m:mi>π</m:mi><m:mo>)</m:mo></m:mrow></m:math></item>
+          <item id="uid53">Properties of Even and Odd Parts: <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>u</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>+</m:mo><m:mi>j</m:mi><m:mi>v</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> and
+<m:math><m:mrow><m:mi>X</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo><m:mo>+</m:mo><m:mi>j</m:mi><m:mi>B</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math><table id="id2261696" summary="A 5 by 6 table without any header rows.">
+<tgroup cols="6"><tbody><row><entry><m:math><m:mi>u</m:mi></m:math></entry><entry><m:math><m:mi>v</m:mi></m:math></entry><entry><m:math><m:mi>A</m:mi></m:math></entry><entry><m:math><m:mi>B</m:mi></m:math></entry><entry><m:math><m:mrow><m:mo>|</m:mo><m:mi>X</m:mi><m:mo>|</m:mo></m:mrow></m:math></entry><entry><m:math><m:mi>θ</m:mi></m:math></entry></row><row><entry>even</entry><entry>0</entry><entry>even</entry><entry>0</entry><entry>even</entry><entry>0</entry></row><row><entry>odd</entry><entry>0</entry><entry>0</entry><entry>odd</entry><entry>even</entry><entry>0</entry></row><row><entry>0</entry><entry>even</entry><entry>0</entry><entry>even</entry><entry>even</entry><entry><m:math><m:mrow><m:mi>π</m:mi><m:mo>/</m:mo><m:mn>2</m:mn></m:mrow></m:math></entry></row><row><entry>0</entry><entry>odd</entry><entry>odd</entry><entry>0</entry><entry>even</entry><entry><m:math><m:mrow><m:mi>π</m:mi><m:mo>/</m:mo><m:mn>2</m:mn></m:mrow></m:math></entry></row></tbody>
+</tgroup>
+</table></item>
+          <item id="uid54">Convolution: If non-cyclic or linear convolution is defined by:
+<newline/>
+<m:math><m:mrow><m:mi>y</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>h</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>*</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:msubsup><m:mo>∑</m:mo><m:mrow><m:mi>m</m:mi><m:mo>=</m:mo><m:mo>-</m:mo><m:mi>∞</m:mi></m:mrow><m:mi>∞</m:mi></m:msubsup><m:mi>h</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>-</m:mo><m:mi>m</m:mi><m:mo>)</m:mo></m:mrow><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>m</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:msubsup><m:mo>∑</m:mo><m:mrow><m:mi>k</m:mi><m:mo>=</m:mo><m:mo>-</m:mo><m:mi>∞</m:mi></m:mrow><m:mi>∞</m:mi></m:msubsup><m:mi>h</m:mi><m:mrow><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>-</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>
+<newline/>
+then <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>*</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>}</m:mo></m:mrow></m:math></item>
+          <item id="uid55">Multiplication: If cyclic convolution is defined by:
+<newline/><m:math><m:mrow><m:mi>Y</m:mi><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>H</m:mi><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow><m:mo>∘</m:mo><m:mi>X</m:mi><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:msubsup><m:mo>∫</m:mo><m:mn>0</m:mn><m:mi>T</m:mi></m:msubsup><m:mover accent="true"><m:mi>H</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>-</m:mo><m:mi>Ω</m:mi><m:mo>)</m:mo></m:mrow><m:mover accent="true"><m:mi>X</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>Ω</m:mi><m:mo>)</m:mo></m:mrow><m:mi>d</m:mi><m:mi>Ω</m:mi></m:mrow></m:math>
+<newline/><m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mrow><m:mo>{</m:mo><m:mi>h</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mfrac><m:mn>1</m:mn><m:mrow><m:mn>2</m:mn><m:mi>π</m:mi></m:mrow></m:mfrac><m:mi mathvariant="script">F</m:mi><m:mrow><m:mo>{</m:mo><m:mi>h</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mo>∘</m:mo><m:mi mathvariant="script">F</m:mi><m:mrow><m:mo>{</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow></m:mrow></m:math></item>
+          <item id="uid56">Parseval: <m:math><m:mrow><m:msubsup><m:mo>∑</m:mo><m:mrow><m:mi>n</m:mi><m:mo>=</m:mo><m:mo>-</m:mo><m:mi>∞</m:mi></m:mrow><m:mi>∞</m:mi></m:msubsup><m:msup><m:mrow><m:mo>|</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>|</m:mo></m:mrow><m:mn>2</m:mn></m:msup><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mfrac><m:mn>1</m:mn><m:mrow><m:mn>2</m:mn><m:mi>π</m:mi></m:mrow></m:mfrac><m:msubsup><m:mo>∫</m:mo><m:mrow><m:mo>-</m:mo><m:mi>π</m:mi></m:mrow><m:mi>π</m:mi></m:msubsup><m:msup><m:mrow><m:mo>|</m:mo><m:mi>X</m:mi><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow><m:mo>|</m:mo></m:mrow><m:mn>2</m:mn></m:msup><m:mi>d</m:mi><m:mi>ω</m:mi></m:mrow></m:math></item>
+          <item id="uid57">Shift: <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mrow><m:mo>{</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>-</m:mo><m:mi>M</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>X</m:mi><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow><m:msup><m:mi>e</m:mi><m:mrow><m:mo>-</m:mo><m:mi>j</m:mi><m:mi>ω</m:mi><m:mi>M</m:mi></m:mrow></m:msup></m:mrow></m:math></item>
+          <item id="uid58">Modulate: <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mrow><m:mo>{</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:msub><m:mi>ω</m:mi><m:mn>0</m:mn></m:msub><m:mi>n</m:mi></m:mrow></m:msup><m:mo>}</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>X</m:mi><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>-</m:mo><m:msub><m:mi>ω</m:mi><m:mn>0</m:mn></m:msub><m:mo>)</m:mo></m:mrow></m:mrow></m:math></item>
+          <item id="uid59">Sample: <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mrow><m:mo>{</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>K</m:mi><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mfrac><m:mn>1</m:mn><m:mi>K</m:mi></m:mfrac><m:msubsup><m:mo>∑</m:mo><m:mrow><m:mi>m</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow><m:mrow><m:mi>K</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:msubsup><m:mi>X</m:mi><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>+</m:mo><m:mi>L</m:mi><m:mi>m</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>
+where <m:math><m:mrow><m:mi>N</m:mi><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>L</m:mi><m:mi>K</m:mi></m:mrow></m:math></item>
+          <item id="uid60">Stretch: <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:msub><m:mi>x</m:mi><m:mi>s</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>X</m:mi><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>, for <m:math><m:mrow><m:mo>-</m:mo><m:mi>K</m:mi><m:mi>π</m:mi><m:mo>≤</m:mo><m:mi>ω</m:mi><m:mo>≤</m:mo><m:mi>K</m:mi><m:mi>π</m:mi></m:mrow></m:math>
+where <m:math><m:mrow><m:msub><m:mi>x</m:mi><m:mi>s</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>K</m:mi><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> for integer <m:math><m:mi>n</m:mi></m:math> and zero otherwise.
+</item>
+          <item id="uid61">Orthogonality: <m:math><m:mrow><m:msubsup><m:mo>∑</m:mo><m:mrow><m:mi>n</m:mi><m:mo>=</m:mo><m:mo>-</m:mo><m:mi>∞</m:mi></m:mrow><m:mi>∞</m:mi></m:msubsup><m:msup><m:mi>e</m:mi><m:mrow><m:mo>-</m:mo><m:mi>j</m:mi><m:msub><m:mi>ω</m:mi><m:mn>1</m:mn></m:msub><m:mi>n</m:mi></m:mrow></m:msup><m:msup><m:mi>e</m:mi><m:mrow><m:mo>-</m:mo><m:mi>j</m:mi><m:msub><m:mi>ω</m:mi><m:mn>2</m:mn></m:msub><m:mi>n</m:mi></m:mrow></m:msup><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mn>2</m:mn><m:mi>π</m:mi><m:mi>δ</m:mi><m:mrow><m:mo>(</m:mo><m:msub><m:mi>ω</m:mi><m:mn>1</m:mn></m:msub><m:mo>-</m:mo><m:msub><m:mi>ω</m:mi><m:mn>2</m:mn></m:msub><m:mo>)</m:mo></m:mrow></m:mrow></m:math></item>
+        </list>
+      </section>
+      <section id="uid62">
+        <title>Evaluation of the DTFT by the DFT</title>
+        <para id="id2263123">If the DTFT of a finite sequence is taken, the result is a continuous
+function of <m:math><m:mi>ω</m:mi></m:math>. If the DFT of the same sequence is taken, the
+results are <m:math><m:mi>N</m:mi></m:math> evenly spaced samples of the DTFT. In other words, the
+DTFT of a finite signal can be evaluated at <m:math><m:mi>N</m:mi></m:math> points with the DFT.</para>
+        <equation id="uid63"><m:math mode="display">
+            <m:mrow>
+              <m:mi>X</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mi>D</m:mi>
+              <m:mi>T</m:mi>
+              <m:mi>F</m:mi>
+              <m:mi>T</m:mi>
+              <m:mrow>
+                <m:mo>{</m:mo>
+                <m:mi>x</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>}</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mo>-</m:mo>
+                  <m:mi>∞</m:mi>
+                </m:mrow>
+                <m:mi>∞</m:mi>
+              </m:munderover>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mi>ω</m:mi>
+                  <m:mi>n</m:mi>
+                </m:mrow>
+              </m:msup>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2263269">and because of the finite length</para>
+        <equation id="uid64"><m:math mode="display">
+            <m:mrow>
+              <m:mi>X</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mi>ω</m:mi>
+                  <m:mi>n</m:mi>
+                </m:mrow>
+              </m:msup>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2263358">If we evaluate <m:math><m:mi>ω</m:mi></m:math> at <m:math><m:mi>N</m:mi></m:math> equally space points, this becomes</para>
+        <equation id="uid65"><m:math mode="display">
+            <m:mrow>
+              <m:mi>X</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mn>2</m:mn>
+                    <m:mi>π</m:mi>
+                  </m:mrow>
+                  <m:mi>N</m:mi>
+                </m:mfrac>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                    </m:mrow>
+                    <m:mi>N</m:mi>
+                  </m:mfrac>
+                  <m:mi>k</m:mi>
+                  <m:mi>n</m:mi>
+                </m:mrow>
+              </m:msup>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2263483">which is the DFT of <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>. By adding zeros to the end of <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> and
+taking a longer DFT, any density of points can be evaluated. This is
+useful in interpolation and in plotting the spectrum of a finite length
+signal. This is discussed further in <link document="m16886">Sampling, Up-Sampling, Down-Sampling, and Multi-Rate Processing</link>.</para>
+        <para id="id2263531">There is an interesting variation of the Parseval's theorem for the DTFT
+of a finite length-<m:math><m:mi>N</m:mi></m:math> signal. If <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>≠</m:mo><m:mn>0</m:mn></m:mrow></m:math> for <m:math><m:mrow><m:mn>0</m:mn><m:mo>≥</m:mo><m:mi>n</m:mi><m:mo>≥</m:mo><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math>,
+and if <m:math><m:mrow><m:mi>L</m:mi><m:mo>≥</m:mo><m:mi>N</m:mi></m:mrow></m:math>, then</para>
+        <equation id="uid66"><m:math mode="display">
+            <m:mrow>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:msup>
+                <m:mrow>
+                  <m:mo>|</m:mo>
+                  <m:mi>x</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>n</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>|</m:mo>
+                </m:mrow>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mi>L</m:mi>
+              </m:mfrac>
+              <m:munderover>
+<m:mrow>         
+       <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>k</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>L</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:msup>
+                <m:mrow>
+                  <m:mo>|</m:mo>
+                  <m:mi>X</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:mi>π</m:mi>
+                    <m:mi>k</m:mi>
+                    <m:mo>/</m:mo>
+                    <m:mi>L</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>|</m:mo>
+                </m:mrow>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mi>π</m:mi>
+              </m:mfrac>
+              <m:msubsup>
+                <m:mo>∫</m:mo>
+                <m:mn>0</m:mn>
+                <m:mi>π</m:mi>
+              </m:msubsup>
+              <m:msup>
+                <m:mrow>
+                  <m:mo>|</m:mo>
+                  <m:mi>X</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>|</m:mo>
+                </m:mrow>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mspace width="0.166667em"/>
+              <m:mi>d</m:mi>
+              <m:mi>ω</m:mi>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2263781">The second term in <link target-id="uid66"/> says the Riemann sum is equal to its limit in this
+case.</para>
+      </section>
+      <section id="uid67">
+        <title>Examples of DTFT</title>
+        <para id="id2263800">As was true for the DFT, insight and intuition is developed by
+understanding the properties and a few examples of the DTFT. Several
+examples are given below and more can be found in the literature
+<link target-id="bid0"/>, <link target-id="bid1"/>, <link target-id="bid2"/>. Remember that while in the case of the DFT signals
+were defined on the region <m:math><m:mrow><m:mo>{</m:mo><m:mn>0</m:mn><m:mo>≤</m:mo><m:mi>n</m:mi><m:mo>≤</m:mo><m:mo>(</m:mo><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>)</m:mo><m:mo>}</m:mo></m:mrow></m:math> and values outside
+that region were periodic extensions, here the signals are defined over
+all integers and are not periodic unless explicitly stated. The spectrum
+is periodic with period <m:math><m:mrow><m:mn>2</m:mn><m:mi>π</m:mi></m:mrow></m:math>.</para>
+        <list id="id2263873" list-type="bulleted">
+          <item id="uid68"><m:math><m:mrow><m:mi>D</m:mi><m:mi>T</m:mi><m:mi>F</m:mi><m:mi>T</m:mi><m:mo>{</m:mo><m:mi>δ</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mn>1</m:mn></m:mrow></m:math> for all frequencies.
+</item>
+          <item id="uid69">
+            <equation id="id2263931">
+              <m:math>
+                <m:mrow>
+                  <m:mi>D</m:mi>
+                  <m:mi>T</m:mi>
+                  <m:mi>F</m:mi>
+                  <m:mi>T</m:mi>
+                  <m:mo>{</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>}</m:mo>
+                  <m:mspace width="0.277778em"/>
+                  <m:mo>=</m:mo>
+                  <m:mspace width="0.277778em"/>
+                  <m:mn>2</m:mn>
+                  <m:mi>π</m:mi>
+                  <m:mi>δ</m:mi>
+                  <m:mo>(</m:mo>
+                  <m:mi>ω</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:math>
+            </equation>
+          </item>
+          <item id="uid70">
+            <equation id="id2263984">
+              <m:math>
+                <m:mrow>
+                  <m:mi>D</m:mi>
+                  <m:mi>T</m:mi>
+                  <m:mi>F</m:mi>
+                  <m:mi>T</m:mi>
+                  <m:mrow>
+                    <m:mo>{</m:mo>
+                    <m:msup>
+                      <m:mi>e</m:mi>
+                      <m:mrow>
+                        <m:mi>j</m:mi>
+                        <m:msub>
+                          <m:mi>ω</m:mi>
+                          <m:mn>0</m:mn>
+                        </m:msub>
+                        <m:mi>n</m:mi>
+                      </m:mrow>
+                    </m:msup>
+                    <m:mo>}</m:mo>
+                  </m:mrow>
+                  <m:mspace width="0.277778em"/>
+                  <m:mo>=</m:mo>
+                  <m:mspace width="0.277778em"/>
+                  <m:mn>2</m:mn>
+                  <m:mi>π</m:mi>
+                  <m:mi>δ</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:msub>
+                      <m:mi>ω</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mrow>
+              </m:math>
+            </equation>
+          </item>
+          <item id="uid71">
+            <equation id="id2264066">
+              <m:math>
+                <m:mrow>
+                  <m:mi>D</m:mi>
+                  <m:mi>T</m:mi>
+                  <m:mi>F</m:mi>
+                  <m:mi>T</m:mi>
+                  <m:mrow>
+                    <m:mo>{</m:mo>
+                    <m:mo form="prefix">cos</m:mo>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:msub>
+                        <m:mi>ω</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                      <m:mi>n</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>}</m:mo>
+                  </m:mrow>
+                  <m:mspace width="0.277778em"/>
+                  <m:mo>=</m:mo>
+                  <m:mspace width="0.277778em"/>
+                  <m:mi>π</m:mi>
+                  <m:mrow>
+                    <m:mo>[</m:mo>
+                    <m:mi>δ</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>ω</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:msub>
+                        <m:mi>ω</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>+</m:mo>
+                    <m:mi>δ</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>ω</m:mi>
+                      <m:mo>+</m:mo>
+                      <m:msub>
+                        <m:mi>ω</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>]</m:mo>
+                  </m:mrow>
+                </m:mrow>
+              </m:math>
+            </equation>
+          </item>
+          <item id="uid72">
+            <equation id="id2264174">
+              <m:math>
+                <m:mrow>
+                  <m:mi>D</m:mi>
+                  <m:mi>T</m:mi>
+                  <m:mi>F</m:mi>
+                  <m:mi>T</m:mi>
+                  <m:mrow>
+                    <m:mo>{</m:mo>
+                    <m:msub>
+                      <m:mo>⊓</m:mo>
+                      <m:mi>M</m:mi>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>n</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>}</m:mo>
+                  </m:mrow>
+                  <m:mspace width="0.277778em"/>
+                  <m:mo>=</m:mo>
+                  <m:mspace width="0.277778em"/>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mo form="prefix">sin</m:mo>
+                      <m:mo>(</m:mo>
+                      <m:mi>ω</m:mi>
+                      <m:mi>M</m:mi>
+                      <m:mi>k</m:mi>
+                      <m:mo>/</m:mo>
+                      <m:mn>2</m:mn>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mrow>
+                      <m:mo form="prefix">sin</m:mo>
+                      <m:mo>(</m:mo>
+                      <m:mi>ω</m:mi>
+                      <m:mi>k</m:mi>
+                      <m:mo>/</m:mo>
+                      <m:mn>2</m:mn>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mfrac>
+                </m:mrow>
+              </m:math>
+            </equation>
+          </item>
+        </list>
+      </section>
+    </section>
+    <section id="uid73">
+      <title>The Z-Transform</title>
+      <para id="id2264277">The z-transform is an extension of the DTFT in a way that is analogous to
+the Laplace transform for continuous-time signals being an extension of the
+Fourier transform. It allows the use of complex variable theory and is
+particularly useful in analyzing and describing systems. The question of
+convergence becomes still more complicated and depends on values of <m:math><m:mi>z</m:mi></m:math>
+used in the inverse transform which must be in the “region of
+convergence" (ROC).</para>
+      <section id="uid75">
+        <title>Definition of the Z-Transform</title>
+        <para id="id2264306">The z-transform (ZT) is defined as a polynomial in the complex variable
+<m:math><m:mi>z</m:mi></m:math> with the discrete-time signal values as its coefficients
+<link target-id="bid9"/>, <link target-id="bid10"/>, <link target-id="bid0"/>. It is given by</para>
+        <equation id="uid76"><m:math mode="display">
+            <m:mrow>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>z</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mo>-</m:mo>
+                  <m:mi>∞</m:mi>
+                </m:mrow>
+                <m:mi>∞</m:mi>
+              </m:munderover>
+              <m:mi>f</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:msup>
+                <m:mi>z</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>n</m:mi>
+                </m:mrow>
+              </m:msup>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2264410">and the inverse transform (IZT) is</para>
+        <equation id="uid77">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>f</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mrow>
+                  <m:mn>2</m:mn>
+                  <m:mi>π</m:mi>
+                  <m:mi>j</m:mi>
+                </m:mrow>
+              </m:mfrac>
+              <m:msub>
+                <m:mo>∮</m:mo>
+                <m:mrow>
+                  <m:mi>R</m:mi>
+                  <m:mi>O</m:mi>
+                  <m:mi>C</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>z</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:msup>
+                <m:mi>z</m:mi>
+                <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mi>d</m:mi>
+              <m:mi>z</m:mi>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2264504">The inverse transform can be derived by using the residue theorem
+<link target-id="bid11"/>, <link target-id="bid1"/> from complex variable theory to find <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo></m:mrow></m:math> from
+<m:math><m:mrow><m:msup><m:mi>z</m:mi><m:mrow><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:msup><m:mi>F</m:mi><m:mrow><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>, <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:math> from <m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math>, <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mn>2</m:mn><m:mo>)</m:mo></m:mrow></m:math> from <m:math><m:mrow><m:mi>z</m:mi><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math>, and in general, <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>
+from <m:math><m:mrow><m:msup><m:mi>z</m:mi><m:mrow><m:mi>n</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:msup><m:mi>F</m:mi><m:mrow><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>. Verification by substitution is more difficult than
+for the DFT or DTFT. Here convergence and the interchange of order of the
+sum and integral is a serious question that involves values of the complex
+variable <m:math><m:mi>z</m:mi></m:math>. The complex contour integral in <link target-id="uid77"/> must be taken in the
+ROC of the z plane.</para>
+        <para id="id2264700">A unilateral z-transform is sometimes needed where the definition <link target-id="uid77"/> uses a
+lower limit on the transform summation of zero. This allow the transformation
+to converge for some functions where the regular bilateral transform does
+not, it provides a straightforward way to solve initial condition
+difference equation problems, and it simplifies the question of finding
+the ROC. The bilateral z-transform is used more for signal analysis and
+the unilateral transform is used more for system description and analysis.
+Unless stated otherwise, we will be using the bilateral z-transform.</para>
+      </section>
+      <section id="uid78">
+        <title>Properties</title>
+        <para id="id2264720">The properties of the ZT are similar to those for the DTFT and DFT and are
+important in the analysis and interpretation of long signals and in the
+analysis and description of discrete-time systems. The main
+properties are given here using the notation that the ZT of a
+complex sequence <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is <m:math><m:mrow><m:mi mathvariant="script">Z</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mo>=</m:mo><m:mi>X</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math>.</para>
+        <list id="id2255426" list-type="enumerated"><item id="uid79">Linear Operator: <m:math><m:mrow><m:mi mathvariant="script">Z</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>+</m:mo><m:mi>y</m:mi><m:mo>}</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi mathvariant="script">Z</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>}</m:mo><m:mo>+</m:mo><m:mi mathvariant="script">Z</m:mi><m:mo>{</m:mo><m:mi>y</m:mi><m:mo>}</m:mo></m:mrow></m:math></item>
+          <item id="uid80">Relationship of ZT to DTFT: <m:math><m:mrow><m:msub><m:mrow><m:mi mathvariant="script">Z</m:mi><m:mrow><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>}</m:mo></m:mrow><m:mo>|</m:mo></m:mrow><m:mrow><m:mi>z</m:mi><m:mo>=</m:mo><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mi>ω</m:mi></m:mrow></m:msup></m:mrow></m:msub><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi mathvariant="script">DTFT</m:mi><m:mrow><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>}</m:mo></m:mrow></m:mrow></m:math></item>
+          <item id="uid81">Periodic Spectrum: <m:math><m:mrow><m:mi>X</m:mi><m:mrow><m:mo>(</m:mo><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mi>ω</m:mi></m:mrow></m:msup><m:mo>)</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>X</m:mi><m:mrow><m:mo>(</m:mo><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mi>ω</m:mi><m:mo>+</m:mo><m:mn>2</m:mn><m:mi>π</m:mi></m:mrow></m:msup><m:mo>)</m:mo></m:mrow></m:mrow></m:math></item>
+          <item id="uid82">Properties of Even and Odd Parts: <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>u</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>+</m:mo><m:mi>j</m:mi><m:mi>v</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> and
+<m:math><m:mrow><m:mi>X</m:mi><m:mrow><m:mo>(</m:mo><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mi>ω</m:mi></m:mrow></m:msup><m:mo>)</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>A</m:mi><m:mrow><m:mo>(</m:mo><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mi>ω</m:mi></m:mrow></m:msup><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mi>j</m:mi><m:mi>B</m:mi><m:mrow><m:mo>(</m:mo><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mi>ω</m:mi></m:mrow></m:msup><m:mo>)</m:mo></m:mrow></m:mrow></m:math><equation id="uid83"><m:math mode="display"><m:mtable><m:mtr><m:mtd><m:mi>u</m:mi></m:mtd><m:mtd><m:mi>v</m:mi></m:mtd><m:mtd><m:mi>A</m:mi></m:mtd><m:mtd><m:mi>B</m:mi></m:mtd></m:mtr><m:mtr><m:mtd/><m:mtd/><m:mtd/><m:mtd/></m:mtr><m:mtr><m:mtd><m:mrow><m:mi>e</m:mi><m:mi>v</m:mi><m:mi>e</m:mi><m:mi>n</m:mi></m:mrow></m:mtd><m:mtd><m:mn>0</m:mn></m:mtd><m:mtd><m:mrow><m:mi>e</m:mi><m:mi>v</m:mi><m:mi>e</m:mi><m:mi>n</m:mi></m:mrow></m:mtd><m:mtd><m:mn>0</m:mn></m:mtd></m:mtr><m:mtr><m:mtd><m:mrow><m:mi>o</m:mi><m:mi>d</m:mi><m:mi>d</m:mi></m:mrow></m:mtd><m:mtd><m:mn>0</m:mn></m:mtd><m:mtd><m:mn>0</m:mn></m:mtd><m:mtd><m:mrow><m:mi>o</m:mi><m:mi>d</m:mi><m:mi>d</m:mi></m:mrow></m:mtd></m:mtr><m:mtr><m:mtd><m:mn>0</m:mn></m:mtd><m:mtd><m:mrow><m:mi>e</m:mi><m:mi>v</m:mi><m:mi>e</m:mi><m:mi>n</m:mi></m:mrow></m:mtd><m:mtd><m:mn>0</m:mn></m:mtd><m:mtd><m:mrow><m:mi>e</m:mi><m:mi>v</m:mi><m:mi>e</m:mi><m:mi>n</m:mi></m:mrow></m:mtd></m:mtr><m:mtr><m:mtd><m:mn>0</m:mn></m:mtd><m:mtd><m:mrow><m:mi>o</m:mi><m:mi>d</m:mi><m:mi>d</m:mi></m:mrow></m:mtd><m:mtd><m:mrow><m:mi>o</m:mi><m:mi>d</m:mi><m:mi>d</m:mi></m:mrow></m:mtd><m:mtd><m:mn>0</m:mn></m:mtd></m:mtr></m:mtable></m:math></equation></item>
+          <item id="uid84">Convolution: If discrete non-cyclic convolution is defined by
+<newline/><m:math><m:mrow><m:mi>y</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>h</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>*</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:msubsup><m:mo>∑</m:mo><m:mrow><m:mi>m</m:mi><m:mo>=</m:mo><m:mo>-</m:mo><m:mi>∞</m:mi></m:mrow><m:mi>∞</m:mi></m:msubsup><m:mi>h</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>-</m:mo><m:mi>m</m:mi><m:mo>)</m:mo></m:mrow><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>m</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:msubsup><m:mo>∑</m:mo><m:mrow><m:mi>k</m:mi><m:mo>=</m:mo><m:mo>-</m:mo><m:mi>∞</m:mi></m:mrow><m:mi>∞</m:mi></m:msubsup><m:mi>h</m:mi><m:mrow><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>-</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math><newline/>
+then <m:math><m:mrow><m:mi mathvariant="script">Z</m:mi><m:mo>{</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>*</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi mathvariant="script">Z</m:mi><m:mo>{</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mi mathvariant="script">Z</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>}</m:mo></m:mrow></m:math></item>
+          <item id="uid85">Shift: <m:math><m:mrow><m:mi mathvariant="script">Z</m:mi><m:mrow><m:mo>{</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>+</m:mo><m:mi>M</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:msup><m:mi>z</m:mi><m:mi>M</m:mi></m:msup><m:mi>X</m:mi><m:mrow><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math></item>
+          <item id="uid86">Shift (unilateral): <m:math><m:mrow><m:mi mathvariant="script">Z</m:mi><m:mrow><m:mo>{</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>+</m:mo><m:mi>m</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:msup><m:mi>z</m:mi><m:mi>m</m:mi></m:msup><m:mi>X</m:mi><m:mrow><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow><m:mo>-</m:mo><m:msup><m:mi>z</m:mi><m:mi>m</m:mi></m:msup><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo></m:mrow><m:mo>-</m:mo><m:msup><m:mi>z</m:mi><m:mrow><m:mi>m</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:msup><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow><m:mo>-</m:mo><m:mo>⋯</m:mo><m:mo>-</m:mo><m:mi>z</m:mi><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>m</m:mi><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:mrow></m:math></item>
+          <item id="uid87">Shift (unilateral): <m:math><m:mrow><m:mi mathvariant="script">Z</m:mi><m:mrow><m:mo>{</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>-</m:mo><m:mi>m</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:msup><m:mi>z</m:mi><m:mrow><m:mo>-</m:mo><m:mi>m</m:mi></m:mrow></m:msup><m:mi>X</m:mi><m:mrow><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow><m:mo>-</m:mo><m:msup><m:mi>z</m:mi><m:mrow><m:mo>-</m:mo><m:mi>m</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:msup><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow><m:mo>-</m:mo><m:mo>⋯</m:mo><m:mo>-</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mo>-</m:mo><m:mi>m</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math></item>
+          <item id="uid88">Modulate: <m:math><m:mrow><m:mi mathvariant="script">Z</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:msup><m:mi>a</m:mi><m:mi>n</m:mi></m:msup><m:mo>}</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>X</m:mi><m:mrow><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>/</m:mo><m:mi>a</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math></item>
+          <item id="uid89">Time mult.: <m:math><m:mrow><m:mi mathvariant="script">Z</m:mi><m:mrow><m:mo>{</m:mo><m:msup><m:mi>n</m:mi><m:mi>m</m:mi></m:msup><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:msup><m:mrow><m:mo>(</m:mo><m:mo>-</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow><m:mi>m</m:mi></m:msup><m:mfrac><m:mrow><m:msup><m:mi>d</m:mi><m:mi>m</m:mi></m:msup><m:mi>X</m:mi><m:mrow><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mrow><m:mi>d</m:mi><m:msup><m:mi>z</m:mi><m:mi>m</m:mi></m:msup></m:mrow></m:mfrac></m:mrow></m:math></item>
+          <item id="uid90">Evaluation: The ZT can be evaluated on the unit circle in the
+z-plane by taking the DTFT of <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> and if the signal is finite in
+length, this can be evaluated at sample points by the DFT.
+</item>
+        </list>
+      </section>
+      <section id="uid91">
+        <title>Examples of the Z-Transform</title>
+        <para id="id2266174">A few examples together with the above properties will enable one to solve
+and understand a wide variety of problems. These use the unit step
+function to remove the negative time part of the signal. This function is
+defined as</para>
+        <equation id="uid92">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>u</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mfenced separators="" open="{" close="">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd columnalign="left">
+                      <m:mn>1</m:mn>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mspace width="4.pt"/>
+                        <m:mtext>if</m:mtext>
+                        <m:mspace width="4.pt"/>
+                        <m:mrow>
+                          <m:mi>n</m:mi>
+                          <m:mo>≥</m:mo>
+                          <m:mn>0</m:mn>
+                        </m:mrow>
+                      </m:mrow>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd columnalign="left">
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mspace width="4.pt"/>
+                        <m:mtext>if</m:mtext>
+                        <m:mspace width="4.pt"/>
+                        <m:mrow>
+                          <m:mi>n</m:mi>
+                          <m:mo>&lt;</m:mo>
+                          <m:mn>0</m:mn>
+                        </m:mrow>
+                      </m:mrow>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2266275">and several bilateral z-transforms are given by</para>
+        <list id="id2266281" list-type="bulleted">
+          <item id="uid93"><m:math><m:mrow><m:mi mathvariant="script">Z</m:mi><m:mo>{</m:mo><m:mi>δ</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mn>1</m:mn></m:mrow></m:math> for all <m:math><m:mi>z</m:mi></m:math>.
+</item>
+          <item id="uid94"><m:math><m:mrow><m:mi mathvariant="script">Z</m:mi><m:mrow><m:mo>{</m:mo><m:mi>u</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mfrac><m:mi>z</m:mi><m:mrow><m:mi>z</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:mfrac></m:mrow></m:math> for <m:math><m:mrow><m:mo>|</m:mo><m:mi>z</m:mi><m:mo>|</m:mo><m:mo>&gt;</m:mo><m:mn>1</m:mn></m:mrow></m:math>.
+</item>
+          <item id="uid95"><m:math><m:mrow><m:mi mathvariant="script">Z</m:mi><m:mrow><m:mo>{</m:mo><m:mi>u</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:msup><m:mi>a</m:mi><m:mi>n</m:mi></m:msup><m:mo>}</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mfrac><m:mi>z</m:mi><m:mrow><m:mi>z</m:mi><m:mo>-</m:mo><m:mi>a</m:mi></m:mrow></m:mfrac></m:mrow></m:math> for <m:math><m:mrow><m:mo>|</m:mo><m:mi>z</m:mi><m:mo>|</m:mo><m:mo>&gt;</m:mo><m:mo>|</m:mo><m:mi>a</m:mi><m:mo>|</m:mo></m:mrow></m:math>.
+</item>
+        </list>
+        <para id="id2266504">Notice that these are similar to but not the same as a term of a partial
+fraction expansion.</para>
+      </section>
+      <section id="uid96">
+        <title>Inversion of the Z-Transform</title>
+        <para id="id2266517">The z-transform can be inverted in three ways. The first two have similar
+procedures with Laplace transformations and the third has no counter part.</para>
+        <list id="id2266522" list-type="bulleted">
+          <item id="uid97">The z-transform can be inverted by the defined contour integral in
+the ROC of the complex <m:math><m:mi>z</m:mi></m:math> plane. This integral can be evaluated using the
+residue theorem <link target-id="bid11"/>, <link target-id="bid1"/>.
+</item>
+          <item id="uid98">The z-transform can be inverted by expanding <m:math><m:mrow><m:mfrac><m:mn>1</m:mn><m:mi>z</m:mi></m:mfrac><m:mi>F</m:mi><m:mrow><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> in a
+partial fraction expansion followed by use of tables for the first or
+second order terms.
+</item>
+          <item id="uid99">The third method is not analytical but numerical. If <m:math><m:mrow><m:mi>F</m:mi><m:mrow><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mfrac><m:mrow><m:mi>P</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow><m:mrow><m:mi>Q</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:mfrac></m:mrow></m:math>, <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> can be obtained as the coefficients of long
+division.
+</item>
+        </list>
+        <para id="id2266673">For example</para>
+        <equation id="uid100">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mfrac>
+                <m:mi>z</m:mi>
+                <m:mrow>
+                  <m:mi>z</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>a</m:mi>
+                </m:mrow>
+              </m:mfrac>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mn>1</m:mn>
+              <m:mo>+</m:mo>
+              <m:mi>a</m:mi>
+              <m:mspace width="0.166667em"/>
+              <m:msup>
+                <m:mi>z</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mo>+</m:mo>
+              <m:msup>
+                <m:mi>a</m:mi>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:msup>
+                <m:mi>z</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>2</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mo>+</m:mo>
+              <m:mo>⋯</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2266753">which is <m:math><m:mrow><m:mi>u</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.166667em"/><m:msup><m:mi>a</m:mi><m:mi>n</m:mi></m:msup></m:mrow></m:math> as used in the examples above.</para>
+        <para id="id2266788">We must understand the role of the ROC in the convergence and inversion of
+the z-transform. We must also see the difference between the one-sided and
+two-sided transform.</para>
+      </section>
+      <section id="uid101">
+        <title>Solution of Difference Equations using the Z-Transform</title>
+        <para id="id2266803">The z-transform can be used to convert a difference equation into an algebraic
+equation in the same manner that the Laplace converts a differential
+equation in to an algebraic equation. The one-sided transform is
+particularly well suited for solving initial condition problems. The two
+unilateral shift properties explicitly use the initial values of the
+unknown variable.</para>
+        <para id="id2266813">A difference equation DE contains the unknown function <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> and shifted
+versions of it such as <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:math> or <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>+</m:mo><m:mn>3</m:mn><m:mo>)</m:mo></m:mrow></m:math>. The solution of the equation
+is the determination of <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>. A linear DE has only simple linear
+combinations of <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> and its shifts. An example of a linear second order
+DE is</para>
+        <equation id="uid102">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>a</m:mi>
+              <m:mspace width="0.166667em"/>
+              <m:mi>x</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>+</m:mo>
+              <m:mi>b</m:mi>
+              <m:mspace width="0.166667em"/>
+              <m:mi>x</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>-</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>)</m:mo>
+              <m:mo>+</m:mo>
+              <m:mi>c</m:mi>
+              <m:mspace width="0.166667em"/>
+              <m:mi>x</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>-</m:mo>
+              <m:mn>2</m:mn>
+              <m:mo>)</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mi>f</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2266996">A time invariant or index invariant DE requires the coefficients not
+be a function of <m:math><m:mi>n</m:mi></m:math> and the linearity requires that they not be a
+function of <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>. Therefore, the coefficients are constants.</para>
+        <para id="id2267031">This equation can be analyzed using classical methods completely analogous
+to those used with differential equations. A solution of the form <m:math><m:mrow><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>K</m:mi><m:msup><m:mi>λ</m:mi><m:mi>n</m:mi></m:msup></m:mrow></m:math> is substituted into the homogeneous difference equation
+resulting in a second order characteristic equation whose two roots give
+a solution of the form <m:math><m:mrow><m:msub><m:mi>x</m:mi><m:mi>h</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:msub><m:mi>K</m:mi><m:mn>1</m:mn></m:msub><m:msubsup><m:mi>λ</m:mi><m:mn>1</m:mn><m:mi>n</m:mi></m:msubsup><m:mo>+</m:mo><m:msub><m:mi>K</m:mi><m:mn>2</m:mn></m:msub><m:msubsup><m:mi>λ</m:mi><m:mn>2</m:mn><m:mi>n</m:mi></m:msubsup></m:mrow></m:math>. A
+particular solution of a form determined by <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is found by the method
+of undetermined coefficients, convolution or some other means. The
+total solution is the particular solution plus the solution of the
+homogeneous equation and the three unknown constants <m:math><m:msub><m:mi>K</m:mi><m:mi>i</m:mi></m:msub></m:math> are determined
+from three initial conditions on <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>.</para>
+        <para id="id2267192">It is possible to solve this difference equation using z-transforms in a
+similar way to the solving of a differential equation by use of the
+Laplace transform. The z-transform converts the difference equation into
+an algebraic equation. Taking the ZT of both sides of the DE gives</para>
+        <equation id="uid103">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>a</m:mi>
+              <m:mspace width="0.166667em"/>
+              <m:mi>X</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>z</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>+</m:mo>
+              <m:mi>b</m:mi>
+              <m:mrow>
+                <m:mo>[</m:mo>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:msup>
+                <m:mi>X</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>z</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>+</m:mo>
+                <m:mi>x</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>]</m:mo>
+              </m:mrow>
+              <m:mo>+</m:mo>
+              <m:mi>c</m:mi>
+              <m:mrow>
+                <m:mo>[</m:mo>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:mn>2</m:mn>
+                  </m:mrow>
+                </m:msup>
+                <m:mi>X</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>z</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>+</m:mo>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:msup>
+                <m:mi>x</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>+</m:mo>
+                <m:mi>x</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mo>-</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>]</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mi>Y</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>z</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2267357">solving for <m:math><m:mrow><m:mi>X</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> gives</para>
+        <equation id="uid104">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>X</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>z</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mfrac>
+                <m:mrow>
+                  <m:msup>
+                    <m:mi>z</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mrow>
+                    <m:mo>[</m:mo>
+                    <m:mi>Y</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>z</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:mi>b</m:mi>
+                    <m:mspace width="0.166667em"/>
+                    <m:mi>x</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mo>-</m:mo>
+                      <m:mn>1</m:mn>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:mi>x</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mo>-</m:mo>
+                      <m:mn>2</m:mn>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>]</m:mo>
+                  </m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>z</m:mi>
+                  <m:mspace width="0.166667em"/>
+                  <m:mi>c</m:mi>
+                  <m:mspace width="0.166667em"/>
+                  <m:mi>x</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>a</m:mi>
+                  <m:mspace width="0.166667em"/>
+                  <m:msup>
+                    <m:mi>z</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>+</m:mo>
+                  <m:mi>b</m:mi>
+                  <m:mspace width="0.166667em"/>
+                  <m:mi>z</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mi>c</m:mi>
+                </m:mrow>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2267522">and inversion of this transform gives the solution <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>. Notice that
+two initial values were required to give a unique solution just as the
+classical method needed two values.</para>
+        <para id="id2267547">These are very general methods. To solve an <m:math><m:mi>n</m:mi></m:math>th order DE requires only
+factoring an <m:math><m:mi>n</m:mi></m:math>th order polynomial and performing a partial fraction
+expansion, jobs that computers are well suited to. There are problems
+that crop up if the denominator polynomial has repeated roots or if the
+transform of <m:math><m:mrow><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> has a root that is the same as the homogeneous
+equation, but those can be handled with slight modifications giving
+solutions with terms of the from <m:math><m:mrow><m:mi>n</m:mi><m:msup><m:mi>λ</m:mi><m:mi>n</m:mi></m:msup></m:mrow></m:math> just as similar problems
+gave solutions for differential equations of the form <m:math><m:mrow><m:mi>t</m:mi><m:mspace width="0.166667em"/><m:msup><m:mi>e</m:mi><m:mrow><m:mi>s</m:mi><m:mi>t</m:mi></m:mrow></m:msup></m:mrow></m:math>.</para>
+        <para id="id2267635">The original DE could be rewritten in a different form by shifting the
+index to give</para>
+        <equation id="uid105">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>a</m:mi>
+              <m:mspace width="0.166667em"/>
+              <m:mi>x</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>+</m:mo>
+              <m:mn>2</m:mn>
+              <m:mo>)</m:mo>
+              <m:mo>+</m:mo>
+              <m:mi>b</m:mi>
+              <m:mspace width="0.166667em"/>
+              <m:mi>x</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>+</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>)</m:mo>
+              <m:mo>+</m:mo>
+              <m:mi>c</m:mi>
+              <m:mspace width="0.166667em"/>
+              <m:mi>x</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mi>f</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>+</m:mo>
+              <m:mn>2</m:mn>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2267728">which can be solved using the second form of the unilateral z-transform
+shift property.</para>
+      </section>
+      <section id="uid106">
+        <title>Region of Convergence for the Z-Transform</title>
+        <para id="id2267746">Since the inversion integral must be taken in the ROC of the transform, it
+is necessary to understand how this region is determined and what it means
+even if the inversion is done by partial fraction expansion or long
+division. Since all signals created by linear constant coefficient
+difference equations are sums of geometric sequences (or samples of
+exponentials), an analysis of these cases will cover most practical
+situations. Consider a geometric sequence starting at zero.</para>
+        <equation id="uid108">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>f</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mi>u</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:msup>
+                <m:mi>a</m:mi>
+                <m:mi>n</m:mi>
+              </m:msup>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2267809">with a z-transform</para>
+        <equation id="uid109">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>z</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mn>1</m:mn>
+              <m:mo>+</m:mo>
+              <m:mi>a</m:mi>
+              <m:mspace width="0.166667em"/>
+              <m:msup>
+                <m:mi>z</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mo>+</m:mo>
+              <m:msup>
+                <m:mi>a</m:mi>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mspace width="0.166667em"/>
+              <m:msup>
+                <m:mi>z</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>2</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mo>+</m:mo>
+              <m:msup>
+                <m:mi>a</m:mi>
+                <m:mn>3</m:mn>
+              </m:msup>
+              <m:mspace width="0.166667em"/>
+              <m:msup>
+                <m:mi>z</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>3</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mo>+</m:mo>
+              <m:mo>⋯</m:mo>
+              <m:mo>+</m:mo>
+              <m:msup>
+                <m:mi>a</m:mi>
+                <m:mi>M</m:mi>
+              </m:msup>
+              <m:msup>
+                <m:mi>z</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>M</m:mi>
+                </m:mrow>
+              </m:msup>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2267940">Multiplying by <m:math><m:mrow><m:mi>a</m:mi><m:mspace width="0.166667em"/><m:msup><m:mi>z</m:mi><m:mrow><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:msup></m:mrow></m:math> gives</para>
+        <equation id="uid110">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>a</m:mi>
+              <m:mspace width="0.166667em"/>
+              <m:msup>
+                <m:mi>z</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>z</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mi>a</m:mi>
+              <m:mspace width="0.166667em"/>
+              <m:msup>
+                <m:mi>z</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mo>+</m:mo>
+              <m:msup>
+                <m:mi>a</m:mi>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:msup>
+                <m:mi>z</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>2</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mo>+</m:mo>
+              <m:msup>
+                <m:mi>a</m:mi>
+                <m:mn>3</m:mn>
+              </m:msup>
+              <m:msup>
+                <m:mi>z</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>3</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mo>+</m:mo>
+              <m:msup>
+                <m:mi>a</m:mi>
+                <m:mn>4</m:mn>
+              </m:msup>
+              <m:msup>
+                <m:mi>z</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>4</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mo>+</m:mo>
+              <m:mo>⋯</m:mo>
+              <m:mo>+</m:mo>
+              <m:msup>
+                <m:mi>a</m:mi>
+                <m:mrow>
+                  <m:mi>M</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:msup>
+                <m:mi>z</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msup>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2268128">and subtracting from <link target-id="uid109"/> gives</para>
+        <equation id="uid111">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>-</m:mo>
+                <m:mi>a</m:mi>
+                <m:mspace width="0.166667em"/>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:msup>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>z</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mn>1</m:mn>
+              <m:mo>-</m:mo>
+              <m:msup>
+                <m:mi>a</m:mi>
+                <m:mrow>
+                  <m:mi>M</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:msup>
+                <m:mi>z</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msup>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2268223">Solving for <m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> results in</para>
+        <equation id="uid112">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>z</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mfrac>
+                <m:mrow>
+                  <m:mn>1</m:mn>
+                  <m:mo>-</m:mo>
+                  <m:msup>
+                    <m:mi>a</m:mi>
+                    <m:mrow>
+                      <m:mi>M</m:mi>
+                      <m:mo>+</m:mo>
+                      <m:mn>1</m:mn>
+                    </m:mrow>
+                  </m:msup>
+                  <m:msup>
+                    <m:mi>z</m:mi>
+                    <m:mrow>
+                      <m:mo>-</m:mo>
+                      <m:mi>M</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mn>1</m:mn>
+                    </m:mrow>
+                  </m:msup>
+                </m:mrow>
+                <m:mrow>
+                  <m:mn>1</m:mn>
+                  <m:mo>-</m:mo>
+                  <m:mi>a</m:mi>
+                  <m:mspace width="0.166667em"/>
+                  <m:msup>
+                    <m:mi>z</m:mi>
+                    <m:mrow>
+                      <m:mo>-</m:mo>
+                      <m:mn>1</m:mn>
+                    </m:mrow>
+                  </m:msup>
+                </m:mrow>
+              </m:mfrac>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mfrac>
+                <m:mrow>
+                  <m:mi>z</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>a</m:mi>
+                  <m:msup>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mfrac>
+                        <m:mi>a</m:mi>
+                        <m:mi>z</m:mi>
+                      </m:mfrac>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mi>M</m:mi>
+                  </m:msup>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>z</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>a</m:mi>
+                </m:mrow>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2268376">The limit of this sum as <m:math><m:mrow><m:mi>M</m:mi><m:mo>→</m:mo><m:mi>∞</m:mi></m:mrow></m:math> is</para>
+        <equation id="uid113">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>z</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mfrac>
+                <m:mi>z</m:mi>
+                <m:mrow>
+                  <m:mi>z</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>a</m:mi>
+                </m:mrow>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2268439">for <m:math><m:mrow><m:mo>|</m:mo><m:mi>z</m:mi><m:mo>|</m:mo><m:mo>&gt;</m:mo><m:mo>|</m:mo><m:mi>a</m:mi><m:mo>|</m:mo></m:mrow></m:math>. This not only establishes the z-transform of <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> but
+gives the region in the <m:math><m:mi>z</m:mi></m:math> plane where the sum converges.</para>
+        <para id="id2268495">If a similar set of operations is performed on the sequence that exists
+for negative <m:math><m:mi>n</m:mi></m:math></para>
+        <equation id="uid114">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>f</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mi>u</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mo>-</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:msup>
+                <m:mi>a</m:mi>
+                <m:mi>n</m:mi>
+              </m:msup>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mfenced separators="" open="{" close="">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd columnalign="left">
+                      <m:msup>
+                        <m:mi>a</m:mi>
+                        <m:mi>n</m:mi>
+                      </m:msup>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mspace width="4.pt"/>
+                        <m:mrow>
+                          <m:mi>n</m:mi>
+                          <m:mo>&lt;</m:mo>
+                          <m:mn>0</m:mn>
+                        </m:mrow>
+                      </m:mrow>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd columnalign="left">
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mspace width="4.pt"/>
+                        <m:mrow>
+                          <m:mi>n</m:mi>
+                          <m:mo>≥</m:mo>
+                          <m:mn>0</m:mn>
+                        </m:mrow>
+                      </m:mrow>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2268631">the result is</para>
+        <equation id="uid115">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>z</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mo>-</m:mo>
+              <m:mfrac>
+                <m:mi>z</m:mi>
+                <m:mrow>
+                  <m:mi>z</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>a</m:mi>
+                </m:mrow>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2268682">for <m:math><m:mrow><m:mo>|</m:mo><m:mi>z</m:mi><m:mo>|</m:mo><m:mo>&lt;</m:mo><m:mo>|</m:mo><m:mi>a</m:mi><m:mo>|</m:mo></m:mrow></m:math>. Here we have exactly the same z-transform for a
+different sequence <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> but with a different ROC. The pole in <m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math>
+divides the z-plane into two regions that give two different <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>. This
+is a general result that can be applied to a general rational <m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> with
+several poles and zeros. The z-plane will be divided into concentric
+annular regions separated by the poles. The contour integral is evaluated
+in one of these regions and the poles inside the contour give the part of
+the solution existing for negative <m:math><m:mi>n</m:mi></m:math> with the poles outside the contour
+giving the part of the solution existing for positive <m:math><m:mi>n</m:mi></m:math>.</para>
+        <para id="id2268804">Notice that any finite length signal has a z-transform that converges for
+all <m:math><m:mi>z</m:mi></m:math>. The ROC is the entire z-plane except perhaps zero and/or infinity.</para>
+      </section>
+      <section id="uid116">
+        <title>Relation of the Z-Transform to the DTFT and the DFT</title>
+        <para id="id2268827">The FS coefficients are weights on the delta functions in a FT of the
+periodically extended signal. The FT is the LT evaluated on the imaginary
+axis: <m:math><m:mrow><m:mi>s</m:mi><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>j</m:mi><m:mi>ω</m:mi></m:mrow></m:math>.</para>
+        <para id="id2268856">The DFT values are samples of the DTFT of a finite length signal. The
+DTFT is the z-transform evaluated on the unit circle in the z plane.</para>
+        <equation id="uid117"><m:math mode="display">
+            <m:mrow>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>z</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mo>-</m:mo>
+                  <m:mi>∞</m:mi>
+                </m:mrow>
+                <m:mi>∞</m:mi>
+              </m:munderover>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:msup>
+                <m:mi>z</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>n</m:mi>
+                </m:mrow>
+              </m:msup>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mi mathvariant="script">ZT</m:mi>
+              <m:mrow>
+                <m:mo>{</m:mo>
+                <m:mi>x</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>}</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid118"><m:math mode="display">
+            <m:mrow>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msup>
+                  <m:mi>e</m:mi>
+                  <m:mrow>
+                    <m:mi>j</m:mi>
+                    <m:mi>ω</m:mi>
+                  </m:mrow>
+                </m:msup>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mo>-</m:mo>
+                  <m:mi>∞</m:mi>
+                </m:mrow>
+                <m:mi>∞</m:mi>
+              </m:munderover>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mi>ω</m:mi>
+                  <m:mi>n</m:mi>
+                </m:mrow>
+              </m:msup>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mi mathvariant="script">DTFT</m:mi>
+              <m:mrow>
+                <m:mo>{</m:mo>
+                <m:mi>x</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>}</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2269071">and if <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is of length <m:math><m:mi>N</m:mi></m:math></para>
+        <equation id="uid119"><m:math mode="display">
+            <m:mrow>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msup>
+                  <m:mi>e</m:mi>
+                  <m:mrow>
+                    <m:mi>j</m:mi>
+                    <m:mfrac>
+                      <m:mrow>
+                        <m:mn>2</m:mn>
+                        <m:mi>π</m:mi>
+                      </m:mrow>
+                      <m:mi>N</m:mi>
+                    </m:mfrac>
+                    <m:mi>k</m:mi>
+                  </m:mrow>
+                </m:msup>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                    </m:mrow>
+                    <m:mi>N</m:mi>
+                  </m:mfrac>
+                  <m:mi>k</m:mi>
+                  <m:mi>n</m:mi>
+                </m:mrow>
+              </m:msup>
+              <m:mspace width="0.277778em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.277778em"/>
+              <m:mi mathvariant="script">DFT</m:mi>
+              <m:mrow>
+                <m:mo>{</m:mo>
+                <m:mi>x</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>}</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2269236">It is important to be able to relate the time-domain signal <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>, its
+spectrum <m:math><m:mrow><m:mi>X</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math>, and its z-transform represented by the pole-zero
+locations on the z plane.</para>
+      </section>
+    </section>
+    <section id="uid120">
+      <title>Relationships Among Fourier Transforms</title>
+      <para id="id2269286">The DFT takes a periodic discrete-time signal into a periodic discrete-frequency representation.</para>
+      <para id="id2269291">The DTFT takes a discrete-time signal into a periodic
+continuous-frequency representation.</para>
+      <para id="id2269298">The FS takes a periodic continuous-time signal into a discrete-frequency representation.</para>
+      <para id="id2269306">The FT takes a continuous-time signal into a continuous-frequency representation.</para>
+      <para id="id2269312">The LT takes a continuous-time signal into a function of a continuous complex variable.</para>
+      <para id="id2269320">The ZT takes a discrete-time signal into a function of a continuous complex variable.</para>
+    </section>
+    <section id="uid122">
+      <title>Wavelet-Based Signal Analysis</title>
+      <para id="id2269338">There are wavelet systems and transforms analogous to the DFT, Fourier
+series, discrete-time Fourier transform, and the Fourier integral. We
+will start with the discrete wavelet transform (DWT) which is analogous
+to the Fourier series and probably should be called the wavelet series
+<link target-id="bid12"/>. Wavelet analysis can be a form of time-frequency analysis
+which locates energy or events in time and frequency (or scale)
+simultaneously. It is somewhat similar to what is called a short-time
+Fourier transform or a Gabor transform or a windowed Fourier transform.</para>
+      <para id="id2269359">The history of wavelets and wavelet based signal processing is
+fairly recent. Its roots in signal expansion go back to early
+geophysical and image processing methods and in DSP to filter bank
+theory and subband coding. The current high interest probably
+started in the late 1980's with the work of Mallat, Daubechies, and
+others. Since then, the amount of research, publication, and
+application has exploded. Two excellent descriptions of the history
+of wavelet research and development are by Hubbard <link target-id="bid13"/>
+and by Daubechies <link target-id="bid14"/> and a projection into the future by
+Sweldens <link target-id="bid15"/> and Burrus <link target-id="bid16"/>.</para>
+      <section id="uid124">
+        <title>The Basic Wavelet Theory</title>
+        <para id="id2269401">The ideas and foundations of the basic dyadic, multiresolution
+wavelet systems are now pretty well developed, understood, and
+available <link target-id="bid12"/>, <link target-id="bid17"/>, <link target-id="bid18"/>, <link target-id="bid19"/>.
+The <emphasis>first</emphasis> basic requirement is
+that a set of expansion functions (usually a basis) are
+generated from a single “mother” function by translation and
+scaling. For the discrete wavelet expansion system, this is</para>
+        <equation id="uid125">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>φ</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mo>,</m:mo>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mi>φ</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msup>
+                  <m:mn>2</m:mn>
+                  <m:mi>j</m:mi>
+                </m:msup>
+                <m:mi>t</m:mi>
+                <m:mo>-</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2269499">where <m:math><m:mrow><m:mi>j</m:mi><m:mo>,</m:mo><m:mi>k</m:mi></m:mrow></m:math> are integer indices for the series expansion of the form</para>
+        <equation id="uid126"><m:math mode="display">
+            <m:mrow>
+              <m:mi>f</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:munder>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mo>,</m:mo>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:munder>
+              <m:msub>
+                <m:mi>c</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mo>,</m:mo>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:msub>
+                <m:mi>φ</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mo>,</m:mo>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2269593">The coefficients <m:math><m:msub><m:mi>c</m:mi><m:mrow><m:mi>j</m:mi><m:mo>,</m:mo><m:mi>k</m:mi></m:mrow></m:msub></m:math> are called the discrete wavelet
+transform of the signal <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>. This use of translation and
+scale to create an expansion system is the foundation of all
+so-called first generation wavelets <link target-id="bid15"/>.</para>
+        <para id="id2269642">The system is somewhat similar to the Fourier series described
+in <link document="m16892" target-id="uid76">Equation 51 from Least Squared Error Designed of FIR Filters</link> with frequencies being related by powers of two
+rather than an integer multiple and the translation by <m:math><m:mi>k</m:mi></m:math> giving
+only the two results of cosine and sine for the Fourier series.</para>
+        <para id="id2269660">The <emphasis>second</emphasis> almost universal requirement is that the wavelet system
+generates a multiresolution analysis (MRA). This means that a
+low resolution function (low scale <m:math><m:mi>j</m:mi></m:math>) can be expanded in terms
+of the same function at a higher resolution (higher <m:math><m:mi>j</m:mi></m:math>). This
+is stated by requiring that the generator of a MRA wavelet
+system, called a scaling function <m:math><m:mrow><m:mi>φ</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>, satisfies</para>
+        <equation id="uid127"><m:math mode="display">
+            <m:mrow>
+              <m:mi>φ</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:munder>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mi>n</m:mi>
+              </m:munder>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mi>φ</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>t</m:mi>
+                <m:mo>-</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2269772">This equation, called the <emphasis>refinement equation</emphasis> or the <emphasis>MRA equation</emphasis> or <emphasis>basic recursion equation</emphasis>, is similar to a
+differential equation in that its solution is what defines the
+basic scaling function and wavelet <link target-id="bid20"/>, <link target-id="bid12"/>.</para>
+        <para id="id2269806">The current state of the art is that most of the necessary and
+sufficient conditions on the coefficients <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> are known for
+the existence, uniqueness, orthogonality, and other properties
+of <m:math><m:mrow><m:mi>φ</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>. Some of the theory parallels Fourier theory and
+some does not.</para>
+        <para id="id2269848">A <emphasis>third</emphasis> important feature of a MRA wavelet system is a
+discrete wavelet transform (DWT) can be calculated by a digital
+filter bank using what is now called Mallat's algorithm.
+Indeed, this connection with digital signal processing (DSP) has
+been a rich source of ideas and methods. With this filter bank,
+one can calculate the DWT of a length-N digital signal with
+order N operations. This means the number of multiplications
+and additions grows only linearly with the length of the signal.
+This compares with <m:math><m:mrow><m:mi>N</m:mi><m:mo form="prefix">log</m:mo><m:mo>(</m:mo><m:mi>N</m:mi><m:mo>)</m:mo></m:mrow></m:math> for an FFT and <m:math><m:msup><m:mi>N</m:mi><m:mn>2</m:mn></m:msup></m:math> for most
+methods and worse than that for some others.</para>
+        <para id="id2269902">These basic ideas came from the work of Meyer, Daubechies,
+Mallat, and others but for a time looked like a solution looking
+for a problem. Then a second phase of research showed there are
+many problems to which the wavelet is an excellent solution. In
+particular, the results of Donoho, Johnstone, Coifman, Beylkin, and
+others opened another set of doors.</para>
+      </section>
+      <section id="uid128">
+        <title>Generalization of the Basic Wavelet System</title>
+        <para id="id2269918">After (in some cases during) much of the development of the above
+basic ideas,
+a number of generalizations <link target-id="bid12"/> were made. They are listed below:</para>
+        <list id="id2269929" list-type="enumerated"><item id="uid129">A larger integer scale factor than <m:math><m:mrow><m:mi>M</m:mi><m:mo>=</m:mo><m:mn>2</m:mn></m:mrow></m:math> can be used to give a
+more general <emphasis>M-band</emphasis> refinement equation <link target-id="bid21"/><equation id="uid130"><m:math mode="display"><m:mrow><m:mi>φ</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:munder>
+<m:mrow><m:mo>∑</m:mo>
+</m:mrow><m:mi>n</m:mi></m:munder><m:mi>h</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.166667em"/><m:mi>φ</m:mi><m:mrow><m:mo>(</m:mo><m:mi>M</m:mi><m:mi>t</m:mi><m:mo>-</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math></equation>
+than the “dyadic" or octave based <link document="m16909" target-id="uid9">Equation 4 from Rational Function Approximation</link>. This also
+gives more than two channels in the accompanying filter bank. It
+allows a uniform frequency resolution rather than the resulting
+logarithmic one for <m:math><m:mrow><m:mi>M</m:mi><m:mo>=</m:mo><m:mn>2</m:mn></m:mrow></m:math>.
+</item>
+          <item id="uid131">The wavelet system called a <emphasis>wavelet packet</emphasis> is generated by
+“iterating" the wavelet branches of the filter bank to give a
+finer resolution to the wavelet decomposition. This was
+suggested by Coifman and it too allows a mixture of uniform and
+logarithmic frequency resolution. It also allows a relatively
+simple adaptive system to be developed which has an
+automatically adjustable frequency resolution based on the
+properties of the signal.
+</item>
+          <item id="uid132">The usual requirement of translation orthogonality of the
+scaling function and wavelets can be relaxed to give what is
+called a <emphasis>biorthogonal system</emphasis><link target-id="bid22"/>. If the expansion
+basis is not orthogonal, a dual basis can be created that will
+allow the usual expansion and coefficient calculations to be
+made. The main disadvantage is the loss of a Parseval's theorem
+which maintains energy partitioning. Nevertheless, the greater
+flexibility of the biorthogonal system allows superior
+performance in many compression and denoising applications.
+</item>
+          <item id="uid133">The basic refinement <link document="m16909" target-id="uid9">Equation 4 from Rational Function Approximation</link> gives the scaling
+function in terms of a compressed version of itself
+(self-similar). If we allow two (or more) scaling functions,
+each being a weighted sum of a compress version of both, a more
+general set of basis functions results. This can be viewed as a
+vector of scaling functions with the coefficients being a matrix
+now. Once again, this generalization allows more flexibility in
+the characteristics of the individual scaling functions and
+their related multi-wavelets. These are called <emphasis>multi-wavelet
+systems</emphasis> and are still being developed.
+</item>
+          <item id="uid134">One of the very few disadvantages of the discrete wavelet
+transform is the fact it is not shift invariant. In other
+words, if you shift a signal in time, its wavelet transform not
+only shifts, it changes character! For many applications in
+denoising and compression, this is not desirable although it may
+be tolerable. The DWT can be made <emphasis>shift-invariant</emphasis> by
+calculating the DWT of a signal for all possible shifts and
+adding (or averaging) the results. That turns out to be
+equivalent to removing all of the down-samplers in the
+associated filter bank (an <emphasis>undecimated filter bank</emphasis>), which
+is also equivalent to building an overdetermined or <emphasis>redundant DWT</emphasis> from a traditional wavelet basis. This
+overcomplete system is similar to a “tight frame" and maintains
+most of the features of an orthogonal basis yet is shift
+invariant. It does, however, require <m:math><m:mrow><m:mi>N</m:mi><m:mo form="prefix">log</m:mo><m:mo>(</m:mo><m:mi>N</m:mi><m:mo>)</m:mo></m:mrow></m:math> operations.
+</item>
+          <item id="uid135">Wavelet systems are easily modified to being an adaptive system
+where the basis adjusts itself to the properties of the signal
+or the signal class. This is often done by starting with a
+large collection or library of expansion systems and bases. A
+subset is adaptively selected based on the efficiency of the
+representation using a process sometimes called <emphasis>pursuit</emphasis>.
+In other words, a set is chosen that will result in the smallest
+number of significant expansion coefficients. Clearly, this is
+signal dependent, which is both its strength and its limitation.
+It is nonlinear.
+</item>
+          <item id="uid136">One of the most powerful structures yet suggested for using
+wavelets for signal processing is to first take the DWT, then do
+a point-wise linear or nonlinear processing of the DWT,
+finally followed by an inverse DWT. Simply setting some of the
+wavelet domain expansion terms to zero results in linear wavelet
+domain filtering, similar to what would happen if the same were
+done with Fourier transforms.
+Donoho <link target-id="bid23"/>, <link target-id="bid24"/> and others have shown by using
+some form of nonlinear thresholding of the DWT, one can achieve near
+optimal denoising or compression of a signal. The concentrating
+or localizing character of the DWT allows this nonlinear
+thresholding to be very effective.
+</item>
+        </list>
+        <para id="id2270266">The present state of activity in wavelet research and
+application shows great promise based on the above
+generalizations and extensions of the basic theory and
+structure <link target-id="bid16"/>. We now have conferences, workshops, articles,
+newsletters, books, and email groups that are moving the state
+of the art forward. More details, examples, and software are
+given in <link target-id="bid12"/>, <link target-id="bid19"/>, <link target-id="bid25"/>.</para>
+        
+      </section>
+    </section>
+  </content>
+  <bib:file>
+    <bib:entry id="bid7">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Agarwal, R. C. and Burrus, C. S.</bib:author>
+        <bib:title>Fast Convolution Using Fermat Number Transforms with Applications to Digital Filtering</bib:title>
+        <bib:journal>IEEE Transactions on Acoustics, Speech, and Signal Processing</bib:journal>
+        <bib:year>1974</bib:year>
+<!--optional fields-->
+        <bib:volume>ASSP-22</bib:volume>
+        <bib:number>2</bib:number>
+        <bib:pages>87-97</bib:pages>
+        <bib:month>April</bib:month>
+        <bib:note>Reprinted in Number Theory in DSP, by McClellan and Rader, Prentice-Hall, 1979</bib:note>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid8">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Agarwal, R. C. and Burrus, C. S.</bib:author>
+        <bib:title>Number Theoretic Transforms to Implement Fast Digital Convolution</bib:title>
+        <bib:journal>Proceedings of the IEEE</bib:journal>
+        <bib:year>1975</bib:year>
+<!--optional fields-->
+        <bib:volume>63</bib:volume>
+        <bib:number>4</bib:number>
+        <bib:pages>550–560</bib:pages>
+        <bib:month>April</bib:month>
+        <bib:note>also in IEEE Press DSP Reprints II, 1979</bib:note>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid12">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Burrus, C. Sidney and Gopinath, Ramesh A. and Guo, Haitao</bib:author>
+        <bib:title>Introduction to Wavelets and the Wavelet Transform</bib:title>
+        <bib:publisher>Prentice Hall</bib:publisher>
+        <bib:year>1998</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Upper Saddle River, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid3">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Burrus, C. S. and Parks, T. W.</bib:author>
+        <bib:title>DFT/FFT and Convolution Algorithms</bib:title>
+        <bib:publisher>John Wiley &amp; Sons</bib:publisher>
+        <bib:year>1985</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid2">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Bracewell, R. N.</bib:author>
+        <bib:title>The Fourier Transform and Its Applications</bib:title>
+        <bib:publisher>McGraw-Hill</bib:publisher>
+        <bib:year>1985</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition>Third</bib:edition>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid16">
+      <bib:inproceedings>
+<!--required fields-->
+        <bib:author>Burrus, C. Sidney</bib:author>
+        <bib:title>Wavelet Based Signal Processing: Where are We and Where are We Going?, Plenary Talk</bib:title>
+        <bib:booktitle>Proceedings of the International Conference on Digital Signal Processing</bib:booktitle>
+        <bib:year>1997</bib:year>
+<!--optional fields-->
+        <bib:editor/>
+        <bib:volume>I</bib:volume>
+        <bib:series/>
+        <bib:pages>3–5</bib:pages>
+        <bib:address>Santorini, Greece</bib:address>
+        <bib:month>July</bib:month>
+        <bib:organization/>
+        <bib:publisher/>
+        <bib:note/>
+      </bib:inproceedings>
+    </bib:entry>
+    <bib:entry id="bid11">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Churchill, R. V. and Brown, J. W.</bib:author>
+        <bib:title>Introduction to Complex Variables and Applications</bib:title>
+        <bib:publisher>McGraw-Hill</bib:publisher>
+        <bib:year>1984</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition>fourth</bib:edition>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid22">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Cohen, A. and Daubechies, I. and Feauveau, J. C.</bib:author>
+        <bib:title>Biorthogonal Bases of Compactly Supported Wavelets</bib:title>
+        <bib:journal>Communications on Pure and Applied Mathematics</bib:journal>
+        <bib:year>1992</bib:year>
+<!--optional fields-->
+        <bib:volume>45</bib:volume>
+        <bib:number/>
+        <bib:pages>485–560</bib:pages>
+        <bib:month/>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid5">
+      <bib:book>
+<!--required fields-->
+        <bib:editor>DSP Committee, </bib:editor>
+        <bib:title>Digital Signal Processing II, selected reprints</bib:title>
+        <bib:publisher>IEEE Press</bib:publisher>
+        <bib:year>1979</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid20">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Daubechies, Ingrid</bib:author>
+        <bib:title>Orthonormal Bases of Compactly Supported Wavelets</bib:title>
+        <bib:journal>Communications on Pure and Applied Mathematics</bib:journal>
+        <bib:year>1988</bib:year>
+<!--optional fields-->
+        <bib:volume>41</bib:volume>
+        <bib:number/>
+        <bib:pages>909–996</bib:pages>
+        <bib:month>November</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid17">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Daubechies, Ingrid</bib:author>
+        <bib:title>Ten Lectures on Wavelets</bib:title>
+        <bib:publisher>SIAM</bib:publisher>
+        <bib:year>1992</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Philadelphia, PA</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note>Notes from the 1990 CBMS-NSF Conference on Wavelets and Applications at Lowell, MA</bib:note>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid14">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Daubechies, Ingrid</bib:author>
+        <bib:title>Where Do Wavelets Comre From? – A Personal Point of View</bib:title>
+        <bib:journal>Proceedings of the IEEE</bib:journal>
+        <bib:year>1996</bib:year>
+<!--optional fields-->
+        <bib:volume>84</bib:volume>
+        <bib:number>4</bib:number>
+        <bib:pages>510–513</bib:pages>
+        <bib:month>April</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid23">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Donoho, David L.</bib:author>
+        <bib:title>Unconditional Bases are Optimal Bases for Data Compression and for Statistical Estimation</bib:title>
+        <bib:journal>Applied and Computational Harmonic Analysis</bib:journal>
+        <bib:year>1993</bib:year>
+<!--optional fields-->
+        <bib:volume>1</bib:volume>
+        <bib:number>1</bib:number>
+        <bib:pages>100–115</bib:pages>
+        <bib:month>December</bib:month>
+        <bib:note>Also Stanford Statistics Dept. Report TR-410, Nov. 1992</bib:note>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid24">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Donoho, David L.</bib:author>
+        <bib:title>De-Noising by Soft-Thresholding</bib:title>
+        <bib:journal>IEEE Transactions on Information Theory</bib:journal>
+        <bib:year>1995</bib:year>
+<!--optional fields-->
+        <bib:volume>41</bib:volume>
+        <bib:number>3</bib:number>
+        <bib:pages>613–627</bib:pages>
+        <bib:month>May</bib:month>
+        <bib:note>also Stanford Statistics Dept. report TR-409, Nov. 1992</bib:note>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid6">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Elliott, D. F. and Rao, K. F.</bib:author>
+        <bib:title>Fast Transforms: Algorithms, Analyses and Applications</bib:title>
+        <bib:publisher>Academic Press</bib:publisher>
+        <bib:year>1982</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid9">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Freeman, H.</bib:author>
+        <bib:title>Discrete Time Systems</bib:title>
+        <bib:publisher>John Wiley &amp; Sons</bib:publisher>
+        <bib:year>1965</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid13">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Hubbard, Barbara Burke</bib:author>
+        <bib:title>The World According to Wavelets</bib:title>
+        <bib:publisher>A K Peters</bib:publisher>
+        <bib:year>1996</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Wellesley, MA</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note>Second Edition 1998</bib:note>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid4">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Moler, Cleve and Little, John and Bangert, Steve</bib:author>
+        <bib:title>Matlab User's Guide</bib:title>
+        <bib:publisher>The MathWorks, Inc.</bib:publisher>
+        <bib:year>1989</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>South Natick, MA</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid25">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Misiti, Michel and Misiti, Yves and Oppenheim, Georges and Poggi, Jean-Michel</bib:author>
+        <bib:title>Wavelet Toolbox User's Guide</bib:title>
+        <bib:publisher>The MathWorks, Inc.</bib:publisher>
+        <bib:year>1996</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Natick, MA</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid0">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Oppenheim, A. V. and Schafer, R. W.</bib:author>
+        <bib:title>Discrete-Time Signal Processing</bib:title>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1989</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Englewood Cliffs, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid1">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Papoulis, A.</bib:author>
+        <bib:title>The Fourier Integral and Its Applications</bib:title>
+        <bib:publisher>McGraw-Hill</bib:publisher>
+        <bib:year>1962</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address/>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid10">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Rabiner, L. R. and Gold, B.</bib:author>
+        <bib:title>Theory and Application of Digital Signal Processing</bib:title>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1975</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Englewood Cliffs, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid21">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Steffen, P. and Heller, P. N. and Gopinath, R. A. and Burrus, C. S.</bib:author>
+        <bib:title>Theory of Regular <!--Math is not currently allowed within BibTeXML.-->-Band Wavelet Bases</bib:title>
+        <bib:journal>IEEE Transactions on Signal Processing</bib:journal>
+        <bib:year>1993</bib:year>
+<!--optional fields-->
+        <bib:volume>41</bib:volume>
+        <bib:number>12</bib:number>
+        <bib:pages>3497–3511</bib:pages>
+        <bib:month>December</bib:month>
+        <bib:note>Special Transaction issue on wavelets; Rice contribution also in Tech. Report No. CML TR-91-22, Nov. 1991.</bib:note>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid19">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Strang, Gilbert and Nguyen, T.</bib:author>
+        <bib:title>Wavelets and Filter Banks</bib:title>
+        <bib:publisher>Wellesley–Cambridge Press</bib:publisher>
+        <bib:year>1996</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Wellesley, MA</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid15">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Sweldens, Wim</bib:author>
+        <bib:title>Wavelets: What Next?</bib:title>
+        <bib:journal>Proceedings of the IEEE</bib:journal>
+        <bib:year>1996</bib:year>
+<!--optional fields-->
+        <bib:volume>84</bib:volume>
+        <bib:number>4</bib:number>
+        <bib:pages>680–685</bib:pages>
+        <bib:month>April</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid18">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Vetterli, Martin and Kovačević, Jelena</bib:author>
+        <bib:title>Wavelets and Subband Coding</bib:title>
+        <bib:publisher>Prentice–Hall</bib:publisher>
+        <bib:year>1995</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Upper Saddle River, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+  </bib:file>
+</document>

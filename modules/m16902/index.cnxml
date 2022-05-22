@@ -1,0 +1,2492 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:bib="http://bibtexml.sf.net/">
+  <title>Direct Frequency Domain IIR Filter Design Methods</title>
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m16902</md:content-id>
+  <md:title>Direct Frequency Domain IIR Filter Design Methods</md:title>
+  <md:abstract/>
+  <md:uuid>35aa760f-dbce-4c2f-80ce-65f13d96e9c0</md:uuid>
+</metadata>
+
+<content>
+    <para id="id2255546">The preceding design methods have been based on designing an
+analog prototype filter and then converting it to a digital
+filter. This approach is appropriate for the class of
+approximations where analytical solutions are possible, but not
+for many others. In the remaining part of this chapter, methods
+will be developed that directly design the desired digital
+filter. Most approaches are extensions of methods used for FIR
+filters, but they are more complicated for the IIR case where
+rational approximation is being performed rather than polynomial
+approximation.</para>
+    <para id="id2255559">In this section a frequency-sampling design method is
+developed such that the frequency response of the IIR filter will pass
+through the given samples of a desired response. Since an IIR filter
+cannot have linear phase, the sampled response must contain both magnitude
+and phase. The extension of the frequency- sampling method to a LS-error
+approximation is not as simple as for the FIR filter. The method presented
+in this section uses a criterion based on the equation error rather than
+the more common error between the actual and desired frequency
+response<link target-id="bid0"/>. Nevertheless, it is a useful noniterative design
+method. Finally, a general discussion of iterative design methods for
+LS-frequency response error is given.</para>
+    <section id="uid1">
+      <title>Frequency-Sampling Design of IIR Filters</title>
+      <para id="id2255587">The method for calculating samples of the frequency response
+of an IIR filter presented in the section on Properties of IIR Filters
+can be reversed to design
+a filter much the same way it was for the FIR filter using frequency sampling.
+The z-transform transfer function for an IIR filter is given by</para>
+      <equation id="uid2">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:mi>B</m:mi>
+                <m:mo>(</m:mo>
+                <m:mi>z</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mrow>
+                <m:mi>A</m:mi>
+                <m:mo>(</m:mo>
+                <m:mi>z</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mfrac>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:msub>
+                  <m:mi>b</m:mi>
+                  <m:mn>0</m:mn>
+                </m:msub>
+                <m:mo>+</m:mo>
+                <m:msub>
+                  <m:mi>b</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:msup>
+                <m:mo>+</m:mo>
+                <m:mo>⋯</m:mo>
+                <m:mo>+</m:mo>
+                <m:msub>
+                  <m:mi>b</m:mi>
+                  <m:mi>M</m:mi>
+                </m:msub>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:mi>M</m:mi>
+                  </m:mrow>
+                </m:msup>
+              </m:mrow>
+              <m:mrow>
+                <m:mn>1</m:mn>
+                <m:mo>+</m:mo>
+                <m:msub>
+                  <m:mi>a</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:msup>
+                <m:mo>+</m:mo>
+                <m:mo>⋯</m:mo>
+                <m:mo>+</m:mo>
+                <m:msub>
+                  <m:mi>a</m:mi>
+                  <m:mi>N</m:mi>
+                </m:msub>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:mi>N</m:mi>
+                  </m:mrow>
+                </m:msup>
+              </m:mrow>
+            </m:mfrac>
+            <m:mo>.</m:mo>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2255995">The frequency response of the filter is given by setting <m:math><m:mrow><m:mi>z</m:mi><m:mo>=</m:mo><m:msup><m:mi>e</m:mi><m:mrow><m:mo>-</m:mo><m:mi>j</m:mi><m:mi>ω</m:mi></m:mrow></m:msup></m:mrow></m:math>. Using the notation</para>
+      <equation id="uid3">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mrow>
+                <m:mi>H</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>ω</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>=</m:mo>
+                <m:mi>H</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>z</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>|</m:mo>
+              </m:mrow>
+              <m:mrow>
+                <m:mi>z</m:mi>
+                <m:mo>=</m:mo>
+                <m:msup>
+                  <m:mi>e</m:mi>
+                  <m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:mi>j</m:mi>
+                    <m:mi>ω</m:mi>
+                  </m:mrow>
+                </m:msup>
+              </m:mrow>
+            </m:msub>
+            <m:mo>.</m:mo>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256084">Equally-spaced samples of the frequency response are chosen so
+that the number of samples is equal to the number of unknown
+coefficients in <link target-id="uid2"/>. These <m:math><m:mrow><m:mi>L</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:math> = <m:math><m:mrow><m:mi>M</m:mi><m:mo>+</m:mo><m:mi>N</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:math> samples of this
+frequency response are given by</para>
+      <equation id="uid4">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi>H</m:mi>
+              <m:mi>k</m:mi>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mfrac>
+                <m:mrow>
+                  <m:mn>2</m:mn>
+                  <m:mi>π</m:mi>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>L</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:mfrac>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256189">and can be calculated from the length-<m:math><m:mrow><m:mo>(</m:mo><m:mi>L</m:mi><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:math>) DFTs of the numerator
+and denominator.</para>
+      <equation id="uid5">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi>H</m:mi>
+              <m:mi>k</m:mi>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:mi mathvariant="script">DFT</m:mi>
+                <m:mo>{</m:mo>
+                <m:msub>
+                  <m:mi>b</m:mi>
+                  <m:mi>n</m:mi>
+                </m:msub>
+                <m:mo>}</m:mo>
+              </m:mrow>
+              <m:mrow>
+                <m:mi mathvariant="script">DFT</m:mi>
+                <m:mo>{</m:mo>
+                <m:msub>
+                  <m:mi>a</m:mi>
+                  <m:mi>n</m:mi>
+                </m:msub>
+                <m:mo>}</m:mo>
+              </m:mrow>
+            </m:mfrac>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:msub>
+                <m:mi>B</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256288">where the indicated division is term-by-term division for each value
+of <m:math><m:mi>k</m:mi></m:math>. Multiplication of both sides of <link target-id="uid5"/> by <m:math><m:msub><m:mi>A</m:mi><m:mi>k</m:mi></m:msub></m:math> gives</para>
+      <equation id="uid6">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi>B</m:mi>
+              <m:mi>k</m:mi>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:msub>
+              <m:mi>H</m:mi>
+              <m:mi>k</m:mi>
+            </m:msub>
+            <m:msub>
+              <m:mi>A</m:mi>
+              <m:mi>k</m:mi>
+            </m:msub>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256356">If the length-<m:math><m:mrow><m:mo>(</m:mo><m:mi>L</m:mi><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:math> inverse DFT of <m:math><m:msub><m:mi>H</m:mi><m:mi>k</m:mi></m:msub></m:math> is denoted by the length-
+<m:math><m:mrow><m:mo>(</m:mo><m:mi>L</m:mi><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:math> sequence <m:math><m:msub><m:mi>h</m:mi><m:mi>n</m:mi></m:msub></m:math>, equation <link target-id="uid6"/> becomes cyclic convolution
+which can be expressed in matrix form by</para>
+      <equation id="uid7">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mfenced separators="" open="[" close="]">
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>b</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>b</m:mi>
+                      <m:mn>1</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mo>⋮</m:mo>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>b</m:mi>
+                      <m:mi>M</m:mi>
+                    </m:msub>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mn>0</m:mn>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mo>⋮</m:mo>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mn>0</m:mn>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mfenced>
+            <m:mo>=</m:mo>
+            <m:mfenced separators="" open="[" close="]">
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mi>L</m:mi>
+                    </m:msub>
+                  </m:mtd>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mrow>
+                        <m:mi>L</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:mn>1</m:mn>
+                      </m:mrow>
+                    </m:msub>
+                  </m:mtd>
+                  <m:mtd>
+                    <m:mo>⋯</m:mo>
+                  </m:mtd>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mn>1</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mn>1</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mi>L</m:mi>
+                    </m:msub>
+                  </m:mtd>
+                  <m:mtd/>
+                  <m:mtd/>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mn>1</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                  <m:mtd/>
+                  <m:mtd/>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mo>⋮</m:mo>
+                  </m:mtd>
+                  <m:mtd/>
+                  <m:mtd/>
+                  <m:mtd/>
+                  <m:mtd>
+                    <m:mo>⋮</m:mo>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mi>L</m:mi>
+                    </m:msub>
+                  </m:mtd>
+                  <m:mtd/>
+                  <m:mtd>
+                    <m:mo>⋯</m:mo>
+                  </m:mtd>
+                  <m:mtd/>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mfenced>
+            <m:mfenced separators="" open="[" close="]">
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mn>1</m:mn>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>a</m:mi>
+                      <m:mn>1</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mo>⋮</m:mo>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>a</m:mi>
+                      <m:mi>N</m:mi>
+                    </m:msub>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mn>0</m:mn>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mo>⋮</m:mo>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mn>0</m:mn>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mfenced>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256692">Note that the <m:math><m:msub><m:mi>h</m:mi><m:mi>n</m:mi></m:msub></m:math> in <link target-id="uid7"/> are not the impulse response values
+of the filter as used in the FIR case. A more compact matrix notation of is</para>
+      <equation id="uid8">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mfenced separators="" open="[" close="]">
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mi mathvariant="bold">b</m:mi>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mn mathvariant="bold">0</m:mn>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mfenced>
+            <m:mo>=</m:mo>
+            <m:mfenced open="[" close="]">
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mi mathvariant="bold">H</m:mi>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mfenced>
+            <m:mfenced separators="" open="[" close="]">
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mi mathvariant="bold">a</m:mi>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mn mathvariant="bold">0</m:mn>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mfenced>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256783">where <m:math><m:mi mathvariant="bold">H</m:mi></m:math> is <m:math><m:mrow><m:mo>(</m:mo><m:mi>L</m:mi><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:math> by <m:math><m:mrow><m:mo>(</m:mo><m:mi>L</m:mi><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:math>, <m:math><m:mi mathvariant="bold">b</m:mi></m:math> is length-<m:math><m:mrow><m:mo>(</m:mo><m:mi>M</m:mi><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:math>,
+and <m:math><m:mi mathvariant="bold">a</m:mi></m:math> is length-<m:math><m:mrow><m:mo>(</m:mo><m:mi>N</m:mi><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:math>. Because the lower <m:math><m:mrow><m:mi>L</m:mi><m:mo>-</m:mo><m:mi>N</m:mi></m:mrow></m:math> terms of
+the right-hand vector of <link target-id="uid7"/> are zero, the <m:math><m:mi mathvariant="bold">H</m:mi></m:math> matrix can be
+reduced by deleting the right-most <m:math><m:mrow><m:mi>L</m:mi><m:mo>-</m:mo><m:mi>N</m:mi></m:mrow></m:math> columns to give <m:math><m:msub><m:mi mathvariant="bold">H</m:mi><m:mn>0</m:mn></m:msub></m:math>
+which causes <link target-id="uid8"/> to become</para>
+      <equation id="uid9">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mfenced separators="" open="[" close="]">
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mi mathvariant="bold">b</m:mi>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mn mathvariant="bold">0</m:mn>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mfenced>
+            <m:mo>=</m:mo>
+            <m:mfenced open="[" close="]">
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi mathvariant="bold">H</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mfenced>
+            <m:mfenced open="[" close="]">
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mi mathvariant="bold">a</m:mi>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mfenced>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257020">Because the first element of <m:math><m:mi mathvariant="bold">a</m:mi></m:math> is unity, it is partitioned
+to remove the unity term and the remaining length-<m:math><m:mi>N</m:mi></m:math> vector is
+denoted <m:math><m:msup><m:mi mathvariant="bold">a</m:mi><m:mo>*</m:mo></m:msup></m:math>. The simultaneous equations represented by <link target-id="uid9"/>
+are uncoupled by further partitioning of the <m:math><m:mi mathvariant="bold">H</m:mi></m:math> matrix as
+shown in</para>
+      <equation id="uid10">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mfenced separators="" open="[" close="]">
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mi mathvariant="bold">b</m:mi>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mn mathvariant="bold">0</m:mn>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mfenced>
+            <m:mo>=</m:mo>
+            <m:mfenced separators="" open="[" close="]">
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi mathvariant="bold">H</m:mi>
+                      <m:mn>1</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mrow>
+                      <m:msub>
+                        <m:mi mathvariant="bold">h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                      <m:mspace width="4pt"/>
+                      <m:mspace width="4pt"/>
+                      <m:msub>
+                        <m:mi mathvariant="bold">H</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mrow>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mfenced>
+            <m:mfenced separators="" open="[" close="]">
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mn>1</m:mn>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msup>
+                      <m:mi mathvariant="bold">a</m:mi>
+                      <m:mo>*</m:mo>
+                    </m:msup>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mfenced>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257185">where <m:math><m:msub><m:mi mathvariant="bold">H</m:mi><m:mn mathvariant="bold">1</m:mn></m:msub></m:math> is <m:math><m:mrow><m:mo>(</m:mo><m:mi>M</m:mi><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:math> by <m:math><m:mrow><m:mo>(</m:mo><m:mi>N</m:mi><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:math>, <m:math><m:msub><m:mi mathvariant="bold">h</m:mi><m:mn>1</m:mn></m:msub></m:math> is
+length-<m:math><m:mrow><m:mo>(</m:mo><m:mi>L</m:mi><m:mo>-</m:mo><m:mi>M</m:mi><m:mo>)</m:mo></m:mrow></m:math>, and <m:math><m:msub><m:mi mathvariant="bold">H</m:mi><m:mn>2</m:mn></m:msub></m:math> is <m:math><m:mrow><m:mo>(</m:mo><m:mi>L</m:mi><m:mo>-</m:mo><m:mi>M</m:mi><m:mo>)</m:mo></m:mrow></m:math> by <m:math><m:mi>N</m:mi></m:math>. The lower <m:math><m:mrow><m:mo>(</m:mo><m:mi>L</m:mi><m:mo>-</m:mo><m:mi>M</m:mi><m:mo>)</m:mo></m:mrow></m:math>
+equations are written</para>
+      <equation id="uid11">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mn mathvariant="bold">0</m:mn>
+            <m:mo>=</m:mo>
+            <m:msub>
+              <m:mi mathvariant="bold">h</m:mi>
+              <m:mn>1</m:mn>
+            </m:msub>
+            <m:mo>+</m:mo>
+            <m:msub>
+              <m:mi mathvariant="bold">H</m:mi>
+              <m:mn>2</m:mn>
+            </m:msub>
+            <m:msup>
+              <m:mrow>
+                <m:mi mathvariant="bold">a</m:mi>
+              </m:mrow>
+              <m:mo>*</m:mo>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257387">or</para>
+      <equation id="uid12">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi mathvariant="bold">h</m:mi>
+              <m:mn>1</m:mn>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:mo>-</m:mo>
+            <m:msub>
+              <m:mi mathvariant="bold">H</m:mi>
+              <m:mn>2</m:mn>
+            </m:msub>
+            <m:msup>
+              <m:mrow>
+                <m:mi mathvariant="bold">a</m:mi>
+              </m:mrow>
+              <m:mo>*</m:mo>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257437">which must be solved for <m:math><m:msup><m:mrow><m:mi mathvariant="bold">a</m:mi></m:mrow><m:mo>*</m:mo></m:msup></m:math>. The upper <m:math><m:mrow><m:mi>M</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:math> equations of
+<link target-id="uid11"/> are written</para>
+      <equation id="uid13">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi mathvariant="bold">b</m:mi>
+            <m:mo>=</m:mo>
+            <m:msub>
+              <m:mi mathvariant="bold">H</m:mi>
+              <m:mn>1</m:mn>
+            </m:msub>
+            <m:mi mathvariant="bold">a</m:mi>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257504">which allows the calculation of <m:math><m:mi mathvariant="bold">b</m:mi></m:math>.</para>
+      <para id="id2257519">If <m:math><m:mrow><m:mi>L</m:mi><m:mo>=</m:mo><m:mi>N</m:mi><m:mo>+</m:mo><m:mi>M</m:mi></m:mrow></m:math>, <m:math><m:msub><m:mi mathvariant="bold">H</m:mi><m:mn>2</m:mn></m:msub></m:math> is square. If <m:math><m:msub><m:mi mathvariant="bold">H</m:mi><m:mn>2</m:mn></m:msub></m:math> is
+nonsingular, <link target-id="uid12"/> can be solved exactly for the denominator
+coefficients in <m:math><m:msup><m:mrow><m:mi mathvariant="bold">a</m:mi></m:mrow><m:mo>*</m:mo></m:msup></m:math>, which are augmented by the unity term
+to give <m:math><m:mi mathvariant="bold">a</m:mi></m:math>. From <link target-id="uid13"/>, the numerator coefficients in <m:math><m:mi mathvariant="bold">b</m:mi></m:math> are found. If <m:math><m:msub><m:mi mathvariant="bold">H</m:mi><m:mn>2</m:mn></m:msub></m:math> is singular <link target-id="bid1"/> and there
+are multiple solutions, a lower order problem can be posed. If
+there are no solutions, the approximation methods must be
+used.</para>
+      <para id="id2257653">Note that any order numerator and denominator can be prescribed. If
+the filter is in fact an FIR filter, <m:math><m:mi mathvariant="bold">a</m:mi></m:math> is unity and <m:math><m:msup><m:mrow><m:mi mathvariant="bold">a</m:mi></m:mrow><m:mo>*</m:mo></m:msup></m:math> does not exist. Under these conditions, <link target-id="uid13"/> states that <m:math><m:mrow><m:msub><m:mi>b</m:mi><m:mi>n</m:mi></m:msub><m:mo>=</m:mo><m:msub><m:mi>h</m:mi><m:mi>n</m:mi></m:msub></m:mrow></m:math>, which is one of the cases of FIR frequency sampling covered
+<link target-id="bid3"/>. Also note that there is no control
+over the stability of the filter designed by this method.</para>
+<section id="fs-id1169465783580">
+      <title>Summary</title>
+      <para id="id2257736">In this section, an interpolation design method was developed and
+analyzed. Use of the DFT converted the frequency- domain
+specifications to the time domain. A matrix partitioning allowed
+uncoupling the solution for the numerator from the solution of the
+denominator coefficients. The use of the DFT prevents the
+possibility of unequally spaced frequency samples as was possible
+for FIR filter design. The solution of simultaneous equations would
+allow unequal spacing which is not as troublesome as with the FIR
+filter because IIR filters are usually of lower order.</para>
+      <para id="id2257751">The frequency-sampling design of IIR filters is somewhat more
+complicated than for FIR filters because of the requirement that
+<m:math><m:msub><m:mi mathvariant="bold">H</m:mi><m:mn>2</m:mn></m:msub></m:math> be nonsingular. As for the FIR filter, the samples of
+the desired frequency response must satisfy the conditions to insure
+that <m:math><m:msub><m:mi>h</m:mi><m:mi>n</m:mi></m:msub></m:math> are real. The power of this method is its ability to
+interpolate arbitrary magnitude and phase specification. In contrast
+to most direct IIR design methods, this method does not require any
+iterative optimization with the accompanying convergence problems.</para>
+      <para id="id2257795">As with the FIR version, because this design approach is an
+interpolation method rather than an approximation method, the
+results may be poor between the interpolation points. This usually
+happens when the desired frequency-response samples are not
+consistent with what an IIR filter can achieve. One solution to
+this problem is the same as for the FIR case
+<link target-id="bid3"/>, the use of more frequency samples than the number of
+filter coefficients and the definition of an approximation error
+function that can be minimized. There is no simple restriction that
+will guarantee stable filters. If the frequency-response samples
+are consistent with an unstable filter, that is what will be
+designed.</para>
+</section>
+    </section>
+    <section id="uid14">
+      <title>Discrete Least-Squared Equation-Error IIR Filter Design</title>
+      <para id="id2257823">In order to obtain better practical filter designs, the
+interpolation scheme of the previous section is extended to give an
+approximation design method <link target-id="bid3"/>. It should be noted at the
+outset that the method developed in this section minimizes an
+equation-error measure and not the usual frequency-response error
+measure.</para>
+      <para id="id2257838">The number of frequency samples specified, <m:math><m:mrow><m:mi>L</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:math>, will be made
+larger than the number of filter coefficients, <m:math><m:mrow><m:mi>M</m:mi><m:mo>+</m:mo><m:mi>N</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:math>. This means
+that <m:math><m:msub><m:mi mathvariant="bold">H</m:mi><m:mn>2</m:mn></m:msub></m:math> is rectangular and, therefore, <link target-id="uid12"/> cannot in
+general be satisfied. To formulate an approximation problem, a
+length-<m:math><m:mrow><m:mo>(</m:mo><m:mi>L</m:mi><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:math> error vector <m:math><m:mi>ε</m:mi></m:math> is introduced in <link target-id="uid9"/>
+and <link target-id="uid10"/> to give</para>
+      <equation id="uid15">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mfenced separators="" open="[" close="]">
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mi mathvariant="bold">b</m:mi>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mn mathvariant="bold">0</m:mn>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mfenced>
+            <m:mo>=</m:mo>
+            <m:mfenced open="[" close="]">
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi mathvariant="bold">H</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mfenced>
+            <m:mfenced open="[" close="]">
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mi mathvariant="bold">a</m:mi>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mfenced>
+            <m:mo>+</m:mo>
+            <m:mfenced open="[" close="]">
+              <m:mi>ε</m:mi>
+            </m:mfenced>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2258012">Equation <link target-id="uid12"/> becomes</para>
+      <equation id="uid16">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi mathvariant="bold">h</m:mi>
+              <m:mn>1</m:mn>
+            </m:msub>
+            <m:mo>-</m:mo>
+            <m:mi>ε</m:mi>
+            <m:mo>=</m:mo>
+            <m:mo>-</m:mo>
+            <m:msub>
+              <m:mi mathvariant="bold">H</m:mi>
+              <m:mn>2</m:mn>
+            </m:msub>
+            <m:msup>
+              <m:mrow>
+                <m:mi mathvariant="bold">a</m:mi>
+              </m:mrow>
+              <m:mo>*</m:mo>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2258074">where now <m:math><m:msub><m:mi mathvariant="bold">H</m:mi><m:mn>2</m:mn></m:msub></m:math> is rectangular with <m:math><m:mrow><m:mo>(</m:mo><m:mi>L</m:mi><m:mo>-</m:mo><m:mi>M</m:mi><m:mo>)</m:mo><m:mo>&gt;</m:mo><m:mi>N</m:mi></m:mrow></m:math>. Using
+the same methods as used to derive <link target-id="uid12"/>, the error <m:math><m:mi>ε</m:mi></m:math> is minimized in a least-squared error sense by the
+solution of the normal equations <link target-id="bid1"/></para>
+      <equation id="uid17">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msubsup>
+              <m:mi mathvariant="bold">H</m:mi>
+              <m:mn>2</m:mn>
+              <m:mi>T</m:mi>
+            </m:msubsup>
+            <m:msub>
+              <m:mi mathvariant="bold">h</m:mi>
+              <m:mn>1</m:mn>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:mo>-</m:mo>
+            <m:msubsup>
+              <m:mi mathvariant="bold">H</m:mi>
+              <m:mn>2</m:mn>
+              <m:mi>T</m:mi>
+            </m:msubsup>
+            <m:msub>
+              <m:mi mathvariant="bold">H</m:mi>
+              <m:mn>2</m:mn>
+            </m:msub>
+            <m:msup>
+              <m:mrow>
+                <m:mi mathvariant="bold">a</m:mi>
+              </m:mrow>
+              <m:mo>*</m:mo>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2258213">If the equations are not singular, the solution is</para>
+      <equation id="uid18">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msup>
+              <m:mrow>
+                <m:mi mathvariant="bold">a</m:mi>
+              </m:mrow>
+              <m:mo>*</m:mo>
+            </m:msup>
+            <m:mo>=</m:mo>
+            <m:mo>-</m:mo>
+            <m:msup>
+              <m:mrow>
+                <m:mo>[</m:mo>
+                <m:msubsup>
+                  <m:mi mathvariant="bold">H</m:mi>
+                  <m:mn>2</m:mn>
+                  <m:mi>T</m:mi>
+                </m:msubsup>
+                <m:msub>
+                  <m:mi mathvariant="bold">H</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msub>
+                <m:mo>]</m:mo>
+              </m:mrow>
+              <m:mrow>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:msup>
+            <m:msubsup>
+              <m:mi mathvariant="bold">H</m:mi>
+              <m:mn>2</m:mn>
+              <m:mi>T</m:mi>
+            </m:msubsup>
+            <m:msub>
+              <m:mi mathvariant="bold">h</m:mi>
+              <m:mn>1</m:mn>
+            </m:msub>
+            <m:mo>.</m:mo>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2258306">If the normal equations are singular, the pseudo-inverse
+<link target-id="bid1"/> can be used to obtain a minimum norm or reduced
+order solution.</para>
+      <para id="id2258324">The numerator coefficients are found by the same techniques as
+before in <link target-id="uid13"/></para>
+      <equation id="uid19">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi mathvariant="bold">b</m:mi>
+            <m:mo>=</m:mo>
+            <m:msub>
+              <m:mi mathvariant="bold">H</m:mi>
+              <m:mn>1</m:mn>
+            </m:msub>
+            <m:mi mathvariant="bold">a</m:mi>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2258366">which results in the upper <m:math><m:mrow><m:mi>M</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:math> terms in <m:math><m:mi>ε</m:mi></m:math>
+being zero and the total squared equation error being minimum.</para>
+      <para id="id2258397">As is true for LS-error design of FIR filters, <link target-id="uid17"/> is often
+numerically ill-conditioned and <link target-id="uid18"/> should not be used to solve for
+<m:math><m:msup><m:mrow><m:mi mathvariant="bold">a</m:mi></m:mrow><m:mo>*</m:mo></m:msup></m:math>. Special algorithms such as those used by Matlab and
+LINPACK <link target-id="bid4"/>, <link target-id="bid5"/> should be employed.</para>
+      <para id="id2258442">The error <m:math><m:mi>ε</m:mi></m:math> defined in <link target-id="uid15"/> can better be
+understood by considering the frequency-domain formulation. Taking
+the DFT of <link target-id="uid15"/> gives</para>
+      <equation id="uid20">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi>B</m:mi>
+              <m:mi>k</m:mi>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:msub>
+              <m:mi>H</m:mi>
+              <m:mi>k</m:mi>
+            </m:msub>
+            <m:msub>
+              <m:mi>A</m:mi>
+              <m:mi>k</m:mi>
+            </m:msub>
+            <m:mo>+</m:mo>
+            <m:mi>ε</m:mi>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2258507">where <m:math><m:mi>ε</m:mi></m:math> is the error in trying to satisfy <link target-id="uid9"/> when the
+equations are over-specified. This can be reformulated in terms of
+<m:math><m:mi mathvariant="script">E</m:mi></m:math>, the difference between the frequency response samples of
+the designed filter and the desired response samples, by dividing
+<link target-id="uid9"/> by <m:math><m:msub><m:mi>A</m:mi><m:mi>k</m:mi></m:msub></m:math> to give</para>
+      <equation id="uid21">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi mathvariant="script">E</m:mi>
+              <m:mi>k</m:mi>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:msub>
+                <m:mi>B</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+            </m:mfrac>
+            <m:mo>-</m:mo>
+            <m:msub>
+              <m:mi>H</m:mi>
+              <m:mi>k</m:mi>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:msub>
+                <m:mi>ε</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2258629"><m:math><m:mi mathvariant="script">E</m:mi></m:math> is the error in the solution of the approximation
+problem, and <m:math><m:mi>ε</m:mi></m:math> is the error in the equations defining
+the problem. The usual statement of a frequency-domain approximation
+problem is in terms of minimizing some measure of <m:math><m:mi mathvariant="script">E</m:mi></m:math>, but
+that results in solving nonlinear equations. The design procedure
+developed in this section minimizes the squared error <m:math><m:mi>ε</m:mi></m:math>,
+thus only requiring the solution of linear equations. There is an
+important relation between these problems. <link target-id="uid21"/> shows that
+minimizing <m:math><m:mi>ε</m:mi></m:math> is the same as minimizing <m:math><m:mi mathvariant="script">E</m:mi></m:math>
+weighted by <m:math><m:mi>A</m:mi></m:math>. However, <m:math><m:mi>A</m:mi></m:math> is unknown until after the problem is
+solved.</para>
+      <para id="id2258725">Although this is posed as a frequency-domain design method, the
+method of solution for both the interpolation problem and the LS
+equation-error problem is the same as the time-domain Prony's
+method, discussed in <link document="m16892" target-id="uid90">Complex and Minimum Phase Approximation</link> of reference <link target-id="bid3"/>.</para>
+      <para id="id2258738">Numerous modifications and extensions can be made to this method. If the
+desired frequency response is close to what can be achieved by an IIR
+filter, this method will give a design approximately the same as that of a
+true least-squared solution-error method. It can be shown that
+<m:math><m:mrow><m:mi>ε</m:mi><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>↔</m:mo><m:mi mathvariant="script">E</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math>. In some cases, improved
+results can be obtained by estimating <m:math><m:msub><m:mi>A</m:mi><m:mi>k</m:mi></m:msub></m:math> and using that as a weight on
+<m:math><m:mi>ε</m:mi></m:math> to approximate minimizing <m:math><m:mi mathvariant="script">E</m:mi></m:math>. There are iterative
+methods based on solving <link target-id="uid18"/> and <link target-id="uid19"/> to obtain values
+for <m:math><m:msub><m:mi>A</m:mi><m:mi>k</m:mi></m:msub></m:math>. These values are used as weights on <m:math><m:mi>ε</m:mi></m:math> to solve for
+a new set of <m:math><m:msub><m:mi>A</m:mi><m:mi>k</m:mi></m:msub></m:math> used as a new set of weights to solve again for <m:math><m:msub><m:mi>A</m:mi><m:mi>k</m:mi></m:msub></m:math><link target-id="bid3"/><link target-id="bid6"/>. We found this approach to converge slowly, but a recent paper
+using the log-magnitude <link target-id="bid7"/> was more successful. Other
+approaches are given in <link target-id="bid8"/>, <link target-id="bid9"/>, <link target-id="bid10"/>. The solution of
+<link target-id="uid18"/> and <link target-id="uid19"/> is sometimes used to obtain starting
+values for other iterative optimization algorithms that need good starting
+values for convergence.</para>
+      <para id="id2258919">An interesting iterative design algorithm that can design to approximate
+complex or magnitude frequency responses has be recently proposed by
+Jackson <link target-id="bid10"/>. A different approach to the same problem was posed
+by Soewito <link target-id="bid6"/>, <link target-id="bid11"/>.</para>
+      <para id="id2258942">To illustrate this design method a sixth-order lowpass filter was
+designed with 41 frequency samples to approximate. The magnitude of
+those less than 0.2 Hz is one and of those greater than 0.2 is zero.
+The phase was experimentally adjusted to result in a good magnitude
+response. The design was performed with Program 9 in the appendix
+of <link target-id="bid3"/> and the frequency response is shown in Figure 7-33 of
+<link target-id="bid3"/>. Matlab programs have recently been written which are
+smaller and easier to understand than those in FORTRAN.</para>
+<section id="fs-id1169462111322">
+      <title>Summary</title>
+      <para id="id2258976">In this section an LS-error approximation method was posed to
+design IIR filters. By using an equation-error rather than a
+solution-error criterion, a problem resulted that required only the
+solution of simultaneous linear equations.</para>
+      <para id="id2258986">Like the FIR filter version, the IIR frequency sampling design
+method and the LS equation-error extension can be used for complex
+approximation and, therefore, can design with both magnitude and
+phase specifications.</para>
+      <para id="id2258993">If the desired frequency-response samples are close to what an IIR
+filter of the specified order can achieve, this method will produce
+a filter very close to what a true least-squared error method would.
+However, when the specifications are not consistent with what can be
+achieved and the approximating error is large, the results can be
+very poor and in some cases, unstable. It is particularly difficult
+to set realistic phase response specifications. With this method, it
+is even more important to have a design environment that will allow
+easy trial-and-error procedure.</para>
+      <para id="id2259006">Newly published works which will be discussed here are
+<link target-id="bid7"/>, <link target-id="bid12"/>, <link target-id="bid13"/>, <link target-id="bid14"/>, <link target-id="bid15"/>, <link target-id="bid16"/>, <link target-id="bid17"/>. Other references can
+be found in <link target-id="bid3"/>, <link target-id="bid7"/>, <link target-id="bid18"/>, <link target-id="bid6"/>, <link target-id="bid11"/>, <link target-id="bid19"/>. The Matlab command <code>invfreqz()</code>
+ which is an inverse to the <code>freqz()</code>
+ command gives a
+similar or, perhaps, the same result as the method described in this
+note but uses a different formulation <link target-id="bid20"/>, <link target-id="bid21"/>.</para>
+</section>
+      <section id="uid22">
+        <title>more</title>
+        <para id="id2259113">Practical problems occur in the design of a filter to
+separate signals according to their energy. Because the energy
+content of a signal is the integral or sum of the square of the
+signal, a mean-squared-error measure is natural. Unfortunately,
+for the IIR filter design problem, the optimization procedure is
+nonlinear. This was pointed out in the last section where the
+equation error was used in order to have a linear problem.</para>
+        <para id="id2259124">Because of the nonlinear nature of the least-squared-error
+minimization, the method of solution becomes dependent on the
+desired frequency response, and therefore, there is no single
+method for design. The mean-squared error for magnitude
+approximation is defined as</para>
+        <equation id="uid23"><m:math mode="display">
+            <m:mrow>
+              <m:mi>q</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>x</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>i</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mi>L</m:mi>
+              </m:munderover>
+              <m:mrow>
+                <m:mo>|</m:mo>
+                <m:mi>H</m:mi>
+              </m:mrow>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msub>
+                  <m:mi>ω</m:mi>
+                  <m:mi>i</m:mi>
+                </m:msub>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mrow>
+                <m:mo>|</m:mo>
+                <m:mo>-</m:mo>
+                <m:mo>|</m:mo>
+              </m:mrow>
+              <m:msub>
+                <m:mi>H</m:mi>
+                <m:mi>d</m:mi>
+              </m:msub>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msub>
+                  <m:mi>ω</m:mi>
+                  <m:mi>i</m:mi>
+                </m:msub>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:msup>
+                <m:mrow>
+                  <m:mo>|</m:mo>
+                </m:mrow>
+                <m:mn>2</m:mn>
+              </m:msup>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259228">where <m:math><m:mi>x</m:mi></m:math> is a vector of filter parameters chosen to minimize q,
+and the error is sampled at <m:math><m:mrow><m:mi>L</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:math> frequencies <m:math><m:msub><m:mi>ω</m:mi><m:mi>i</m:mi></m:msub></m:math>. Steiglitz
+<link target-id="bid3"/> chose the parameter vector x to be the coefficients of a
+cascade structure in order to best fit an iterative optimization
+scheme. He applied a standard optimization algorithm, the
+Fletcher-Powell method, to the minimization of <link target-id="uid21"/>. Other
+methods which are more directly related to a squared-error measure
+can also be used.</para>
+        <para id="id2259287">Practical difficulties exist in solving this approximation
+problem. In some cases, local minima are found rather than the
+global minimum. In other cases, convergence of the minimization
+algorithm is slow or does not occur at all. Numerical problems can
+result from ill-conditioned equations, and there is no guarantee
+that the designed filter will be stable.</para>
+        <para id="id2259296">An important factor is the choice of a desired frequency-
+response function <m:math><m:mrow><m:msub><m:mi>H</m:mi><m:mi>d</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> that does not result in the optimum
+approximation having a large error. This often means not having an
+abrupt discontinuity between the passband and stopband.</para>
+        <para id="id2259327">Another factor is the starting of the iterative optimization
+algorithm with a set of coefficients in <m:math><m:mi>x</m:mi></m:math> that is close to the
+optimum. This can be accomplished by using the frequency sampling
+method to give a design that can be
+used to start a least-squares algorithm. Because the error defined
+in <link target-id="uid21"/> is in terms of magnitudes, an unstable design can be
+converted to a stable one by moving the unstable pole at a radius of
+<m:math><m:mi>r</m:mi></m:math> in the <m:math><m:mi>z</m:mi></m:math>-plane to a radius of <m:math><m:mrow><m:mn>1</m:mn><m:mo>/</m:mo><m:mi>r</m:mi></m:mrow></m:math>. This does not change the
+magnitude frequency response and does stabilize the effect of that
+pole <link target-id="bid3"/>.</para>
+        <para id="id2259391">A generalization of the idea of a squared-error measure is
+defined by raising the error to the <m:math><m:mi>p</m:mi></m:math> power where <m:math><m:mi>p</m:mi></m:math> is a
+positive integer. This error is defined by</para>
+        <equation id="uid24"><m:math mode="display">
+            <m:mrow>
+              <m:mi>q</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>x</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>i</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mi>L</m:mi>
+              </m:munderover>
+              <m:msup>
+                <m:mrow>
+                  <m:mo>|</m:mo>
+                  <m:mi>H</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:msub>
+                    <m:mi>H</m:mi>
+                    <m:mi>d</m:mi>
+                  </m:msub>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>|</m:mo>
+                </m:mrow>
+                <m:mi>p</m:mi>
+              </m:msup>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259493">Deczky <link target-id="bid22"/> developed this approach and used the Fletcher-Powell
+method to minimize <link target-id="uid24"/>. He also applied this method to the
+approximation of a desired group-delay function. An important
+characteristic of this formulation is that the solution approaches the
+Chebyshev or mini-max solution as p becomes large. Initial work shows the
+method of iteratively reweighted least squared error (IRLS) as was applied
+to the FIR filter design in <link target-id=""/> can also be used for <m:math><m:msub><m:mi>L</m:mi><m:mi>p</m:mi></m:msub></m:math> and
+constrained least squared error optimal design of IIR filters
+<link target-id="bid23"/>.</para>
+      </section>
+    </section>
+    <section id="uid25">
+      <title>The Chebyshev Error Criterion for IIR Filter Design</title>
+      <para id="id2259546">The error measure that often best meets filter design
+specifications is the maximum error in the frequency response
+that occurs over a band. The filter design problem becomes the
+problem of minimizing the maximum error (the min-max problem).</para>
+      <para id="id2259553">Among several approaches to this error minimization, one is
+by Deczky which minimizes the p-power error of <link target-id="uid24"/> for large
+p. Generally, <m:math><m:mrow><m:mi>p</m:mi><m:mo>=</m:mo><m:mn>10</m:mn></m:mrow></m:math> or greater approximates a Chebyshev result
+<link target-id="bid3"/>. Another is by Dolan and Kaiser which uses a
+penalty-function approach.</para>
+      <para id="id2259585">Linear programming can be applied to this error measure
+by linearizing the equations in much the same way as
+in <link target-id="uid17"/> <link target-id="bid24"/>. In contrast to the FIR case, this can be a
+practical design method because the order of practical IIR
+filters is generally much lower than for FIR filters. A scheme
+called differential correction has also proven to be effective.</para>
+      <para id="id2259604">Although the rational approximation problem is nonlinear, an
+application of the Remes exchange algorithm can be implemented
+<link target-id="bid3"/>. Since the zeros of the numerator of the transfer
+function mainly control the stopband characteristics of a filter,
+and the zeros of the denominator mainly control the passband, the
+effects of the two are somewhat uncoupled. An application of the
+Remes exchange algorithm, alternating between the numerator and
+denominator, gives an effective method for designing IIR filters
+with a Chebyshev error criterion. If the order of the
+numerator and denominator are the same and the desired filter is
+an ideal lowpass filter, the Remes exchange should give the same
+result as the elliptic function filter. However,
+this approach allows any order numerator or denominator to be set
+and any shape passband to be approximated. There are cases where
+a lower-order denominator than numerator results in a filter with
+fewer required muliplications than an elliptic-function filter
+<link target-id="bid3"/>.</para>
+    </section>
+    <section id="uid26">
+      <title>Prony's Method for Time-Domain Design of IIR Filters</title>
+      <para id="id2259643">The problem of designing an IIR digital filter with a
+prescribed time-domain response is addressed in this section.
+Most formulations of time-domain design of IIR filters result in
+nonlinear equations for the same reasons as for frequency-domain
+design. Prony, in 1790, derived a special formulation for the
+analysis of elastic properties of gases, which resulted in linear
+equations. A more general form of Prony's method can be applied
+to the IIR filter design by use of a matrix description <link target-id="bid25"/>, <link target-id="bid3"/>.</para>
+      <para id="id2259666">The transfer function of an IIR filter is given by</para>
+      <equation id="uid27">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:mi>B</m:mi>
+                <m:mo>(</m:mo>
+                <m:mi>z</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mrow>
+                <m:mi>A</m:mi>
+                <m:mo>(</m:mo>
+                <m:mi>z</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mfrac>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:msub>
+                  <m:mi>b</m:mi>
+                  <m:mn>0</m:mn>
+                </m:msub>
+                <m:mo>+</m:mo>
+                <m:msub>
+                  <m:mi>b</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:msup>
+                <m:mo>+</m:mo>
+                <m:mo>⋯</m:mo>
+                <m:mo>+</m:mo>
+                <m:msub>
+                  <m:mi>b</m:mi>
+                  <m:mi>M</m:mi>
+                </m:msub>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:mi>M</m:mi>
+                  </m:mrow>
+                </m:msup>
+              </m:mrow>
+              <m:mrow>
+                <m:mn>1</m:mn>
+                <m:mo>+</m:mo>
+                <m:msub>
+                  <m:mi>a</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:msup>
+                <m:mo>+</m:mo>
+                <m:mo>⋯</m:mo>
+                <m:mo>+</m:mo>
+                <m:msub>
+                  <m:mi>a</m:mi>
+                  <m:mi>N</m:mi>
+                </m:msub>
+                <m:msup>
+                  <m:mi>z</m:mi>
+                  <m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:mi>N</m:mi>
+                  </m:mrow>
+                </m:msup>
+              </m:mrow>
+            </m:mfrac>
+            <m:mo>=</m:mo>
+            <m:msub>
+              <m:mi>h</m:mi>
+              <m:mn>0</m:mn>
+            </m:msub>
+            <m:mo>+</m:mo>
+            <m:msub>
+              <m:mi>h</m:mi>
+              <m:mn>1</m:mn>
+            </m:msub>
+            <m:msup>
+              <m:mi>z</m:mi>
+              <m:mrow>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:msup>
+            <m:mo>+</m:mo>
+            <m:msub>
+              <m:mi>h</m:mi>
+              <m:mn>2</m:mn>
+            </m:msub>
+            <m:msup>
+              <m:mi>z</m:mi>
+              <m:mrow>
+                <m:mo>-</m:mo>
+                <m:mn>2</m:mn>
+              </m:mrow>
+            </m:msup>
+            <m:mo>+</m:mo>
+            <m:mo>⋯</m:mo>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2259877">and the impulse response <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is related to <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> by the <m:math><m:mi>z</m:mi></m:math>
+transform.</para>
+      <equation id="uid28"><m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>n</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+              </m:mrow>
+              <m:mi>∞</m:mi>
+            </m:munderover>
+            <m:mspace width="4pt"/>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="4pt"/>
+            <m:msup>
+              <m:mi>z</m:mi>
+              <m:mrow>
+                <m:mo>-</m:mo>
+                <m:mi>n</m:mi>
+              </m:mrow>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2259992"><link target-id="uid28"/> can be written</para>
+      <equation id="uid29">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>B</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>z</m:mi>
+            <m:mo>)</m:mo>
+            <m:mo>=</m:mo>
+            <m:mi>H</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>z</m:mi>
+            <m:mo>)</m:mo>
+            <m:mspace width="4pt"/>
+            <m:mi>A</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>z</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2260044">which is the z-transform version of convolution. This convolution
+can be written as a matrix multiplication. Using the first K+1
+terms of the impulse response, this is written</para>
+      <equation id="uid30">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mfenced separators="" open="[" close="]">
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>b</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>b</m:mi>
+                      <m:mn>1</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mo>⋮</m:mo>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>b</m:mi>
+                      <m:mi>M</m:mi>
+                    </m:msub>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mn>0</m:mn>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mo>⋮</m:mo>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mn>0</m:mn>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mfenced>
+            <m:mo>=</m:mo>
+            <m:mfenced separators="" open="[" close="]">
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                  <m:mtd>
+                    <m:mn>0</m:mn>
+                  </m:mtd>
+                  <m:mtd>
+                    <m:mn>0</m:mn>
+                  </m:mtd>
+                  <m:mtd>
+                    <m:mo>⋯</m:mo>
+                  </m:mtd>
+                  <m:mtd>
+                    <m:mn>0</m:mn>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mn>1</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                  <m:mtd>
+                    <m:mn>0</m:mn>
+                  </m:mtd>
+                  <m:mtd/>
+                  <m:mtd/>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mn>1</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                  <m:mtd/>
+                  <m:mtd/>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mo>⋮</m:mo>
+                  </m:mtd>
+                  <m:mtd/>
+                  <m:mtd/>
+                  <m:mtd/>
+                  <m:mtd>
+                    <m:mo>⋮</m:mo>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mi>L</m:mi>
+                    </m:msub>
+                  </m:mtd>
+                  <m:mtd/>
+                  <m:mtd>
+                    <m:mo>⋯</m:mo>
+                  </m:mtd>
+                  <m:mtd/>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mfenced>
+            <m:mfenced separators="" open="[" close="]">
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mn>1</m:mn>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>a</m:mi>
+                      <m:mn>1</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mo>⋮</m:mo>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi>a</m:mi>
+                      <m:mi>N</m:mi>
+                    </m:msub>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mn>0</m:mn>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mo>⋮</m:mo>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mn>0</m:mn>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mfenced>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2260289">In order to uncouple the calculations of the <m:math><m:msub><m:mi>a</m:mi><m:mi>n</m:mi></m:msub></m:math> and the <m:math><m:msub><m:mi>b</m:mi><m:mi>n</m:mi></m:msub></m:math>,
+the matrices are partitioned to give</para>
+      <equation id="uid31">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mfenced separators="" open="[" close="]">
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mi mathvariant="bold">b</m:mi>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mn mathvariant="bold">0</m:mn>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mfenced>
+            <m:mo>=</m:mo>
+            <m:mfenced separators="" open="[" close="]">
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msub>
+                      <m:mi mathvariant="bold">H</m:mi>
+                      <m:mn>1</m:mn>
+                    </m:msub>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mrow>
+                      <m:msub>
+                        <m:mi mathvariant="bold">h</m:mi>
+                        <m:mn>1</m:mn>
+                      </m:msub>
+                      <m:mspace width="4pt"/>
+                      <m:mspace width="4pt"/>
+                      <m:msub>
+                        <m:mi mathvariant="bold">H</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msub>
+                    </m:mrow>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mfenced>
+            <m:mfenced separators="" open="[" close="]">
+              <m:mtable>
+                <m:mtr>
+                  <m:mtd>
+                    <m:mn>1</m:mn>
+                  </m:mtd>
+                </m:mtr>
+                <m:mtr>
+                  <m:mtd>
+                    <m:msup>
+                      <m:mi mathvariant="bold">a</m:mi>
+                      <m:mo>*</m:mo>
+                    </m:msup>
+                  </m:mtd>
+                </m:mtr>
+              </m:mtable>
+            </m:mfenced>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2260433">where <m:math><m:mi mathvariant="bold">b</m:mi></m:math> is the vector of the <m:math><m:mrow><m:mi>M</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:math> numerator coefficients of <link target-id="uid27"/>,
+<m:math><m:msup><m:mi mathvariant="bold">a</m:mi><m:mo>*</m:mo></m:msup></m:math> is the vector of the <m:math><m:mi>N</m:mi></m:math> denominator coefficients (<m:math><m:mrow><m:mi>a</m:mi><m:mi>o</m:mi><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow></m:math>), <m:math><m:msub><m:mi mathvariant="bold">h</m:mi><m:mn>1</m:mn></m:msub></m:math> is the
+vector of the last <m:math><m:mrow><m:mo>(</m:mo><m:mi>K</m:mi><m:mo>-</m:mo><m:mi>M</m:mi><m:mo>)</m:mo></m:mrow></m:math> terms of the impulse response, <m:math><m:msub><m:mi mathvariant="bold">H</m:mi><m:mn mathvariant="bold">1</m:mn></m:msub></m:math> is the
+<m:math><m:mrow><m:mi>M</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:math> by <m:math><m:mrow><m:mi>N</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:math> partition of <link target-id="uid30"/>, and <m:math><m:msub><m:mi mathvariant="bold">H</m:mi><m:mn>2</m:mn></m:msub></m:math> is the <m:math><m:mrow><m:mo>(</m:mo><m:mi>K</m:mi><m:mo>-</m:mo><m:mi>M</m:mi><m:mo>)</m:mo></m:mrow></m:math> by <m:math><m:mi>N</m:mi></m:math> remaining
+part. The lower <m:math><m:mrow><m:mi>K</m:mi><m:mo>-</m:mo><m:mi>M</m:mi></m:mrow></m:math> equations are written</para>
+      <equation id="uid32">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mn mathvariant="bold">0</m:mn>
+            <m:mo>=</m:mo>
+            <m:msub>
+              <m:mi mathvariant="bold">h</m:mi>
+              <m:mn>1</m:mn>
+            </m:msub>
+            <m:mo>+</m:mo>
+            <m:msub>
+              <m:mi mathvariant="bold">H</m:mi>
+              <m:mn>2</m:mn>
+            </m:msub>
+            <m:msup>
+              <m:mrow>
+                <m:mi mathvariant="bold">a</m:mi>
+              </m:mrow>
+              <m:mo>*</m:mo>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2260712">or</para>
+      <equation id="uid33">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi mathvariant="bold">h</m:mi>
+              <m:mn>1</m:mn>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:mo>-</m:mo>
+            <m:msub>
+              <m:mi mathvariant="bold">H</m:mi>
+              <m:mn>2</m:mn>
+            </m:msub>
+            <m:msup>
+              <m:mrow>
+                <m:mi mathvariant="bold">a</m:mi>
+              </m:mrow>
+              <m:mo>*</m:mo>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2260764">which must be solved for <m:math><m:msup><m:mrow><m:mi mathvariant="bold">a</m:mi></m:mrow><m:mo>*</m:mo></m:msup></m:math>. The upper <m:math><m:mrow><m:mi>M</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:math> equations of
+<link target-id="uid31"/> are written</para>
+      <equation id="uid34">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi mathvariant="bold">b</m:mi>
+            <m:mo>=</m:mo>
+            <m:msub>
+              <m:mi mathvariant="bold">H</m:mi>
+              <m:mn>1</m:mn>
+            </m:msub>
+            <m:mi mathvariant="bold">a</m:mi>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2260840">which allows the calculation of <m:math><m:mi mathvariant="bold">b</m:mi></m:math>.</para>
+      <para id="id2260858">If <m:math><m:mrow><m:mi>L</m:mi><m:mo>=</m:mo><m:mi>N</m:mi><m:mo>+</m:mo><m:mi>M</m:mi></m:mrow></m:math>, then <m:math><m:msub><m:mi mathvariant="bold">H</m:mi><m:mn>2</m:mn></m:msub></m:math> is square. If <m:math><m:msub><m:mi mathvariant="bold">H</m:mi><m:mn>2</m:mn></m:msub></m:math> is nonsingular, <link target-id="uid33"/>
+can be solved exactly for the denominator coefficients in <m:math><m:msup><m:mrow><m:mi mathvariant="bold">a</m:mi></m:mrow><m:mo>*</m:mo></m:msup></m:math>, which are augmented by the unity term to give <m:math><m:mi mathvariant="bold">a</m:mi></m:math>.
+From <link target-id="uid34"/>, the numerator coefficients in <m:math><m:mi mathvariant="bold">b</m:mi></m:math> are found.
+If <m:math><m:msub><m:mi mathvariant="bold">H</m:mi><m:mn>2</m:mn></m:msub></m:math> is singular <link target-id="bid1"/> and there are multiple
+solutions, a lower order problem can be posed. If there are no
+solutions, the methods of the next section must be used.</para>
+      <para id="id2260995">Note that any order numerator and denominator can be prescribed. If
+the filter is in fact an FIR filter, <m:math><m:mi mathvariant="bold">a</m:mi></m:math> is unity and <m:math><m:msup><m:mrow><m:mi mathvariant="bold">a</m:mi></m:mrow><m:mo>*</m:mo></m:msup></m:math> does not exist. Under these conditions, <link target-id="uid34"/> states
+that <m:math><m:mrow><m:msub><m:mi>b</m:mi><m:mi>n</m:mi></m:msub><m:mo>=</m:mo><m:msub><m:mi>h</m:mi><m:mi>n</m:mi></m:msub></m:mrow></m:math>, which is one of the cases of FIR frequency
+sampling covered in Section 3.1 of <link target-id="bid3"/>. Also note that there
+is no control over the stability of the filter designed by this
+method.</para>
+      <para id="id2261068">Although Prony's method, applied to the time-domain design
+problem here, is similar to the solution of the frequency-sampling
+IIR design problem, there are important differences. The
+inverse DFT is used to obtain the matrix in the frequency domain problem, which is
+cyclic convolution. Equation <link target-id="uid30"/> is noncyclic convolution and
+the <m:math><m:mrow><m:mi>K</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:math> terms of <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>, used to form <m:math><m:mi mathvariant="bold">H</m:mi></m:math>, result from a truncation
+of the infinitely long sequence.</para>
+      <section id="uid35">
+        <title>An Approximate Solution or the Least Equation Error Problem</title>
+        <para id="id2261132">In order to obtain better practical filter designs, the interpolation
+scheme of the previous section is extended to give an approximation design
+method <link target-id="bid3"/>. It should be noted at the outset that the method developed
+in this section minimizes an equation-error measure and not the usual
+frequency-response error measure.</para>
+        <para id="id2261147">The number of samples specified, <m:math><m:mrow><m:mi>L</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:math>, will be made larger than
+the number of filter coefficients, <m:math><m:mrow><m:mi>M</m:mi><m:mo>+</m:mo><m:mi>N</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:math>. This means that <m:math><m:msub><m:mi mathvariant="bold">H</m:mi><m:mn>2</m:mn></m:msub></m:math> is
+rectangular and, therefore, <link target-id=""/> cannot in general be satisfied. To
+formulate an approximation problem, a length-<m:math><m:mrow><m:mo>(</m:mo><m:mi>L</m:mi><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:math> error vector
+<m:math><m:mi>ε</m:mi></m:math> is introduced in <link target-id=""/> and <link target-id=""/> to give</para>
+        <equation id="uid36">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mfenced separators="" open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mi mathvariant="bold">b</m:mi>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mn mathvariant="bold">0</m:mn>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mo>=</m:mo>
+              <m:mfenced open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:msub>
+                        <m:mi mathvariant="bold">H</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mfenced open="[" close="]">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd>
+                      <m:mi mathvariant="bold">a</m:mi>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+              <m:mo>+</m:mo>
+              <m:mfenced open="[" close="]">
+                <m:mi>ε</m:mi>
+              </m:mfenced>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2261314"><link target-id="uid33"/> becomes</para>
+        <equation id="uid37">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi mathvariant="bold">h</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mo>-</m:mo>
+              <m:mi>ε</m:mi>
+              <m:mo>=</m:mo>
+              <m:mo>-</m:mo>
+              <m:msub>
+                <m:mi mathvariant="bold">H</m:mi>
+                <m:mn>2</m:mn>
+              </m:msub>
+              <m:msup>
+                <m:mrow>
+                  <m:mi mathvariant="bold">a</m:mi>
+                </m:mrow>
+                <m:mo>*</m:mo>
+              </m:msup>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2261376">where now <m:math><m:msub><m:mi mathvariant="bold">H</m:mi><m:mn>2</m:mn></m:msub></m:math> is rectangular with <m:math><m:mrow><m:mo>(</m:mo><m:mi>L</m:mi><m:mo>-</m:mo><m:mi>M</m:mi><m:mo>)</m:mo><m:mo>&gt;</m:mo><m:mi>N</m:mi></m:mrow></m:math>. Using the same
+methods as used to derive <link target-id="uid33"/>, the error <m:math><m:mi>ε</m:mi></m:math> is minimized in a
+least-squared error sense by the solution of the normal equations <link target-id="bid1"/></para>
+        <equation id="uid38">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msubsup>
+                <m:mi mathvariant="bold">H</m:mi>
+                <m:mn>2</m:mn>
+                <m:mi>T</m:mi>
+              </m:msubsup>
+              <m:msub>
+                <m:mi mathvariant="bold">h</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mo>-</m:mo>
+              <m:msubsup>
+                <m:mi mathvariant="bold">H</m:mi>
+                <m:mn>2</m:mn>
+                <m:mi>T</m:mi>
+              </m:msubsup>
+              <m:msub>
+                <m:mi mathvariant="bold">H</m:mi>
+                <m:mn>2</m:mn>
+              </m:msub>
+              <m:msup>
+                <m:mrow>
+                  <m:mi mathvariant="bold">a</m:mi>
+                </m:mrow>
+                <m:mo>*</m:mo>
+              </m:msup>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2261515">If the equations are not singular, the solution is</para>
+        <equation id="uid39">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msup>
+                <m:mrow>
+                  <m:mi mathvariant="bold">a</m:mi>
+                </m:mrow>
+                <m:mo>*</m:mo>
+              </m:msup>
+              <m:mo>=</m:mo>
+              <m:mo>-</m:mo>
+              <m:msup>
+                <m:mrow>
+                  <m:mo>[</m:mo>
+                  <m:msubsup>
+                    <m:mi mathvariant="bold">H</m:mi>
+                    <m:mn>2</m:mn>
+                    <m:mi>T</m:mi>
+                  </m:msubsup>
+                  <m:msub>
+                    <m:mi mathvariant="bold">H</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msub>
+                  <m:mo>]</m:mo>
+                </m:mrow>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:msubsup>
+                <m:mi mathvariant="bold">H</m:mi>
+                <m:mn>2</m:mn>
+                <m:mi>T</m:mi>
+              </m:msubsup>
+              <m:msub>
+                <m:mi mathvariant="bold">h</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2261608">If the normal equations are singular, the pseudo-inverse <link target-id="bid1"/>
+can be used to obtain a minimum norm or reduced order solution.</para>
+        <para id="id2261626">The numerator coefficients are found by the same techniques as before in
+<link target-id="uid34"/></para>
+        <equation id="uid40">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi mathvariant="bold">b</m:mi>
+              <m:mo>=</m:mo>
+              <m:msub>
+                <m:mi mathvariant="bold">H</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mi mathvariant="bold">a</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2261668">which results in the upper <m:math><m:mrow><m:mi>M</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:math> terms in <m:math><m:mi>ε</m:mi></m:math> being zero
+and the total squared equation error being minimum.</para>
+        <para id="id2261699">As is true for LS-error design of FIR filters, <link target-id="uid38"/> is often numerically
+ill-conditioned and <link target-id="uid39"/> should not be used to solve for <m:math><m:msup><m:mrow><m:mi mathvariant="bold">a</m:mi></m:mrow><m:mo>*</m:mo></m:msup></m:math>.
+Special algorithms such as those used by Matlab and LINPACK
+<link target-id="bid4"/>, <link target-id="bid5"/> should be employed.</para>
+        <para id="id2261744">Various modifications can be made to the form of Prony's
+method presented. After the denominator is found by minimizing
+the equation error, the numerator can be found by minimizing the
+solution error. It is possible to mix the exact and approximate
+methods. The details can be found in <link target-id="bid3"/>, <link target-id="bid26"/>, <link target-id="bid27"/>.</para>
+        <para id="id2261768">Several modifications to Prony's method have been made to
+use it to minimize the solution error. Most of these iteratively
+minimize a weighted-equation error with Prony's method and update
+the weights from the previous determination of <m:math><m:mi>a</m:mi></m:math><link target-id="bid28"/>, <link target-id="bid29"/>.</para>
+        <para id="id2261795">If an LS-error, time-domain approximation is the desired
+result, a minimization technique can be applied directly to the
+solution error. The most successful method seems to be the Gauss-
+Newton algorithm with a step-size control. This combined with
+Prony's method to find starting parameters is an effective design
+tool.</para>
+        
+      </section>
+    </section>
+  </content>
+  <bib:file>
+    <bib:entry id="bid0">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Berchin, Greg</bib:author>
+        <bib:title>Precise Filter Design</bib:title>
+        <bib:journal>IEEE Signal Processing Magazine</bib:journal>
+        <bib:year>2007</bib:year>
+<!--optional fields-->
+        <bib:volume>24</bib:volume>
+        <bib:number>1</bib:number>
+        <bib:pages>137–139</bib:pages>
+        <bib:month>January</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid25">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Burrus, C. S. and Parks, T. W.</bib:author>
+        <bib:title>Time Domain Design of Recursive Digital Filters</bib:title>
+        <bib:journal>IEEE Transactions on Audio and Electroacoustics</bib:journal>
+        <bib:year>1970</bib:year>
+<!--optional fields-->
+        <bib:volume>18</bib:volume>
+        <bib:number>2</bib:number>
+        <bib:pages>137–141</bib:pages>
+        <bib:month>June</bib:month>
+        <bib:note>also in IEEE Press DSP Reprints, 1972</bib:note>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid26">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Brophy, F. and Salazar, A. C.</bib:author>
+        <bib:title>Considerations of the Pade Approximant Technique in the Synthesis of Recursive Digital Filters</bib:title>
+        <bib:journal>IEEE Transactions on Audio and Electroacoustics</bib:journal>
+        <bib:year>1973</bib:year>
+<!--optional fields-->
+        <bib:volume>21</bib:volume>
+        <bib:number/>
+        <bib:pages>500–505</bib:pages>
+        <bib:month/>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid27">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Brophy, F. and Salazar, A. C.</bib:author>
+        <bib:title>Recursive digital filter Systhesis in the Time Domain</bib:title>
+        <bib:journal>IEEE Transactions on Acoustics, Speech, and Signal Processing</bib:journal>
+        <bib:year>1974</bib:year>
+<!--optional fields-->
+        <bib:volume>22</bib:volume>
+        <bib:number/>
+        <bib:pages>45–55</bib:pages>
+        <bib:month/>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid19">
+      <bib:inproceedings>
+<!--required fields-->
+        <bib:author>Burrus, C. Sidney and Vargas, Ricardo A.</bib:author>
+        <bib:title>The Direct Design of Recursive or IIR Digital filters</bib:title>
+        <bib:booktitle>Proceedings of International Symposium on Communications, Control, and Signal Processing</bib:booktitle>
+        <bib:year>2008</bib:year>
+<!--optional fields-->
+        <bib:editor/>
+        <bib:number/>
+        <bib:series/>
+        <bib:pages/>
+        <bib:address>ISCCSP-08, Malta</bib:address>
+        <bib:month>March</bib:month>
+        <bib:organization/>
+        <bib:publisher/>
+        <bib:note/>
+      </bib:inproceedings>
+    </bib:entry>
+    <bib:entry id="bid18">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Cuyt, Annie and Wuytack, Luc</bib:author>
+        <bib:title>Nonlinear Methods in Numerical Analysis</bib:title>
+        <bib:publisher>Elsevier</bib:publisher>
+        <bib:year>1987</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Amsterdam</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note>North–Holland Mathematics Studies: 136</bib:note>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid5">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Dongarra, J. J. and Bunch, J. R. and Moler, C. B. and Stewart, G. W.</bib:author>
+        <bib:title>LINPACK User's Guide</bib:title>
+        <bib:publisher>SIAM</bib:publisher>
+        <bib:year>1979</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Philadelphia, PA</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid22">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Deczky, A. G.</bib:author>
+        <bib:title>Equiripple and Minimum Chebyshev Approximations for Recurxive Digital Filters</bib:title>
+        <bib:journal>IEEE Transactions on Acoustics, Speech, and Signal Processing</bib:journal>
+        <bib:year>1972</bib:year>
+<!--optional fields-->
+        <bib:volume>20</bib:volume>
+        <bib:number/>
+        <bib:pages>257–263</bib:pages>
+        <bib:month/>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid28">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Evans, A. G. and Fischl, R.</bib:author>
+        <bib:title>Optimal Least Squares Time-Domain Systhesis of Recursive Digital Filters</bib:title>
+        <bib:journal>IEEE Transactions on Audio and Electroacoustics</bib:journal>
+        <bib:year>1973</bib:year>
+<!--optional fields-->
+        <bib:volume>21</bib:volume>
+        <bib:number/>
+        <bib:pages>61–65</bib:pages>
+        <bib:month/>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid14">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Garcia, C. B. and Zangwill, W. I.</bib:author>
+        <bib:title>Pathways to Solutions, Fixed Points, and Equilibria</bib:title>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1981</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Englewood Cliffs, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid10">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Jackson, L. B.</bib:author>
+        <bib:title>Frequency-Domain Steiglitz-McBride Method for Least-Squares IIR Filter Design, ARMA Modeling, and Periodogram Smoothing</bib:title>
+        <bib:journal>IEEE Signal Processing Letters</bib:journal>
+        <bib:year>2008</bib:year>
+<!--optional fields-->
+        <bib:volume>15</bib:volume>
+        <bib:number/>
+        <bib:pages>49–52</bib:pages>
+        <bib:month/>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid17">
+      <bib:inproceedings>
+<!--required fields-->
+        <bib:author>Kumaresan, R. and Burrus, C. S.</bib:author>
+        <bib:title>Fitting a Pole-Zero Filter Model to Arbitrary Frequency Response Samples</bib:title>
+        <bib:booktitle>Proceedings of the IEEE International Conference on Acoustics, Speech, and Signal Processing</bib:booktitle>
+        <bib:year>1991</bib:year>
+<!--optional fields-->
+        <bib:editor/>
+        <bib:number/>
+        <bib:series/>
+        <bib:pages>1649–1652</bib:pages>
+        <bib:address>IEEE ICASSP-91, Toronto</bib:address>
+        <bib:month>May 14–17</bib:month>
+        <bib:organization/>
+        <bib:publisher/>
+        <bib:note/>
+      </bib:inproceedings>
+    </bib:entry>
+    <bib:entry id="bid12">
+      <bib:inproceedings>
+<!--required fields-->
+        <bib:author>Kobayashi, Takao and Imai, Satoshi</bib:author>
+        <bib:title>Complex Chebyshev Approximation for IIR Digital Filters in Iterative WLS Technique</bib:title>
+        <bib:booktitle>Proceedings of the ICASSP-90</bib:booktitle>
+        <bib:year>1990</bib:year>
+<!--optional fields-->
+        <bib:editor/>
+        <bib:number/>
+        <bib:series/>
+        <bib:pages>13.D3.12</bib:pages>
+        <bib:address>Albuquerque, NM</bib:address>
+        <bib:month>April</bib:month>
+        <bib:organization/>
+        <bib:publisher/>
+        <bib:note/>
+      </bib:inproceedings>
+    </bib:entry>
+    <bib:entry id="bid7">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Kobayashi, Takao and Imai, Satoshi</bib:author>
+        <bib:title>Design of IIR Digital Filters with Arbitrary Log Magnitude Function by WLS Techniques</bib:title>
+        <bib:journal>IEEE Trans. on ASSP</bib:journal>
+        <bib:year>1990</bib:year>
+<!--optional fields-->
+        <bib:volume>38</bib:volume>
+        <bib:number>2</bib:number>
+        <bib:pages>247–252</bib:pages>
+        <bib:month>February</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid20">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Levy, E. C.</bib:author>
+        <bib:title>Complex-Curve Fitting</bib:title>
+        <bib:journal>IRE Transactions on Automatic control</bib:journal>
+        <bib:year>1959</bib:year>
+<!--optional fields-->
+        <bib:volume>AC-4</bib:volume>
+        <bib:number>1</bib:number>
+        <bib:pages>37–43</bib:pages>
+        <bib:month>May</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid1">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Lawson, C. L. and Hanson, R. J.</bib:author>
+        <bib:title>Solving Least Squares Problems</bib:title>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1974</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Inglewood Cliffs, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid16">
+      <bib:article>
+<!--required fields-->
+        <bib:author>McClellan, J. H. and Lee, D. W.</bib:author>
+        <bib:title>Exact Equivalence of the Steiglitz–McBride Iteration and IQML</bib:title>
+        <bib:journal>IEEE Transactions on Signal Processing</bib:journal>
+        <bib:year>1991</bib:year>
+<!--optional fields-->
+        <bib:volume>39</bib:volume>
+        <bib:number>2</bib:number>
+        <bib:pages>509–512</bib:pages>
+        <bib:month>February</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid4">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Moler, Cleve and Little, John and Bangert, Steve</bib:author>
+        <bib:title>Matlab User's Guide</bib:title>
+        <bib:publisher>The MathWorks, Inc.</bib:publisher>
+        <bib:year>1989</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>South Natick, MA</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid3">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Parks, T. W. and Burrus, C. S.</bib:author>
+        <bib:title>Digital Filter Design</bib:title>
+        <bib:publisher>John Wiley &amp; Sons</bib:publisher>
+        <bib:year>1987</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid15">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Pintelon, Rik</bib:author>
+        <bib:title>Comments on Design of IIR Filters in the Complex Domain</bib:title>
+        <bib:journal>IEEE Transactions on Signal Processing</bib:journal>
+        <bib:year>1991</bib:year>
+<!--optional fields-->
+        <bib:volume>39</bib:volume>
+        <bib:number>6</bib:number>
+        <bib:pages>1454–1455</bib:pages>
+        <bib:month>June</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid24">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Rabiner, L. R. and Gold, B.</bib:author>
+        <bib:title>Theory and Application of Digital Signal Processing</bib:title>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1975</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Englewood Cliffs, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid13">
+      <bib:inproceedings>
+<!--required fields-->
+        <bib:author>Stonick, V. L. and Alexander, S. T.</bib:author>
+        <bib:title>Global Optimal IIR Filter Design and ARMA Estimation Using Homotopy Continuation Methods</bib:title>
+        <bib:booktitle>Proceedings of the ICASSP-90</bib:booktitle>
+        <bib:year>1990</bib:year>
+<!--optional fields-->
+        <bib:editor/>
+        <bib:number/>
+        <bib:series/>
+        <bib:pages>13.D3.13</bib:pages>
+        <bib:address>Albuquerque, NM</bib:address>
+        <bib:month>April</bib:month>
+        <bib:organization/>
+        <bib:publisher/>
+        <bib:note/>
+      </bib:inproceedings>
+    </bib:entry>
+    <bib:entry id="bid9">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Shaw, Arnab K.</bib:author>
+        <bib:title>Optimal Design of Digital IIR Filters by Model-Fitting Frequency Response Data</bib:title>
+        <bib:journal>IEEE Transactions on Circuits and Systems–II</bib:journal>
+        <bib:year>1995</bib:year>
+<!--optional fields-->
+        <bib:volume>42</bib:volume>
+        <bib:number/>
+        <bib:pages>702–710</bib:pages>
+        <bib:month>November</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid8">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Sanathanan, C. K. and Koerner, J.</bib:author>
+        <bib:title>Transfer Function Synthesis as a Ratio of Two Complex Polynomials</bib:title>
+        <bib:journal>IEEE Transactions on Automatic Control</bib:journal>
+        <bib:year>1963</bib:year>
+<!--optional fields-->
+        <bib:volume>8</bib:volume>
+        <bib:number/>
+        <bib:pages>56–58</bib:pages>
+        <bib:month>January</bib:month>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid21">
+      <bib:phdthesis>
+<!--required fields-->
+        <bib:author>Smith, Julius O.</bib:author>
+        <bib:title>Techniques for Digital Filter Design and System Identification with Application to the Violin</bib:title>
+        <bib:school>EE Dept., Stanford University</bib:school>
+        <bib:year>1983</bib:year>
+<!--optional fields-->
+        <bib:type>Ph. D. Thesis</bib:type>
+        <bib:address/>
+        <bib:month>June</bib:month>
+        <bib:note>IIR filter design on page 50</bib:note>
+      </bib:phdthesis>
+    </bib:entry>
+    <bib:entry id="bid6">
+      <bib:phdthesis>
+<!--required fields-->
+        <bib:author>Soewito, Atmadji W.</bib:author>
+        <bib:title>Least Square Digital Filter Design in the Frequency Domain</bib:title>
+        <bib:school>Rice University</bib:school>
+        <bib:year>1990</bib:year>
+<!--optional fields-->
+        <bib:type>Ph. D. Thesis</bib:type>
+        <bib:address>ECE Department, Houston, TX 77251</bib:address>
+        <bib:month>December</bib:month>
+        <bib:note/>
+      </bib:phdthesis>
+    </bib:entry>
+    <bib:entry id="bid29">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Steiglitz, K.</bib:author>
+        <bib:title>Computer-Aided Design of Recursive Digital Filters</bib:title>
+        <bib:journal>IEEE Transactions on Audio and Electroacoustics</bib:journal>
+        <bib:year>1970</bib:year>
+<!--optional fields-->
+        <bib:volume>18</bib:volume>
+        <bib:number/>
+        <bib:pages>123–129</bib:pages>
+        <bib:month/>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid11">
+      <bib:phdthesis>
+<!--required fields-->
+        <bib:author>Vargas, Ricardo Arturo</bib:author>
+        <bib:title>Iterative Design of <!--Math is not currently allowed within BibTeXML.--> Digital Filters</bib:title>
+        <bib:school>Rice University</bib:school>
+        <bib:year>2008</bib:year>
+<!--optional fields-->
+        <bib:type>Ph. D. Thesis</bib:type>
+        <bib:address>ECE Department, Houston, TX 77251</bib:address>
+        <bib:month>May</bib:month>
+        <bib:note/>
+      </bib:phdthesis>
+    </bib:entry>
+    <bib:entry id="bid23">
+      <bib:inproceedings>
+<!--required fields-->
+        <bib:author>Vargas, Ricardo A. and Burrus, C. Sidney</bib:author>
+        <bib:title>On the Design of <!--Math is not currently allowed within BibTeXML.--> IIR Filters with Arbitrary Frequency Response</bib:title>
+        <bib:booktitle>Proceedings of IEEE International Conference on Acoustics Speech and Signal Processing</bib:booktitle>
+        <bib:year>2001</bib:year>
+<!--optional fields-->
+        <bib:editor/>
+        <bib:number/>
+        <bib:series/>
+        <bib:pages/>
+        <bib:address>ICASSP-01, Salt Lake City</bib:address>
+        <bib:month>May 7-11</bib:month>
+        <bib:organization/>
+        <bib:publisher/>
+        <bib:note/>
+      </bib:inproceedings>
+    </bib:entry>
+  </bib:file>
+</document>

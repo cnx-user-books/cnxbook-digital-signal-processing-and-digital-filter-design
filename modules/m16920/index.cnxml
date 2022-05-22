@@ -1,0 +1,1632 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:bib="http://bibtexml.sf.net/">
+  <title>Continuous-Time Signals</title>
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m16920</md:content-id>
+  <md:title>Continuous-Time Signals</md:title>
+  <md:abstract/>
+  <md:uuid>cdabc60e-a255-468b-8935-24beddcbf588</md:uuid>
+</metadata>
+  <content>
+    <para id="id2255546">Signals occur in a wide range of physical phenomenon. They might be
+human speech, blood pressure variations with time, seismic waves,
+radar and sonar signals, pictures or images, stress and strain
+signals in a building structure, stock market prices, a city's
+population, or temperature across a plate. These signals are often
+modeled or represented by a real or complex valued mathematical
+function of one or more variables. For example, speech is modeled
+by a function representing air pressure varying with time. The
+function is acting as a mathematical analogy to the speech signal
+and, therefore, is called an <emphasis>analog</emphasis> signal. For these
+signals, the independent variable is time and it changes
+continuously so that the term <emphasis>continuous-time</emphasis> signal is also
+used. In our discussion, we talk of the mathematical function as
+the signal even though it is really a model or representation of the
+physical signal.</para>
+    <para id="id2255575">The description of signals in terms of their sinusoidal frequency
+content has proven to be one of the most powerful tools of
+continuous and discrete-time signal description, analysis, and
+processing. For that reason, we will start the discussion of
+signals with a development of Fourier transform methods. We will
+first review the continuous-time methods of the Fourier series (FS),
+the Fourier transform or integral (FT), and the Laplace transform
+(LT). Next the discrete-time methods will be developed in more
+detail with the discrete Fourier transform (DFT) applied to finite
+length signals followed by the discrete-time Fourier transform
+(DTFT) for infinitely long signals and ending with the Z-transform
+which allows the powerful tools of complex variable theory to be
+applied.</para>
+    <para id="id2255592">More recently, a new tool has been developed for the analysis of signals.
+Wavelets and wavelet transforms <link target-id="bid0"/>, <link target-id="bid1"/>, <link target-id="bid2"/>, <link target-id="bid3"/>, <link target-id="bid4"/> are
+another more flexible expansion system that also can describe continuous
+and discrete-time, finite or infinite duration signals. We will very
+briefly introduce the ideas behind wavelet-based signal analysis.</para>
+    <section id="uid1">
+      <title>The Fourier Series</title>
+      <para id="id2255637">The problem of expanding a finite length signal in a trigonometric series
+was posed and studied in the late 1700's by renowned mathematicians such
+as Bernoulli, d'Alembert, Euler, Lagrange, and Gauss. Indeed, what we now
+call the Fourier series and the formulas for the coefficients were used by
+Euler in 1780. However, it was the presentation in 1807 and the paper in
+1822 by Fourier stating that an arbitrary function could be represented by
+a series of sines and cosines that brought the problem to everyone's
+attention and started serious theoretical investigations and practical
+applications that continue to this day
+<link target-id="bid5"/>, <link target-id="bid6"/>, <link target-id="bid7"/>, <link target-id="bid8"/>, <link target-id="bid9"/>, <link target-id="bid10"/>. The theoretical work
+has been at the center of analysis and the practical applications have
+been of major significance in virtually every field of quantitative
+science and technology. For these reasons and others, the Fourier series
+is worth our serious attention in a study of signal processing.</para>
+      <section id="uid3">
+        <title>Definition of the Fourier Series</title>
+        <para id="id2255694">We assume that the signal <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> to be analyzed is well described by a
+real or complex valued function of a real variable <m:math><m:mi>t</m:mi></m:math> defined over a
+finite interval <m:math><m:mrow><m:mo>{</m:mo><m:mn>0</m:mn><m:mo>≤</m:mo><m:mi>t</m:mi><m:mo>≤</m:mo><m:mi>T</m:mi><m:mo>}</m:mo></m:mrow></m:math>. The trigonometric series expansion
+of <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> is given by</para>
+        <equation id="uid4"><m:math mode="display">
+            <m:mrow>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mrow>
+                  <m:mi>a</m:mi>
+                  <m:mo>(</m:mo>
+                  <m:mn>0</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mn>2</m:mn>
+              </m:mfrac>
+              <m:mo>+</m:mo>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>k</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+                <m:mi>∞</m:mi>
+              </m:munderover>
+              <m:mi>a</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mn>2</m:mn>
+                    <m:mi>π</m:mi>
+                  </m:mrow>
+                  <m:mi>T</m:mi>
+                </m:mfrac>
+                <m:mi>k</m:mi>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>+</m:mo>
+              <m:mi>b</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">sin</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mn>2</m:mn>
+                    <m:mi>π</m:mi>
+                  </m:mrow>
+                  <m:mi>T</m:mi>
+                </m:mfrac>
+                <m:mi>k</m:mi>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256134">where <m:math><m:mrow><m:msub><m:mi>x</m:mi><m:mi>k</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>c</m:mi><m:mi>o</m:mi><m:mi>s</m:mi><m:mrow><m:mo>(</m:mo><m:mn>2</m:mn><m:mi>π</m:mi><m:mi>k</m:mi><m:mi>t</m:mi><m:mo>/</m:mo><m:mi>T</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> and <m:math><m:mrow><m:msub><m:mi>y</m:mi><m:mi>k</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>s</m:mi><m:mi>i</m:mi><m:mi>n</m:mi><m:mrow><m:mo>(</m:mo><m:mn>2</m:mn><m:mi>π</m:mi><m:mi>k</m:mi><m:mi>t</m:mi><m:mo>/</m:mo><m:mi>T</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> are the
+basis functions for the expansion. The energy or power in an electrical,
+mechanical, etc. system is a function of the square of voltage, current,
+velocity, pressure, etc. For this reason, the natural setting for a
+representation of signals is the Hilbert space of <m:math><m:mrow><m:msup><m:mi>L</m:mi><m:mn>2</m:mn></m:msup><m:mrow><m:mo>[</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mi>T</m:mi><m:mo>]</m:mo></m:mrow></m:mrow></m:math>. This modern
+formulation of the problem is developed in <link target-id="bid11"/>, <link target-id="bid7"/>. The
+sinusoidal basis functions in the trigonometric expansion form a complete
+orthogonal set in <m:math><m:mrow><m:msup><m:mi>L</m:mi><m:mn>2</m:mn></m:msup><m:mrow><m:mo>[</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mi>T</m:mi><m:mo>]</m:mo></m:mrow></m:mrow></m:math>. The orthogonality is easily seen from inner
+products</para>
+        <equation id="uid5">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mo form="prefix">cos</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                    </m:mrow>
+                    <m:mi>T</m:mi>
+                  </m:mfrac>
+                  <m:mi>k</m:mi>
+                  <m:mi>t</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mspace width="0.277778em"/>
+                <m:mo>,</m:mo>
+                <m:mspace width="0.277778em"/>
+                <m:mo form="prefix">cos</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                    </m:mrow>
+                    <m:mi>T</m:mi>
+                  </m:mfrac>
+                  <m:mi>ℓ</m:mi>
+                  <m:mi>t</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:msubsup>
+                <m:mo>∫</m:mo>
+                <m:mn>0</m:mn>
+                <m:mi>T</m:mi>
+              </m:msubsup>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mo form="prefix">cos</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                    </m:mrow>
+                    <m:mi>T</m:mi>
+                  </m:mfrac>
+                  <m:mi>k</m:mi>
+                  <m:mi>t</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mspace width="0.277778em"/>
+                <m:mo form="prefix">cos</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                    </m:mrow>
+                    <m:mi>T</m:mi>
+                  </m:mfrac>
+                  <m:mi>ℓ</m:mi>
+                  <m:mi>t</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mi>d</m:mi>
+              <m:mi>t</m:mi>
+              <m:mo>=</m:mo>
+              <m:mi>δ</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>-</m:mo>
+                <m:mi>ℓ</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256475">and</para>
+        <equation id="uid6">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mo form="prefix">cos</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                    </m:mrow>
+                    <m:mi>T</m:mi>
+                  </m:mfrac>
+                  <m:mi>k</m:mi>
+                  <m:mi>t</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mspace width="0.277778em"/>
+                <m:mo>,</m:mo>
+                <m:mspace width="0.277778em"/>
+                <m:mo form="prefix">sin</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                    </m:mrow>
+                    <m:mi>T</m:mi>
+                  </m:mfrac>
+                  <m:mi>ℓ</m:mi>
+                  <m:mi>t</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:msubsup>
+                <m:mo>∫</m:mo>
+                <m:mn>0</m:mn>
+                <m:mi>T</m:mi>
+              </m:msubsup>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mo form="prefix">cos</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                    </m:mrow>
+                    <m:mi>T</m:mi>
+                  </m:mfrac>
+                  <m:mi>k</m:mi>
+                  <m:mi>t</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mspace width="0.277778em"/>
+                <m:mo form="prefix">sin</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                    </m:mrow>
+                    <m:mi>T</m:mi>
+                  </m:mfrac>
+                  <m:mi>ℓ</m:mi>
+                  <m:mi>t</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mi>d</m:mi>
+              <m:mi>t</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256631">where <m:math><m:mrow><m:mi>δ</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> is the Kronecker delta function with
+<m:math><m:mrow><m:mi>δ</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow></m:math> and <m:math><m:mrow><m:mi>δ</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>≠</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math>. Because of this, the <m:math><m:mi>k</m:mi></m:math>th
+coefficients in the series can be found by taking the inner product of
+<m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> with the <m:math><m:mi>k</m:mi></m:math>th basis functions. This gives for the coefficients</para>
+        <equation id="uid7">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>a</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mn>2</m:mn>
+                <m:mi>T</m:mi>
+              </m:mfrac>
+              <m:msubsup>
+                <m:mo>∫</m:mo>
+                <m:mn>0</m:mn>
+                <m:mi>T</m:mi>
+              </m:msubsup>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mn>2</m:mn>
+                    <m:mi>π</m:mi>
+                  </m:mrow>
+                  <m:mi>T</m:mi>
+                </m:mfrac>
+                <m:mi>k</m:mi>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mi>d</m:mi>
+              <m:mi>t</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256811">and</para>
+        <equation id="uid8">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>b</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mn>2</m:mn>
+                <m:mi>T</m:mi>
+              </m:mfrac>
+              <m:msubsup>
+                <m:mo>∫</m:mo>
+                <m:mn>0</m:mn>
+                <m:mi>T</m:mi>
+              </m:msubsup>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">sin</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mn>2</m:mn>
+                    <m:mi>π</m:mi>
+                  </m:mrow>
+                  <m:mi>T</m:mi>
+                </m:mfrac>
+                <m:mi>k</m:mi>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mi>d</m:mi>
+              <m:mi>t</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256893">where <m:math><m:mi>T</m:mi></m:math> is the time interval of interest or the period of
+a periodic signal. Because of the orthogonality of the basis functions, a
+finite Fourier series formed by truncating the infinite series is an
+optimal least squared error approximation to <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>. If the finite series
+is defined by</para>
+        <equation id="uid9"><m:math mode="display">
+            <m:mrow>
+              <m:mover accent="true">
+                <m:mi>x</m:mi>
+                <m:mo>^</m:mo>
+              </m:mover>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mrow>
+                  <m:mi>a</m:mi>
+                  <m:mo>(</m:mo>
+                  <m:mn>0</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mn>2</m:mn>
+              </m:mfrac>
+              <m:mo>+</m:mo>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>k</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+                <m:mi>N</m:mi>
+              </m:munderover>
+              <m:mi>a</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mn>2</m:mn>
+                    <m:mi>π</m:mi>
+                  </m:mrow>
+                  <m:mi>T</m:mi>
+                </m:mfrac>
+                <m:mi>k</m:mi>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>+</m:mo>
+              <m:mi>b</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">sin</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mn>2</m:mn>
+                    <m:mi>π</m:mi>
+                  </m:mrow>
+                  <m:mi>T</m:mi>
+                </m:mfrac>
+                <m:mi>k</m:mi>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>,</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257059">the squared error is</para>
+        <equation id="uid10">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>ε</m:mi>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mi>T</m:mi>
+              </m:mfrac>
+              <m:msubsup>
+                <m:mo>∫</m:mo>
+                <m:mn>0</m:mn>
+                <m:mi>T</m:mi>
+              </m:msubsup>
+              <m:msup>
+                <m:mrow>
+                  <m:mo>|</m:mo>
+                  <m:mi>x</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>t</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mover accent="true">
+                    <m:mi>x</m:mi>
+                    <m:mo>^</m:mo>
+                  </m:mover>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>t</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>|</m:mo>
+                </m:mrow>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mi>d</m:mi>
+              <m:mi>t</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257140">which is minimized over all <m:math><m:mrow><m:mi>a</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>b</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math> by
+<link target-id="uid7"/> and <link target-id="uid8"/>. This is an extraordinarily important
+property.</para>
+        <para id="id2257187">It follows that if <m:math><m:mrow><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>∈</m:mo><m:msup><m:mi>L</m:mi><m:mn>2</m:mn></m:msup><m:mrow><m:mo>[</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mi>T</m:mi><m:mo>]</m:mo></m:mrow></m:mrow></m:math>, then the series converges to
+<m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> in the sense that <m:math><m:mrow><m:mi>ε</m:mi><m:mo>→</m:mo><m:mn>0</m:mn></m:mrow></m:math> as <m:math><m:mrow><m:mi>N</m:mi><m:mo>→</m:mo><m:mi>∞</m:mi></m:mrow></m:math><link target-id="bid11"/>, <link target-id="bid7"/>. The question of point-wise convergence is
+more difficult. A sufficient condition that is adequate for most
+application states: If <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:math> is bounded, is piece-wise continuous, and
+has no more than a finite number of maxima over an interval, the Fourier
+series converges point-wise to <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:math> at all points of continuity and to
+the arithmetic mean at points of discontinuities. If <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:math> is
+continuous, the series converges uniformly at all points
+<link target-id="bid7"/>, <link target-id="bid5"/>, <link target-id="bid6"/>.</para>
+        <para id="id2257356">A useful condition <link target-id="bid11"/>, <link target-id="bid7"/> states that if <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>
+and its derivatives through the <m:math><m:mi>q</m:mi></m:math>th derivative are defined and have
+bounded variation, the Fourier coefficients <m:math><m:mrow><m:mi>a</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>b</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math>
+asymptotically drop off at least as fast as <m:math><m:mfrac><m:mn>1</m:mn><m:msup><m:mi>k</m:mi><m:mrow><m:mi>q</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:msup></m:mfrac></m:math> as <m:math><m:mrow><m:mi>k</m:mi><m:mo>→</m:mo><m:mi>∞</m:mi></m:mrow></m:math>. This ties global rates of convergence of the
+coefficients to local smoothness conditions of the function.</para>
+        <para id="id2257470">The form of the Fourier series using both sines and cosines makes
+determination of the peak value or of the location of a particular
+frequency term difficult. A different form that explicitly gives the peak
+value of the sinusoid of that frequency and the location or phase shift of
+that sinusoid is given by</para>
+        <equation id="uid11"><m:math mode="display">
+            <m:mrow>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mrow>
+                  <m:mi>d</m:mi>
+                  <m:mo>(</m:mo>
+                  <m:mn>0</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mn>2</m:mn>
+              </m:mfrac>
+              <m:mo>+</m:mo>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>k</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+                <m:mi>∞</m:mi>
+              </m:munderover>
+              <m:mi>d</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mn>2</m:mn>
+                    <m:mi>π</m:mi>
+                  </m:mrow>
+                  <m:mi>T</m:mi>
+                </m:mfrac>
+                <m:mi>k</m:mi>
+                <m:mi>t</m:mi>
+                <m:mo>+</m:mo>
+                <m:mi>θ</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>k</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257579">and, using Euler's relation and the usual electrical
+engineering notation of <m:math><m:mrow><m:mi>j</m:mi><m:mo>=</m:mo><m:msqrt><m:mrow><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:msqrt></m:mrow></m:math>,</para>
+        <equation id="uid12">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mi>x</m:mi>
+                </m:mrow>
+              </m:msup>
+              <m:mo>=</m:mo>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>x</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>+</m:mo>
+              <m:mi>j</m:mi>
+              <m:mo form="prefix">sin</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>x</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>,</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257660">the complex exponential form is obtained as</para>
+        <equation id="uid13"><m:math mode="display">
+            <m:mrow>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>k</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mo>-</m:mo>
+                  <m:mi>∞</m:mi>
+                </m:mrow>
+                <m:mi>∞</m:mi>
+              </m:munderover>
+              <m:mi>c</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                    </m:mrow>
+                    <m:mi>T</m:mi>
+                  </m:mfrac>
+                  <m:mi>k</m:mi>
+                  <m:mi>t</m:mi>
+                </m:mrow>
+              </m:msup>
+            </m:mrow>
+          </m:math>
+        
+</equation>
+        <para id="id2257744">where</para>
+        <equation id="uid14">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>c</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>=</m:mo>
+              <m:mi>a</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>+</m:mo>
+              <m:mi>j</m:mi>
+              <m:mspace width="0.166667em"/>
+              <m:mi>b</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257800">The coefficient equation is</para>
+        <equation id="uid15">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>c</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mi>T</m:mi>
+              </m:mfrac>
+              <m:msubsup>
+                <m:mo>∫</m:mo>
+                <m:mn>0</m:mn>
+                <m:mi>T</m:mi>
+              </m:msubsup>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                    </m:mrow>
+                    <m:mi>T</m:mi>
+                  </m:mfrac>
+                  <m:mi>k</m:mi>
+                  <m:mi>t</m:mi>
+                </m:mrow>
+              </m:msup>
+              <m:mi>d</m:mi>
+              <m:mi>t</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257889">The coefficients in these three forms are related by</para>
+        <equation id="uid16">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msup>
+                <m:mrow>
+                  <m:mo>|</m:mo>
+                  <m:mi>d</m:mi>
+                  <m:mo>|</m:mo>
+                </m:mrow>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mo>=</m:mo>
+              <m:msup>
+                <m:mrow>
+                  <m:mo>|</m:mo>
+                  <m:mi>c</m:mi>
+                  <m:mo>|</m:mo>
+                </m:mrow>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mo>=</m:mo>
+              <m:msup>
+                <m:mi>a</m:mi>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mo>+</m:mo>
+              <m:msup>
+                <m:mi>b</m:mi>
+                <m:mn>2</m:mn>
+              </m:msup>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257955">and</para>
+        <equation id="uid17">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>θ</m:mi>
+              <m:mo>=</m:mo>
+              <m:mi>a</m:mi>
+              <m:mi>r</m:mi>
+              <m:mi>g</m:mi>
+              <m:mrow>
+                <m:mo>{</m:mo>
+                <m:mi>c</m:mi>
+                <m:mo>}</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:msup>
+                <m:mo form="prefix">tan</m:mo>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mfrac>
+                  <m:mi>b</m:mi>
+                  <m:mi>a</m:mi>
+                </m:mfrac>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258018">It is easier to evaluate a signal in terms of <m:math><m:mrow><m:mi>c</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math> or <m:math><m:mrow><m:mi>d</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math> and
+<m:math><m:mrow><m:mi>θ</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math> than in terms of <m:math><m:mrow><m:mi>a</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>b</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math>. The first two are polar
+representation of a complex value and the last is rectangular. The
+exponential form is easier to work with mathematically.</para>
+        <para id="id2258111">Although the function to be expanded is defined only over a specific
+finite region, the series converges to a function that is defined over the
+real line and is periodic. It is equal to the original function over the
+region of definition and is a periodic extension outside of the region.
+Indeed, one could artificially extend the given function at the outset and
+then the expansion would converge everywhere.</para>
+      </section>
+      <section id="uid18">
+        <title>A Geometric View</title>
+        <para id="id2258128">It can be very helpful to develop a geometric view of the Fourier series
+where <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> is considered to be a vector and the basis functions are the
+coordinate or basis vectors. The coefficients become the projections of
+<m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> on the coordinates. The ideas of a measure of distance, size, and
+orthogonality are important and the definition of error is easy to
+picture. This is done in <link target-id="bid11"/>, <link target-id="bid7"/>, <link target-id="bid12"/> using Hilbert space
+methods.</para>
+      </section>
+      <section id="uid19">
+        <title>Properties of the Fourier Series</title>
+        <para id="id2258196">The properties of the Fourier series are important in applying it to signal
+analysis and to interpreting it. The main properties are given here
+using the notation that the Fourier series of a real valued function <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> over <m:math><m:mrow><m:mo>{</m:mo><m:mn>0</m:mn><m:mo>≤</m:mo><m:mi>t</m:mi><m:mo>≤</m:mo><m:mi>T</m:mi><m:mo>}</m:mo></m:mrow></m:math> is given by <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mo>=</m:mo><m:mi>c</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mover accent="true"><m:mi>x</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>
+denotes the periodic extensions of <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>.</para>
+        <list id="id2258322" list-type="enumerated"><item id="uid20">Linear: <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>+</m:mo><m:mi>y</m:mi><m:mo>}</m:mo><m:mo>=</m:mo><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>}</m:mo><m:mo>+</m:mo><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>y</m:mi><m:mo>}</m:mo></m:mrow></m:math>
+<newline/>
+Idea of superposition. Also scalability: <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>a</m:mi><m:mi>x</m:mi><m:mo>}</m:mo><m:mo>=</m:mo><m:mi>a</m:mi><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>}</m:mo></m:mrow></m:math></item>
+          <item id="uid21">Extensions of <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>: <m:math><m:mrow><m:mover accent="true"><m:mi>x</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mover accent="true"><m:mi>x</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>+</m:mo><m:mi>T</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>
+<newline/>
+<m:math><m:mrow><m:mover accent="true"><m:mi>x</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is periodic.
+</item>
+          <item id="uid22">Even and Odd Parts: <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>u</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>+</m:mo><m:mi>j</m:mi><m:mi>v</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>C</m:mi><m:mrow><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>A</m:mi><m:mrow><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mi>j</m:mi><m:mi>B</m:mi><m:mrow><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mrow><m:mo>|</m:mo><m:mi>C</m:mi><m:mrow><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow><m:mo>|</m:mo><m:mspace width="0.166667em"/></m:mrow><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mi>θ</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:msup></m:mrow></m:math><table id="id2258666" summary="A 5 by 6 table without any header rows.">
+<tgroup cols="6"><tbody><row><entry><m:math><m:mi>u</m:mi></m:math></entry><entry><m:math><m:mi>v</m:mi></m:math></entry><entry><m:math><m:mi>A</m:mi></m:math></entry><entry><m:math><m:mi>B</m:mi></m:math></entry><entry><m:math><m:mrow><m:mo>|</m:mo><m:mi>C</m:mi><m:mo>|</m:mo></m:mrow></m:math></entry><entry><m:math><m:mi>θ</m:mi></m:math></entry></row><row><entry>even</entry><entry>0</entry><entry>even</entry><entry>0</entry><entry>even</entry><entry>0</entry></row><row><entry>odd</entry><entry>0</entry><entry>0</entry><entry>odd</entry><entry>even</entry><entry>0</entry></row><row><entry>0</entry><entry>even</entry><entry>0</entry><entry>even</entry><entry>even</entry><entry><m:math><m:mrow><m:mi>π</m:mi><m:mo>/</m:mo><m:mn>2</m:mn></m:mrow></m:math></entry></row><row><entry>0</entry><entry>odd</entry><entry>odd</entry><entry>0</entry><entry>even</entry><entry><m:math><m:mrow><m:mi>π</m:mi><m:mo>/</m:mo><m:mn>2</m:mn></m:mrow></m:math></entry></row></tbody>
+</tgroup>
+</table></item>
+          <item id="uid23">Convolution: If continuous cyclic convolution is defined by
+<newline/><equation id="id2258976"><m:math><m:mrow><m:mi>y</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>h</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>∘</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:msubsup><m:mo>∫</m:mo><m:mn>0</m:mn><m:mi>T</m:mi></m:msubsup><m:mover accent="true"><m:mi>h</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>-</m:mo><m:mi>τ</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.166667em"/><m:mover accent="true"><m:mi>x</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>τ</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.166667em"/><m:mi>d</m:mi><m:mi>τ</m:mi></m:mrow></m:math></equation>
+<newline/>then <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>∘</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mspace width="0.166667em"/><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>}</m:mo></m:mrow></m:math></item>
+          <item id="uid24">Multiplication: If discrete convolution is defined by
+<newline/><equation id="id2259195"><m:math><m:mrow><m:mi>e</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>d</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>*</m:mo><m:mi>c</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:msubsup><m:mo>∑</m:mo><m:mrow><m:mi>m</m:mi><m:mo>=</m:mo><m:mo>-</m:mo><m:mi>∞</m:mi></m:mrow><m:mi>∞</m:mi></m:msubsup><m:mi>d</m:mi><m:mrow><m:mo>(</m:mo><m:mi>m</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.166667em"/><m:mi>c</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>-</m:mo><m:mi>m</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math></equation>
+<newline/>then <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mspace width="0.166667em"/><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mo>*</m:mo><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>}</m:mo></m:mrow></m:math>
+<newline/>This property is the inverse of <link target-id="uid23">property 4</link> and vice versa.
+</item>
+          <item id="uid25">Parseval: <m:math><m:mrow><m:mfrac><m:mn>1</m:mn><m:mi>T</m:mi></m:mfrac><m:msubsup><m:mo>∫</m:mo><m:mn>0</m:mn><m:mi>T</m:mi></m:msubsup><m:msup><m:mrow><m:mo>|</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>|</m:mo></m:mrow><m:mn>2</m:mn></m:msup><m:mi>d</m:mi><m:mi>t</m:mi><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:msubsup><m:mo>∑</m:mo><m:mrow><m:mi>k</m:mi><m:mo>=</m:mo><m:mo>-</m:mo><m:mi>∞</m:mi></m:mrow><m:mi>∞</m:mi></m:msubsup><m:msup><m:mrow><m:mo>|</m:mo><m:mi>C</m:mi><m:mrow><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow><m:mo>|</m:mo></m:mrow><m:mn>2</m:mn></m:msup></m:mrow></m:math>
+<newline/>This property says the energy calculated in the time domain is the same as
+that calculated in the frequency (or Fourier) domain.
+</item>
+          <item id="uid26">Shift: <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mrow><m:mo>{</m:mo><m:mover accent="true"><m:mi>x</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>-</m:mo><m:msub><m:mi>t</m:mi><m:mn>0</m:mn></m:msub><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>C</m:mi><m:mrow><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.166667em"/><m:msup><m:mi>e</m:mi><m:mrow><m:mo>-</m:mo><m:mi>j</m:mi><m:mn>2</m:mn><m:mi>π</m:mi><m:msub><m:mi>t</m:mi><m:mn>0</m:mn></m:msub><m:mi>k</m:mi><m:mo>/</m:mo><m:mi>T</m:mi></m:mrow></m:msup></m:mrow></m:math>
+<newline/>A shift in the time domain results in a linear phase shift in the frequency domain.
+</item>
+          <item id="uid27">Modulate: <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.166667em"/><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mn>2</m:mn><m:mi>π</m:mi><m:mi>K</m:mi><m:mi>t</m:mi><m:mo>/</m:mo><m:mi>T</m:mi></m:mrow></m:msup><m:mo>}</m:mo><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>C</m:mi><m:mrow><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>-</m:mo><m:mi>K</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>
+<newline/>Modulation in the time domain results in a shift in the frequency domain. This
+property is the inverse of property 7.
+</item>
+          <item id="uid28">Orthogonality of basis functions:
+<equation id="uid29"><m:math mode="display"><m:mrow><m:msubsup><m:mo>∫</m:mo><m:mn>0</m:mn><m:mi>T</m:mi></m:msubsup><m:msup><m:mi>e</m:mi><m:mrow><m:mo>-</m:mo><m:mi>j</m:mi><m:mn>2</m:mn><m:mi>π</m:mi><m:mi>m</m:mi><m:mi>t</m:mi><m:mo>/</m:mo><m:mi>T</m:mi></m:mrow></m:msup><m:mspace width="0.166667em"/><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mn>2</m:mn><m:mi>π</m:mi><m:mi>n</m:mi><m:mi>t</m:mi><m:mo>/</m:mo><m:mi>T</m:mi></m:mrow></m:msup><m:mspace width="0.166667em"/><m:mi>d</m:mi><m:mi>t</m:mi><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mi>T</m:mi><m:mspace width="0.277778em"/><m:mi>δ</m:mi><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>-</m:mo><m:mi>m</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mfenced separators="" open="{" close=""><m:mtable><m:mtr><m:mtd columnalign="left"><m:mi>T</m:mi></m:mtd><m:mtd columnalign="left"><m:mrow><m:mtext>if</m:mtext><m:mspace width="4.pt"/><m:mrow><m:mi>n</m:mi><m:mo>=</m:mo><m:mi>m</m:mi></m:mrow></m:mrow></m:mtd></m:mtr><m:mtr><m:mtd columnalign="left"><m:mn>0</m:mn></m:mtd><m:mtd columnalign="left"><m:mrow><m:mtext>if</m:mtext><m:mspace width="4.pt"/><m:mrow><m:mi>n</m:mi><m:mo>≠</m:mo><m:mi>m</m:mi></m:mrow><m:mo>.</m:mo></m:mrow></m:mtd></m:mtr></m:mtable></m:mfenced></m:mrow></m:math></equation>
+Orthogonality allows the calculation of coefficients using inner products in
+<link target-id="uid7"/> and <link target-id="uid8"/>. It also allows Parseval's Theorem in <link target-id="uid25">property 6</link>.
+A relaxed version of orthogonality is called “tight frames" and is important
+in over-specified systems, especially in wavelets.
+</item>
+        </list>
+      </section>
+      <section id="uid30">
+        <title>Examples</title>
+        <list id="id2259933" list-type="bulleted">
+          <item id="uid31">An example of the Fourier series is the expansion of a square wave
+signal with period <m:math><m:mrow><m:mn>2</m:mn><m:mi>π</m:mi></m:mrow></m:math>. The expansion is
+<equation id="uid32"><m:math mode="display"><m:mrow><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:mfrac><m:mn>4</m:mn><m:mi>π</m:mi></m:mfrac><m:mrow><m:mo>[</m:mo><m:mo form="prefix">sin</m:mo><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mfrac><m:mn>1</m:mn><m:mn>3</m:mn></m:mfrac><m:mo form="prefix">sin</m:mo><m:mrow><m:mo>(</m:mo><m:mn>3</m:mn><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mfrac><m:mn>1</m:mn><m:mn>5</m:mn></m:mfrac><m:mo form="prefix">sin</m:mo><m:mrow><m:mo>(</m:mo><m:mn>5</m:mn><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>⋯</m:mo><m:mo>]</m:mo></m:mrow><m:mo>.</m:mo></m:mrow></m:math></equation>
+Because <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> is odd, there are no cosine terms (all <m:math><m:mrow><m:mi>a</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math>) and,
+because of its symmetries, there are no even harmonics (even <m:math><m:mi>k</m:mi></m:math> terms are
+zero). The function is well defined and bounded; its derivative is not,
+therefore, the coefficients drop off as <m:math><m:mfrac><m:mn>1</m:mn><m:mi>k</m:mi></m:mfrac></m:math>.
+</item>
+          <item id="uid33">A second example is a triangle wave of period <m:math><m:mrow><m:mn>2</m:mn><m:mi>π</m:mi></m:mrow></m:math>. This is a
+continuous function where the square wave was not. The expansion of the
+triangle wave is
+<equation id="uid34"><m:math mode="display"><m:mrow><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mfrac><m:mn>4</m:mn><m:mi>π</m:mi></m:mfrac><m:mrow><m:mo>[</m:mo><m:mo form="prefix">sin</m:mo><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>-</m:mo><m:mfrac><m:mn>1</m:mn><m:msup><m:mn>3</m:mn><m:mn>2</m:mn></m:msup></m:mfrac><m:mo form="prefix">sin</m:mo><m:mrow><m:mo>(</m:mo><m:mn>3</m:mn><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mfrac><m:mn>1</m:mn><m:msup><m:mn>5</m:mn><m:mn>2</m:mn></m:msup></m:mfrac><m:mo form="prefix">sin</m:mo><m:mrow><m:mo>(</m:mo><m:mn>5</m:mn><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mo>⋯</m:mo><m:mo>]</m:mo></m:mrow><m:mo>.</m:mo></m:mrow></m:math></equation>
+Here the coefficients drop off as <m:math><m:mfrac><m:mn>1</m:mn><m:msup><m:mi>k</m:mi><m:mn>2</m:mn></m:msup></m:mfrac></m:math> since the function and
+its first derivative exist and are bounded.
+</item>
+        </list>
+        <para id="id2260298">Note the derivative of a triangle wave is a square wave. Examine the
+series coefficients to see this. There are many books and web sites on
+the Fourier series that give insight through examples and demos.</para>
+      </section>
+      <section id="uid35">
+        <title>Theorems on the Fourier Series</title>
+        <para id="id2260312">Four of the most important theorems in the theory of Fourier analysis are
+the inversion theorem, the convolution theorem, the differentiation
+theorem, and Parseval's theorem <link target-id="bid13"/>.</para>
+        <list id="id2260324" list-type="bulleted"><item id="uid36">The inversion theorem is the truth of the transform pair given
+in <link target-id="uid4"/>, <link target-id="uid7"/>, and <link target-id="uid8"/>..
+</item>
+          <item id="uid37">The convolution theorem is <link target-id="uid23">property 4</link>.
+</item>
+          <item id="uid38">The differentiation theorem says that the transform of the
+derivative of a function is <m:math><m:mrow><m:mi>j</m:mi><m:mi>ω</m:mi></m:mrow></m:math> times the transform of the
+function.
+</item>
+          <item id="uid39">Parseval's theorem is given in <link target-id="uid25">property 6</link>.
+</item>
+        </list>
+        <para id="id2260398">All of these are based on the orthogonality of the basis function of the
+Fourier series and integral and all require knowledge of the convergence
+of the sums and integrals. The practical and theoretical use of Fourier
+analysis is greatly expanded if use is made of distributions or
+generalized functions (e.g. Dirac delta functions, <m:math><m:mrow><m:mi>δ</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>)
+<link target-id="bid14"/>, <link target-id="bid15"/>. Because energy is an important measure of a function in
+signal processing applications, the Hilbert space of <m:math><m:msup><m:mi>L</m:mi><m:mn>2</m:mn></m:msup></m:math> functions is a
+proper setting for the basic theory and a geometric view can be especially
+useful <link target-id="bid11"/>, <link target-id="bid13"/>.</para>
+        <para id="id2260464">The following theorems and results concern the existence and convergence
+of the Fourier series and the discrete-time Fourier transform <link target-id="bid16"/>.
+Details, discussions and proofs can be found in the cited references.</para>
+        <list id="id2260476" list-type="bulleted">
+          <item id="uid40">If <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:math> has bounded variation in the interval <m:math><m:mrow><m:mo>(</m:mo><m:mo>-</m:mo><m:mi>π</m:mi><m:mo>,</m:mo><m:mi>π</m:mi><m:mo>)</m:mo></m:mrow></m:math>, the Fourier
+series corresponding to <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:math> converges to the value <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:math> at any point
+within the interval, at which the function is continuous; it converges to
+the value <m:math><m:mrow><m:mfrac><m:mn>1</m:mn><m:mn>2</m:mn></m:mfrac><m:mrow><m:mo>[</m:mo><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>0</m:mn><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>-</m:mo><m:mn>0</m:mn><m:mo>)</m:mo></m:mrow><m:mo>]</m:mo></m:mrow></m:mrow></m:math> at any such point at which the
+function is discontinuous. At the points <m:math><m:mrow><m:mi>π</m:mi><m:mo>,</m:mo><m:mo>-</m:mo><m:mi>π</m:mi></m:mrow></m:math> it converges to the
+value <m:math><m:mrow><m:mfrac><m:mn>1</m:mn><m:mn>2</m:mn></m:mfrac><m:mrow><m:mo>[</m:mo><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mo>-</m:mo><m:mi>π</m:mi><m:mo>+</m:mo><m:mn>0</m:mn><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>π</m:mi><m:mo>-</m:mo><m:mn>0</m:mn><m:mo>)</m:mo></m:mrow><m:mo>]</m:mo></m:mrow></m:mrow></m:math>. <link target-id="bid5"/></item>
+          <item id="uid41">If <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:math> is of bounded variation in <m:math><m:mrow><m:mo>(</m:mo><m:mo>-</m:mo><m:mi>π</m:mi><m:mo>,</m:mo><m:mi>π</m:mi><m:mo>)</m:mo></m:mrow></m:math>, the Fourier
+series converges to <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:math>, uniformly in any interval <m:math><m:mrow><m:mo>(</m:mo><m:mi>a</m:mi><m:mo>,</m:mo><m:mi>b</m:mi><m:mo>)</m:mo></m:mrow></m:math> in which <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:math>
+is continuous, the continuity at <m:math><m:mi>a</m:mi></m:math> and <m:math><m:mi>b</m:mi></m:math> being on both sides. <link target-id="bid5"/></item>
+          <item id="uid42">If <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:math> is of bounded variation in <m:math><m:mrow><m:mo>(</m:mo><m:mo>-</m:mo><m:mi>π</m:mi><m:mo>,</m:mo><m:mi>π</m:mi><m:mo>)</m:mo></m:mrow></m:math>, the Fourier
+series converges to <m:math><m:mrow><m:mfrac><m:mn>1</m:mn><m:mn>2</m:mn></m:mfrac><m:mrow><m:mo>[</m:mo><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>0</m:mn><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>-</m:mo><m:mn>0</m:mn><m:mo>)</m:mo></m:mrow><m:mo>]</m:mo></m:mrow></m:mrow></m:math>, bounded throughout
+the interval <m:math><m:mrow><m:mo>(</m:mo><m:mo>-</m:mo><m:mi>π</m:mi><m:mo>,</m:mo><m:mi>π</m:mi><m:mo>)</m:mo></m:mrow></m:math>. <link target-id="bid5"/></item>
+          <item id="uid43">If <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:math> is bounded and if it is continuous in its domain at every
+point, with the exception of a finite number of points at which it may
+have ordinary discontinuities, and if the domain may be divided into a
+finite number of parts, such that in any one of them the function is
+monotone; or, in other words, the function has only a finite number of
+maxima and minima in its domain, the Fourier series of <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:math> converges to
+<m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:math> at points of continuity and to <m:math><m:mrow><m:mfrac><m:mn>1</m:mn><m:mn>2</m:mn></m:mfrac><m:mrow><m:mo>[</m:mo><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>0</m:mn><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>-</m:mo><m:mn>0</m:mn><m:mo>)</m:mo></m:mrow><m:mo>]</m:mo></m:mrow></m:mrow></m:math> at
+points of discontinuity. <link target-id="bid5"/>, <link target-id="bid6"/></item>
+          <item id="uid44">If <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:math> is such that, when the arbitrarily small neighborhoods of
+a finite number of points in whose neighborhood <m:math><m:mrow><m:mo>|</m:mo><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>|</m:mo></m:mrow></m:math> has no upper
+bound have been excluded, <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:math> becomes a function with bounded
+variation, then the Fourier series converges to the value
+<m:math><m:mrow><m:mfrac><m:mn>1</m:mn><m:mn>2</m:mn></m:mfrac><m:mrow><m:mo>[</m:mo><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>0</m:mn><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>-</m:mo><m:mn>0</m:mn><m:mo>)</m:mo></m:mrow><m:mo>]</m:mo></m:mrow></m:mrow></m:math>, at every point in <m:math><m:mrow><m:mo>(</m:mo><m:mo>-</m:mo><m:mi>π</m:mi><m:mo>,</m:mo><m:mi>π</m:mi><m:mo>)</m:mo></m:mrow></m:math>, except
+the points of infinite discontinuity of the function, provided the
+improper integral <m:math><m:mrow><m:msubsup><m:mo>∫</m:mo><m:mrow><m:mo>-</m:mo><m:mi>π</m:mi></m:mrow><m:mi>π</m:mi></m:msubsup><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:math> exist, and is absolutely
+convergent. <link target-id="bid5"/></item>
+          <item id="uid45">If f is of bounded variation, the Fourier series of f converges at
+every point <m:math><m:mi>x</m:mi></m:math> to the value <m:math><m:mrow><m:mo>[</m:mo><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>+</m:mo><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>-</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>]</m:mo><m:mo>/</m:mo><m:mn>2</m:mn></m:mrow></m:math>. If f is, in addition,
+continuous at every point of an interval <m:math><m:mrow><m:mi>I</m:mi><m:mo>=</m:mo><m:mo>(</m:mo><m:mi>a</m:mi><m:mo>,</m:mo><m:mi>b</m:mi><m:mo>)</m:mo></m:mrow></m:math>, its Fourier series is uniformly
+convergent in <m:math><m:mi>I</m:mi></m:math>. <link target-id="bid17"/></item>
+          <item id="uid46">If <m:math><m:mrow><m:mi>a</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>b</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math> are absolutely summable, the Fourier series converges
+uniformly to <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:math> which is continuous. <link target-id="bid16"/></item>
+          <item id="uid47">If <m:math><m:mrow><m:mi>a</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>b</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math> are square summable, the Fourier series converges to <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:math>
+where it is continuous, but not necessarily uniformly. <link target-id="bid16"/></item>
+          <item id="uid48">Suppose that <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:math> is periodic, of period <m:math><m:mi>X</m:mi></m:math>, is defined and
+bounded on <m:math><m:mrow><m:mo>[</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mi>X</m:mi><m:mo>]</m:mo></m:mrow></m:math> and that at least one of the following four conditions
+is satisfied: (i) <m:math><m:mi>f</m:mi></m:math> is piecewise monotonic on <m:math><m:mrow><m:mo>[</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mi>X</m:mi><m:mo>]</m:mo></m:mrow></m:math>, (ii) <m:math><m:mi>f</m:mi></m:math> has a
+finite number of maxima and minima on <m:math><m:mrow><m:mo>[</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mi>X</m:mi><m:mo>]</m:mo></m:mrow></m:math> and a finite number of
+discontinuities on <m:math><m:mrow><m:mo>[</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mi>X</m:mi><m:mo>]</m:mo></m:mrow></m:math>, (iii) <m:math><m:mi>f</m:mi></m:math> is of bounded variation on <m:math><m:mrow><m:mo>[</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mi>X</m:mi><m:mo>]</m:mo></m:mrow></m:math>,
+(iv) <m:math><m:mi>f</m:mi></m:math> is piecewise smooth on <m:math><m:mrow><m:mo>[</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mi>X</m:mi><m:mo>]</m:mo></m:mrow></m:math>: then it will follow that the
+Fourier series coefficients may be defined through the defining integral,
+using proper Riemann integrals, and that the Fourier series converges to
+<m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:math> at a.a.<m:math><m:mi>x</m:mi></m:math>, to <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:math> at each point of continuity of <m:math><m:mi>f</m:mi></m:math>, and to
+the value <m:math><m:mrow><m:mfrac><m:mn>1</m:mn><m:mn>2</m:mn></m:mfrac><m:mrow><m:mo>[</m:mo><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:msup><m:mi>x</m:mi><m:mo>-</m:mo></m:msup><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:msup><m:mi>x</m:mi><m:mo>+</m:mo></m:msup><m:mo>)</m:mo></m:mrow><m:mo>]</m:mo></m:mrow></m:mrow></m:math> at all <m:math><m:mi>x</m:mi></m:math>. <link target-id="bid13"/></item>
+          <item id="uid49">For any <m:math><m:mrow><m:mn>1</m:mn><m:mo>≤</m:mo><m:mi>p</m:mi><m:mo>&lt;</m:mo><m:mi>∞</m:mi></m:mrow></m:math> and any <m:math><m:mrow><m:mi>f</m:mi><m:mo>∈</m:mo><m:msup><m:mi>C</m:mi><m:mi>p</m:mi></m:msup><m:mrow><m:mo>(</m:mo><m:msup><m:mi>S</m:mi><m:mn>1</m:mn></m:msup><m:mo>)</m:mo></m:mrow></m:mrow></m:math>, the partial
+sums
+<equation id="uid50"><m:math mode="display"><m:mrow><m:msub><m:mi>S</m:mi><m:mi>n</m:mi></m:msub><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:msub><m:mi>S</m:mi><m:mi>n</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>f</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.277778em"/><m:mo>=</m:mo><m:mspace width="0.277778em"/><m:munder><m:mrow><m:mo>∑</m:mo></m:mrow><m:mrow><m:mo>|</m:mo><m:mi>k</m:mi><m:mo>|</m:mo><m:mo>≤</m:mo><m:mi>n</m:mi></m:mrow></m:munder><m:mover accent="true"><m:mi>f</m:mi><m:mo>^</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow><m:msub><m:mi>e</m:mi><m:mi>k</m:mi></m:msub></m:mrow></m:math></equation>
+converge to <m:math><m:mi>f</m:mi></m:math>, uniformly as <m:math><m:mrow><m:mi>n</m:mi><m:mo>→</m:mo><m:mi>∞</m:mi></m:mrow></m:math>; in fact,
+<m:math><m:mrow><m:mrow><m:mo>|</m:mo><m:mo>|</m:mo></m:mrow><m:msub><m:mi>S</m:mi><m:mi>n</m:mi></m:msub><m:mo>-</m:mo><m:mi>f</m:mi><m:msub><m:mrow><m:mo>|</m:mo><m:mo>|</m:mo></m:mrow><m:mi>∞</m:mi></m:msub></m:mrow></m:math> is bounded by a constant multiple of <m:math><m:msup><m:mi>n</m:mi><m:mrow><m:mo>-</m:mo><m:mi>p</m:mi><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>/</m:mo><m:mn>2</m:mn></m:mrow></m:msup></m:math>.
+<link target-id="bid11"/></item>
+        </list>
+        <para id="id2262040">The Fourier series expansion results in transforming a periodic, continuous
+time function, <m:math><m:mrow><m:mover accent="true"><m:mi>x</m:mi><m:mo>˜</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>, to two discrete indexed frequency functions,
+<m:math><m:mrow><m:mi>a</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>b</m:mi><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math> that are not periodic.</para>
+      </section>
+    </section>
+    <section id="uid51">
+      <title>The Fourier Transform</title>
+      <para id="id2262114">Many practical problems in signal analysis involve either infinitely long
+or very long signals where the Fourier series is not appropriate.
+For these cases, the Fourier transform (FT) and its inverse (IFT) have
+been developed. This transform has been used with great success in
+virtually all quantitative areas of science and technology where the
+concept of frequency is important. While the Fourier series was used before
+Fourier worked on it, the Fourier transform seems to be his original idea.
+It can be derived as an extension of the Fourier series by letting the
+length or period <m:math><m:mi>T</m:mi></m:math> increase to infinity or the Fourier transform can be independently
+defined and then the Fourier series shown to be a special case of it. The
+latter approach is the more general of the two, but the former is more intuitive
+<link target-id="bid14"/>, <link target-id="bid15"/>.</para>
+      <section id="uid53">
+        <title>Definition of the Fourier Transform</title>
+        <para id="id2262158">The Fourier transform (FT) of a real-valued (or complex) function of the
+real-variable <m:math><m:mi>t</m:mi></m:math> is defined by</para>
+        <equation id="uid54">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>X</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:msubsup>
+                <m:mo>∫</m:mo>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>∞</m:mi>
+                </m:mrow>
+                <m:mi>∞</m:mi>
+              </m:msubsup>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mi>ω</m:mi>
+                  <m:mi>t</m:mi>
+                </m:mrow>
+              </m:msup>
+              <m:mspace width="0.166667em"/>
+              <m:mi>d</m:mi>
+              <m:mi>t</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2262246">giving a complex valued function of the real variable <m:math><m:mi>ω</m:mi></m:math> representing
+frequency. The inverse Fourier transform (IFT) is given by</para>
+        <equation id="uid55">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>x</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mrow>
+                  <m:mn>2</m:mn>
+                  <m:mi>π</m:mi>
+                </m:mrow>
+              </m:mfrac>
+              <m:msubsup>
+                <m:mo>∫</m:mo>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>∞</m:mi>
+                </m:mrow>
+                <m:mi>∞</m:mi>
+              </m:msubsup>
+              <m:mi>X</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mi>ω</m:mi>
+                  <m:mi>t</m:mi>
+                </m:mrow>
+              </m:msup>
+              <m:mspace width="0.166667em"/>
+              <m:mi>d</m:mi>
+              <m:mi>ω</m:mi>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2262349">Because of the infinite limits on both integrals, the question of
+convergence is important. There are useful practical signals that do
+not have Fourier transforms if only classical functions are allowed
+because of problems with convergence. The use of delta functions
+(distributions) in both the time and frequency domains allows a much
+larger class of signals to be represented <link target-id="bid14"/>.</para>
+      </section>
+      <section id="uid56">
+        <title>Properties of the Fourier Transform</title>
+        <para id="id2262375">The properties of the Fourier transform are somewhat parallel to those
+of the Fourier series and are important in applying it to
+signal analysis and interpreting it. The main properties are given
+here using the notation that the FT of a real valued function <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> over
+all time <m:math><m:mi>t</m:mi></m:math> is given by <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>}</m:mo><m:mo>=</m:mo><m:mi>X</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math>.</para>
+        <list id="id2262438" list-type="enumerated">
+          <item id="uid57">Linear: <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>+</m:mo><m:mi>y</m:mi><m:mo>}</m:mo><m:mo>=</m:mo><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>}</m:mo><m:mo>+</m:mo><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>y</m:mi><m:mo>}</m:mo></m:mrow></m:math></item>
+          <item id="uid58">Even and Oddness: if <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>u</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>+</m:mo><m:mi>j</m:mi><m:mi>v</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>X</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo><m:mo>+</m:mo><m:mi>j</m:mi><m:mi>B</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> then
+
+<table id="id2262599" summary="A 5 by 6 table without any header rows.">
+<tgroup cols="6"><tbody><row><entry><m:math><m:mi>u</m:mi></m:math></entry><entry><m:math><m:mi>v</m:mi></m:math></entry><entry><m:math><m:mi>A</m:mi></m:math></entry><entry><m:math><m:mi>B</m:mi></m:math></entry><entry><m:math><m:mrow><m:mo>|</m:mo><m:mi>X</m:mi><m:mo>|</m:mo></m:mrow></m:math></entry><entry><m:math><m:mi>θ</m:mi></m:math></entry></row><row><entry>even</entry><entry>0</entry><entry>even</entry><entry>0</entry><entry>even</entry><entry>0</entry></row><row><entry>odd</entry><entry>0</entry><entry>0</entry><entry>odd</entry><entry>even</entry><entry>0</entry></row><row><entry>0</entry><entry>even</entry><entry>0</entry><entry>even</entry><entry>even</entry><entry><m:math><m:mrow><m:mi>π</m:mi><m:mo>/</m:mo><m:mn>2</m:mn></m:mrow></m:math></entry></row><row><entry>0</entry><entry>odd</entry><entry>odd</entry><entry>0</entry><entry>even</entry><entry><m:math><m:mrow><m:mi>π</m:mi><m:mo>/</m:mo><m:mn>2</m:mn></m:mrow></m:math></entry></row></tbody>
+</tgroup>
+</table></item>
+          <item id="uid59">Convolution: If continuous convolution is defined by:
+<equation id="id2262908"><m:math><m:mrow><m:mi>y</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>h</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>*</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:msubsup><m:mo>∫</m:mo><m:mrow><m:mo>-</m:mo><m:mi>∞</m:mi></m:mrow><m:mi>∞</m:mi></m:msubsup><m:mi>h</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>-</m:mo><m:mi>τ</m:mi><m:mo>)</m:mo></m:mrow><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>τ</m:mi><m:mo>)</m:mo></m:mrow><m:mi>d</m:mi><m:mi>τ</m:mi><m:mo>=</m:mo><m:msubsup><m:mo>∫</m:mo><m:mrow><m:mo>-</m:mo><m:mi>∞</m:mi></m:mrow><m:mi>∞</m:mi></m:msubsup><m:mi>h</m:mi><m:mrow><m:mo>(</m:mo><m:mi>λ</m:mi><m:mo>)</m:mo></m:mrow><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>-</m:mo><m:mi>λ</m:mi><m:mo>)</m:mo></m:mrow><m:mi>d</m:mi><m:mi>λ</m:mi></m:mrow></m:math></equation>
+then <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>*</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mo>=</m:mo><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>}</m:mo></m:mrow></m:math></item>
+          <item id="uid60">Multiplication: <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mrow><m:mo>{</m:mo><m:mi>h</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mo>=</m:mo><m:mfrac><m:mn>1</m:mn><m:mrow><m:mn>2</m:mn><m:mi>π</m:mi></m:mrow></m:mfrac><m:mi mathvariant="script">F</m:mi><m:mrow><m:mo>{</m:mo><m:mi>h</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mo>*</m:mo><m:mi mathvariant="script">F</m:mi><m:mrow><m:mo>{</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow></m:mrow></m:math></item>
+          <item id="uid61">Parseval: <m:math><m:mrow><m:msubsup><m:mo>∫</m:mo><m:mrow><m:mo>-</m:mo><m:mi>∞</m:mi></m:mrow><m:mi>∞</m:mi></m:msubsup><m:msup><m:mrow><m:mo>|</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>|</m:mo></m:mrow><m:mn>2</m:mn></m:msup><m:mi>d</m:mi><m:mi>t</m:mi><m:mo>=</m:mo><m:mfrac><m:mn>1</m:mn><m:mrow><m:mn>2</m:mn><m:mi>π</m:mi></m:mrow></m:mfrac><m:msubsup><m:mo>∫</m:mo><m:mrow><m:mo>-</m:mo><m:mi>∞</m:mi></m:mrow><m:mi>∞</m:mi></m:msubsup><m:msup><m:mrow><m:mo>|</m:mo><m:mi>X</m:mi><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow><m:mo>|</m:mo></m:mrow><m:mn>2</m:mn></m:msup><m:mi>d</m:mi><m:mi>ω</m:mi></m:mrow></m:math></item>
+          <item id="uid62">Shift: <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mrow><m:mo>{</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>-</m:mo><m:mi>T</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mo>=</m:mo><m:mi>X</m:mi><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow><m:msup><m:mi>e</m:mi><m:mrow><m:mo>-</m:mo><m:mi>j</m:mi><m:mi>ω</m:mi><m:mi>T</m:mi></m:mrow></m:msup></m:mrow></m:math></item>
+          <item id="uid63">Modulate: <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mn>2</m:mn><m:mi>π</m:mi><m:mi>K</m:mi><m:mi>t</m:mi></m:mrow></m:msup><m:mo>}</m:mo><m:mo>=</m:mo><m:mi>X</m:mi><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>-</m:mo><m:mn>2</m:mn><m:mi>π</m:mi><m:mi>K</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math></item>
+          <item id="uid64">Derivative: <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mrow><m:mo>{</m:mo><m:mfrac><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow><m:mrow><m:mi>d</m:mi><m:mi>t</m:mi></m:mrow></m:mfrac><m:mo>}</m:mo></m:mrow><m:mo>=</m:mo><m:mi>j</m:mi><m:mi>ω</m:mi><m:mi>X</m:mi><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math></item>
+          <item id="uid65">Stretch: <m:math><m:mrow><m:mi mathvariant="script">F</m:mi><m:mrow><m:mo>{</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>a</m:mi><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mo>=</m:mo><m:mfrac><m:mn>1</m:mn><m:mrow><m:mo>|</m:mo><m:mi>a</m:mi><m:mo>|</m:mo></m:mrow></m:mfrac><m:mi>X</m:mi><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>/</m:mo><m:mi>a</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math></item>
+          <item id="uid66">Orthogonality: <m:math><m:mrow><m:msubsup><m:mo>∫</m:mo><m:mrow><m:mo>-</m:mo><m:mi>∞</m:mi></m:mrow><m:mi>∞</m:mi></m:msubsup><m:msup><m:mi>e</m:mi><m:mrow><m:mo>-</m:mo><m:mi>j</m:mi><m:msub><m:mi>ω</m:mi><m:mn>1</m:mn></m:msub><m:mi>t</m:mi></m:mrow></m:msup><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:msub><m:mi>ω</m:mi><m:mn>2</m:mn></m:msub><m:mi>t</m:mi></m:mrow></m:msup><m:mo>=</m:mo><m:mn>2</m:mn><m:mi>π</m:mi><m:mi>δ</m:mi><m:mrow><m:mo>(</m:mo><m:msub><m:mi>ω</m:mi><m:mn>1</m:mn></m:msub><m:mo>-</m:mo><m:msub><m:mi>ω</m:mi><m:mn>2</m:mn></m:msub><m:mo>)</m:mo></m:mrow></m:mrow></m:math></item>
+        </list>
+      </section>
+      <section id="uid67">
+        <title>Examples of the Fourier Transform</title>
+        <para id="id2263706">Deriving a few basic transforms and using the properties allows a large
+class of signals to be easily studied. Examples of modulation, sampling,
+and others will be given.</para>
+        <list id="id2263712" list-type="bulleted">
+          <item id="uid68">If <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>δ</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> then <m:math><m:mrow><m:mi>X</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow></m:math></item>
+          <item id="uid69">If <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow></m:math> then <m:math><m:mrow><m:mi>X</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>2</m:mn><m:mi>π</m:mi><m:mi>δ</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math></item>
+          <item id="uid70">If <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> is an infinite sequence of delta functions spaced <m:math><m:mi>T</m:mi></m:math>
+apart, <m:math><m:mrow><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:msubsup><m:mo>∑</m:mo><m:mrow><m:mi>n</m:mi><m:mo>=</m:mo><m:mo>-</m:mo><m:mi>∞</m:mi></m:mrow><m:mi>∞</m:mi></m:msubsup><m:mi>δ</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>-</m:mo><m:mi>n</m:mi><m:mi>T</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>, its transform is
+also an infinite sequence of delta functions of weight <m:math><m:mrow><m:mn>2</m:mn><m:mi>π</m:mi><m:mo>/</m:mo><m:mi>T</m:mi></m:mrow></m:math> spaced
+<m:math><m:mrow><m:mn>2</m:mn><m:mi>π</m:mi><m:mo>/</m:mo><m:mi>T</m:mi></m:mrow></m:math> apart,
+<m:math><m:mrow><m:mi>X</m:mi><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mn>2</m:mn><m:mi>π</m:mi><m:msubsup><m:mo>∑</m:mo><m:mrow><m:mi>k</m:mi><m:mo>=</m:mo><m:mo>-</m:mo><m:mi>∞</m:mi></m:mrow><m:mi>∞</m:mi></m:msubsup><m:mi>δ</m:mi><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>-</m:mo><m:mn>2</m:mn><m:mi>π</m:mi><m:mi>k</m:mi><m:mo>/</m:mo><m:mi>T</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>.
+</item>
+          <item id="uid71">Other interesting and illustrative examples can be found in
+<link target-id="bid14"/>, <link target-id="bid15"/>.
+</item>
+        </list>
+        <para id="id2264050">Note the Fourier transform takes a function of continuous time into a function
+of continuous frequency, neither function being periodic. If “distribution" or
+“delta functions" are allowed, the Fourier transform of a periodic function will
+be a infinitely long string of delta functions with weights that are the Fourier
+series coefficients.</para>
+      </section>
+    </section>
+    <section id="uid72">
+      <title>The Laplace Transform</title>
+      <para id="id2264076">The Laplace transform can be thought of as a generalization of the Fourier
+transform in order to include a larger class of functions, to allow the
+use of complex variable theory, to solve initial value differential
+equations, and to give a tool for input-output description of linear
+systems. Its use in system and signal analysis became popular in the
+1950's and remains as the central tool for much of continuous time system
+theory. The question of convergence becomes still more complicated and
+depends on complex values of <m:math><m:mi>s</m:mi></m:math> used in the inverse transform which must be in a
+“region of convergence" (ROC).</para>
+      <section id="uid74">
+        <title>Definition of the Laplace Transform</title>
+        <para id="id2264107">The definition of the Laplace transform (LT) of a real valued function defined
+over all positive time <m:math><m:mi>t</m:mi></m:math> is</para>
+        <equation id="uid75">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>s</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:msubsup>
+                <m:mo>∫</m:mo>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>∞</m:mi>
+                </m:mrow>
+                <m:mi>∞</m:mi>
+              </m:msubsup>
+              <m:mi>f</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>s</m:mi>
+                  <m:mi>t</m:mi>
+                </m:mrow>
+              </m:msup>
+              <m:mspace width="0.166667em"/>
+              <m:mi>d</m:mi>
+              <m:mi>t</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2264193">and the inverse transform (ILT) is given by the complex contour integral</para>
+        <equation id="uid76">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>f</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mrow>
+                  <m:mn>2</m:mn>
+                  <m:mi>π</m:mi>
+                  <m:mi>j</m:mi>
+                </m:mrow>
+              </m:mfrac>
+              <m:msubsup>
+                <m:mo>∫</m:mo>
+                <m:mrow>
+                  <m:mi>c</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mi>∞</m:mi>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>c</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mi>∞</m:mi>
+                </m:mrow>
+              </m:msubsup>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>s</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mi>s</m:mi>
+                  <m:mi>t</m:mi>
+                </m:mrow>
+              </m:msup>
+              <m:mspace width="0.166667em"/>
+              <m:mi>d</m:mi>
+              <m:mi>s</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2264293">where <m:math><m:mrow><m:mi>s</m:mi><m:mo>=</m:mo><m:mi>σ</m:mi><m:mo>+</m:mo><m:mi>j</m:mi><m:mi>ω</m:mi></m:mrow></m:math> is a complex variable and the path of
+integration for the ILT must be in the region of the <m:math><m:mi>s</m:mi></m:math> plane where the Laplace
+transform integral converges. This definition is often called the
+bilateral Laplace transform to distinguish it from the unilateral
+transform (ULT) which is defined with zero as the lower limit of the forward
+transform integral <link target-id="uid75"/>. Unless stated otherwise, we will be using the
+bilateral transform.</para>
+        <para id="id2264341">Notice that the Laplace transform becomes the Fourier transform on the
+imaginary axis, for <m:math><m:mrow><m:mi>s</m:mi><m:mo>=</m:mo><m:mi>j</m:mi><m:mi>ω</m:mi></m:mrow></m:math>. If the ROC includes the <m:math><m:mrow><m:mi>j</m:mi><m:mi>ω</m:mi></m:mrow></m:math>
+axis, the Fourier transform exists but if it does not, only the Laplace
+transform of the function exists.</para>
+        <para id="id2264377">There is a considerable literature on the Laplace transform and its use in
+continuous-time system theory. We will develop most of these ideas for
+the discrete-time system in terms of the z-transform later in this
+chapter and will only briefly consider only the more important properties
+here.</para>
+        <para id="id2264385">The unilateral Laplace transform cannot be used if useful parts of the
+signal exists for negative time. It does not reduce to the Fourier
+transform for signals that exist for negative time, but if the negative
+time part of a signal can be neglected, the unilateral transform will
+converge for a much larger class of function that the bilateral transform
+will. It also makes the solution of linear, constant coefficient differential
+equations with initial conditions much easier.</para>
+      </section>
+      <section id="uid77">
+        <title>Properties of the Laplace Transform</title>
+        <para id="id2264405">Many of the properties of the Laplace transform are similar to those for
+Fourier transform <link target-id="bid15"/>, <link target-id="bid14"/>, however, the basis functions for the Laplace
+transform are not orthogonal. Some of the more important ones are:</para>
+        <list id="id2264422" list-type="enumerated"><item id="uid78">Linear: <m:math><m:mrow><m:mi mathvariant="script">L</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>+</m:mo><m:mi>y</m:mi><m:mo>}</m:mo><m:mo>=</m:mo><m:mi mathvariant="script">L</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>}</m:mo><m:mo>+</m:mo><m:mi mathvariant="script">L</m:mi><m:mo>{</m:mo><m:mi>y</m:mi><m:mo>}</m:mo></m:mrow></m:math></item>
+          <item id="uid79">Convolution: If <m:math><m:mrow><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>*</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mo>∫</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>-</m:mo><m:mi>τ</m:mi><m:mo>)</m:mo><m:mspace width="0.166667em"/><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>τ</m:mi><m:mo>)</m:mo><m:mspace width="0.166667em"/><m:mi>d</m:mi><m:mi>τ</m:mi></m:mrow></m:math><newline/>
+then <m:math><m:mrow><m:mi mathvariant="script">L</m:mi><m:mo>{</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>*</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mo>=</m:mo><m:mi mathvariant="script">L</m:mi><m:mo>{</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>}</m:mo><m:mspace width="0.166667em"/><m:mi mathvariant="script">L</m:mi><m:mo>{</m:mo><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>}</m:mo></m:mrow></m:math></item>
+          <item id="uid80">Derivative: <m:math><m:mrow><m:mi mathvariant="script">L</m:mi><m:mrow><m:mo>{</m:mo><m:mfrac><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow><m:mrow><m:mi>d</m:mi><m:mi>t</m:mi></m:mrow></m:mfrac><m:mo>}</m:mo></m:mrow><m:mo>=</m:mo><m:mi>s</m:mi><m:mi mathvariant="script">L</m:mi><m:mrow><m:mo>{</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow></m:mrow></m:math></item>
+          <item id="uid81">Derivative (ULT): <m:math><m:mrow><m:mi mathvariant="script">L</m:mi><m:mrow><m:mo>{</m:mo><m:mfrac><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow><m:mrow><m:mi>d</m:mi><m:mi>t</m:mi></m:mrow></m:mfrac><m:mo>}</m:mo></m:mrow><m:mo>=</m:mo><m:mi>s</m:mi><m:mi mathvariant="script">L</m:mi><m:mrow><m:mo>{</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mo>-</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo></m:mrow></m:mrow></m:math></item>
+          <item id="uid82">Integral: <m:math><m:mrow><m:mi mathvariant="script">L</m:mi><m:mrow><m:mo>{</m:mo><m:mo>∫</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.166667em"/><m:mi>d</m:mi><m:mi>t</m:mi><m:mo>}</m:mo></m:mrow><m:mo>=</m:mo><m:mfrac><m:mn>1</m:mn><m:mi>s</m:mi></m:mfrac><m:mi mathvariant="script">L</m:mi><m:mrow><m:mo>{</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow></m:mrow></m:math></item>
+          <item id="uid83">Shift: <m:math><m:mrow><m:mi mathvariant="script">L</m:mi><m:mrow><m:mo>{</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>-</m:mo><m:mi>T</m:mi><m:mo>)</m:mo></m:mrow><m:mo>}</m:mo></m:mrow><m:mo>=</m:mo><m:mi>C</m:mi><m:mrow><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.166667em"/><m:msup><m:mi>e</m:mi><m:mrow><m:mo>-</m:mo><m:mi>T</m:mi><m:mi>s</m:mi></m:mrow></m:msup></m:mrow></m:math></item>
+          <item id="uid84">Modulate: <m:math><m:mrow><m:mi mathvariant="script">L</m:mi><m:mrow><m:mo>{</m:mo><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="0.166667em"/><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:msub><m:mi>ω</m:mi><m:mn>0</m:mn></m:msub><m:mi>t</m:mi></m:mrow></m:msup><m:mo>}</m:mo></m:mrow><m:mo>=</m:mo><m:mi>X</m:mi><m:mrow><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>-</m:mo><m:mi>j</m:mi><m:msub><m:mi>ω</m:mi><m:mn>0</m:mn></m:msub><m:mo>)</m:mo></m:mrow></m:mrow></m:math></item>
+        </list>
+        <para id="id2265018">Examples can be found in <link target-id="bid14"/>, <link target-id="bid15"/> and are similar to those of the
+z-transform presented later in these notes. Indeed, note the parallals and
+differences in the Fourier series, Fourier transform, and Z-transform.</para>
+        
+      </section>
+    </section>
+  </content>
+  <bib:file>
+    <bib:entry id="bid1">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Burrus, C. Sidney and Gopinath, Ramesh A. and Guo, Haitao</bib:author>
+        <bib:title>Introduction to Wavelets and the Wavelet Transform</bib:title>
+        <bib:publisher>Prentice Hall</bib:publisher>
+        <bib:year>1998</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Upper Saddle River, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid15">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Bracewell, R. N.</bib:author>
+        <bib:title>The Fourier Transform and Its Applications</bib:title>
+        <bib:publisher>McGraw-Hill</bib:publisher>
+        <bib:year>1985</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition>Third</bib:edition>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid6">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Carslaw, H. S.</bib:author>
+        <bib:title>Theory of Fourier's Series and Integrals</bib:title>
+        <bib:publisher>Dover</bib:publisher>
+        <bib:year>1906, 1930</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition>third</bib:edition>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid13">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Champeney, D. C.</bib:author>
+        <bib:title>A Handbook of Fourier Theorems</bib:title>
+        <bib:publisher>Cambridge University Press</bib:publisher>
+        <bib:year>1987</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Cambridge</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid2">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Daubechies, Ingrid</bib:author>
+        <bib:title>Ten Lectures on Wavelets</bib:title>
+        <bib:publisher>SIAM</bib:publisher>
+        <bib:year>1992</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Philadelphia, PA</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note>Notes from the 1990 CBMS-NSF Conference on Wavelets and Applications at Lowell, MA</bib:note>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid11">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Dym, H. and McKean, H. P.</bib:author>
+        <bib:title>Fourier Series and Integrals</bib:title>
+        <bib:publisher>Academic Press</bib:publisher>
+        <bib:year>1972</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid9">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Folland, Gerald B.</bib:author>
+        <bib:title>Fourier Analysis and its Applications</bib:title>
+        <bib:publisher>Wadsworth &amp; Brooks/Cole</bib:publisher>
+        <bib:year>1992</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Pacific Grove</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid5">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Hobson, E. W.</bib:author>
+        <bib:title>The Theory of Functions of a Real Variable and the Theory of Fourier's Series</bib:title>
+        <bib:publisher>Dover</bib:publisher>
+        <bib:year>1926</bib:year>
+<!--optional fields-->
+        <bib:volume>2</bib:volume>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition>Second</bib:edition>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid0">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Hubbard, Barbara Burke</bib:author>
+        <bib:title>The World According to Wavelets</bib:title>
+        <bib:publisher>A K Peters</bib:publisher>
+        <bib:year>1996</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Wellesley, MA</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note>Second Edition 1998</bib:note>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid8">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Körner, T. W.</bib:author>
+        <bib:title>Fourier Analysis</bib:title>
+        <bib:publisher>Cambridge University Press</bib:publisher>
+        <bib:year>1988</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Cambridge</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid7">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Lanczos, C.</bib:author>
+        <bib:title>Applied Analysis</bib:title>
+        <bib:publisher>Prentice Hall</bib:publisher>
+        <bib:year>1956</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Englewood Cliffs, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid10">
+      <bib:book>
+<!--required fields-->
+        <bib:author>of LEX, Transnational College</bib:author>
+        <bib:title>Who is Fourier?</bib:title>
+        <bib:publisher>Language Research Foundation</bib:publisher>
+        <bib:year>1995</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Boston</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid16">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Oppenheim, A. V. and Schafer, R. W.</bib:author>
+        <bib:title>Discrete-Time Signal Processing</bib:title>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1989</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Englewood Cliffs, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid14">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Papoulis, A.</bib:author>
+        <bib:title>The Fourier Integral and Its Applications</bib:title>
+        <bib:publisher>McGraw-Hill</bib:publisher>
+        <bib:year>1962</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address/>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid4">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Strang, Gilbert and Nguyen, T.</bib:author>
+        <bib:title>Wavelets and Filter Banks</bib:title>
+        <bib:publisher>Wellesley–Cambridge Press</bib:publisher>
+        <bib:year>1996</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Wellesley, MA</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid3">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Vetterli, Martin and Kovačević, Jelena</bib:author>
+        <bib:title>Wavelets and Subband Coding</bib:title>
+        <bib:publisher>Prentice–Hall</bib:publisher>
+        <bib:year>1995</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Upper Saddle River, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid12">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Young, R. M.</bib:author>
+        <bib:title>An Introduction to Nonharmonic Fourier Series</bib:title>
+        <bib:publisher>Academic Press</bib:publisher>
+        <bib:year>1980</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid17">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Zygmund, A.</bib:author>
+        <bib:title>Trigonometrical Series</bib:title>
+        <bib:publisher>Dover</bib:publisher>
+        <bib:year>1935, 1955</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+  </bib:file>
+</document>

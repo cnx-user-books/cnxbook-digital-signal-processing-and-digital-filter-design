@@ -1,0 +1,519 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:bib="http://bibtexml.sf.net/">
+  <title>Frequency Transformations</title>
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m16913</md:content-id>
+  <md:title>Frequency Transformations</md:title>
+  <md:abstract/>
+  <md:uuid>02e9be97-7bc3-4561-b4e0-9c013d37ad9d</md:uuid>
+</metadata>
+  <content>
+    <para id="id2255546">In addition to the lowpass frequency response, other basic
+ideal responses are often needed in practice. The ideal highpass filter
+rejects signals with frequencies below a certain value and passes those
+with frequencies above that value. The ideal bandpass filter passes only a
+band of frequencies, and the ideal band reject filter completely rejects a
+band of frequencies. These ideal frequency responses are illustrated in
+<link target-id="uid1"/>.</para>
+    <figure id="uid1" orient="horizontal"><media id="id1169850753762" alt="Figure one contains four cartesian graphs. Each graph's horizontal axis ranges in value from -5 to 5 in increments of 5, and their vertical axes are labeled Ideal response, ranging in value from -1 to 1.5 in increments of 0.5. The first graph, labeled Ideal lowpass, contains a horizontal line from (-5, 0) to (5, 0) and a vertical line from (0, 0) to (0, 1.5). The graph also contains line segments from approximately (-1, 0) to (-1, 1), (1, 0) to (1, 1) and (-1, 1) to (1, 1). The second graph, labeled Ideal highpass, contains a horizontal line from (-5, 0) to (5, 0) and a vertical line from (0, 0) to (0, 1.5). The graph also contains line segments from approximately (-5, 1) to (-1, 1), (-1, 1) to (-1, 0) (1, 0) to (1, 1), and (1, 1) to (5, 1). The third graph, labeled ideal bandpass, contains a horizontal line from (-5, 0) to (5, 0) and a vertical line from (0, 0) to (0, 1.5). The graph also contains line segments from approximately (-2, 0) to (-2, 1), (-2, 1) to (-1, 1), (-1, 1) to (-1, 0), (1, 0) to (1, 1), (1, 1) to (2, 1) and (2, 1) to (2, 0). The fourth graph, labeled ideal bandreject, contains a horizontal line from (-5, 0) to (5, 0) and a vertical line from (0, 0) to (0, 1.5). The graph also contains line segments from approximately (-5, 1) to (-2, 1), (-2, 1) to (-2, 0), (-1, 0) to (-1, 1), (1, 0) to (1, 1), (-1, 1) to (1, 1), (2, 0) to (2, 1), and (2, 1) to (5, 1)."><image src="../../media/figIIR14.png" mime-type="image/png" width="417"/><image for="pdf" src="../../media/figIIR14.eps" mime-type="application/postscript"/></media>
+      
+    <caption>The Basic Four Ideal Frequency Responses</caption></figure>
+    <para id="id2255582">This section presents a method for designing the three new filters by
+using a frequency transformation on the basic lowpass design. When used on
+the four classical IIR approximations (e.g. Butterworth, Chebyshev,
+inverse-Chebyshev, and Elliptic Function), the optimality is preserved.
+This procedure is used in the FREQXFM() subroutine of Program 8 in the
+appendix.</para>
+    <section id="uid2">
+      <title>Change the Bandedge</title>
+      <para id="id2255598">The classical filters have all been developed for a bandedge of
+<m:math><m:mrow><m:msub><m:mi>ω</m:mi><m:mn>0</m:mn></m:msub><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow></m:math>. That is where the Butterworth filter has a magnitude
+squared of one half: <m:math><m:mrow><m:mo>|</m:mo><m:mi>F</m:mi><m:mo>|</m:mo><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>.</m:mo><m:mn>5</m:mn></m:mrow></m:math> or the Chebyshev filter has its passband
+edge or the Inverse Chebyshev has its stopband edge or the Elliptic filter
+has its passband edge. To scale the bandedge, simply replace <m:math><m:mi>s</m:mi></m:math> by <m:math><m:mrow><m:mi>K</m:mi><m:mi>s</m:mi></m:mrow></m:math>
+or: <m:math><m:mrow><m:mi>s</m:mi><m:mo>→</m:mo><m:mi>K</m:mi><m:mi>s</m:mi></m:mrow></m:math> where <m:math><m:mi>K</m:mi></m:math> is reciprocal of the new desired
+bandedge. What happened to the prototype filter at <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow></m:math> will now
+happen at <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mn>1</m:mn><m:mo>/</m:mo><m:mi>K</m:mi></m:mrow></m:math>. It is simply a linear scaling of the <m:math><m:mi>ω</m:mi></m:math>
+axis. This change can be done before the conversions below or after.</para>
+    </section>
+    <section id="uid3">
+      <title>The Highpass Filter</title>
+      <para id="id2255751">The frequency response illustrated in <link target-id="uid1"/>b can be
+obtained from that in <link target-id="uid1"/>a by replacing the complex
+frequency variable <m:math><m:mi>s</m:mi></m:math> in the transfer function by <m:math><m:mrow><m:mn>1</m:mn><m:mo>/</m:mo><m:mi>s</m:mi></m:mrow></m:math>. This change
+of variable maps zero frequency to infinity, maps unity into unity, and
+maps infinity to zero. It turns the complex <m:math><m:mi>s</m:mi></m:math> plane inside out and
+leaves the unit circle alone.</para>
+      <para id="id2255801">In the design procedure, the desired bandedge <m:math><m:msub><m:mi>ω</m:mi><m:mn>0</m:mn></m:msub></m:math> for the
+highpass filter is mapped by <m:math><m:mrow><m:mn>1</m:mn><m:mo>/</m:mo><m:msub><m:mi>ω</m:mi><m:mn>0</m:mn></m:msub></m:mrow></m:math> to give the bandedge for the
+prototype lowpass filter. This lowpass filter is next designed by
+one of the optimal procedures already covered and then converted
+to a highpass transfer function by replacing <m:math><m:mi>s</m:mi></m:math> by <m:math><m:mrow><m:mn>1</m:mn><m:mo>/</m:mo><m:mi>s</m:mi></m:mrow></m:math>. If an
+elliptic-function filter approximation is used, both the passband
+edge <m:math><m:msub><m:mi>ω</m:mi><m:mi>p</m:mi></m:msub></m:math> and the stopbandedge <m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math> are transformed. Because
+most optimal lowpass design procedures give the designed transfer
+function in factored form from explicit formulas for the poles
+and zeros, the transformation can be performed on each pole and
+zero to give the highpass transfer function in factored form.</para>
+    </section>
+    <section id="uid4">
+      <title>The Bandpass Filter</title>
+      <para id="id2255907">In order to convert the lowpass filter of <link target-id="uid1"/>a into
+that of <link target-id="uid1"/>c, a more complicated frequency
+transformation is required. In order to reduce confusion, the complex
+frequency variable for the prototype analog filter transfer function will
+be denoted by <m:math><m:mi>p</m:mi></m:math> and that for the transformed analog filter by <m:math><m:mi>s</m:mi></m:math>.
+The transformation is given by</para>
+      <equation id="uid5">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>p</m:mi>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:msup>
+                  <m:mi>s</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mo>+</m:mo>
+                <m:msubsup>
+                  <m:mi>ω</m:mi>
+                  <m:mn>0</m:mn>
+                  <m:mn>2</m:mn>
+                </m:msubsup>
+              </m:mrow>
+              <m:mi>s</m:mi>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2255986">This change of variables doubles the order of the filter, maps the origin
+of the <m:math><m:mi>s</m:mi></m:math>-plane to both plus and minus <m:math><m:mrow><m:mi>j</m:mi><m:msub><m:mi>ω</m:mi><m:mn>0</m:mn></m:msub></m:mrow></m:math>, and maps minus and
+plus infinity to zero and infinity. The entire <m:math><m:mi>ω</m:mi></m:math> axis of the
+prototype response is mapped between zero and plus infinity on the
+transformed responses. It is also mapped onto the left-half axis between
+minus infinity and zero. This is illustrated in <link target-id="uid6"/>.</para>
+      <figure id="uid6" orient="horizontal"><media id="id1169848509453" alt="Figure two is a cartesian graph with an unlabeled vertical axis and a horizontal axis labeled Frequency, ω. The horizontal axis ranges in value from -5 to 5 in increments of 5, and the vertical axis ranges in value from 0 to 5 in increments of 1. There are two blue horizontal lines in this graph, one from (-5, 3) to (5, 3) and the other from (-5, 0) to (5, 0). Above the horizontal lines is a box containing the phrase, lowpass prototype. In between the lines is a box containing the phrase, bandpass filter. There is an arrow drawn from the lowpass prototype box to the bandpass filter box. There are three trapezoids in this graph, each with their base on one of the horizontal lines. The largest trapezoid is centered with its base from approximately (-2, 3) to (2, 3). It has a height of one. The horizontal values of the vertices of the trapezoid read from left to right, -ω_s, -ω_p, ω_p, and ω_s. There are two identical trapezoids in the lower half of the graph, with their bases from approximately (-3.5, 0) to (-1.5, 0) and (1.5, 0) to (3.5, 0) respectively. These trapezoids also have a height of one. On the base of the trapezoid to the right are labels corresponding to the horizontal values of its vertices (and including the midpoint of its base), labeled from left to right ω_1, ω_2, ω_0, ω_3, ω_4. There are arrows drawn from the  labeled horizontal values of the larger trapezoid above to these labeled points on the smaller trapezoid below and to the right."><image src="../../media/figIIR15.png" mime-type="image/png" width="417"/><image for="pdf" src="../../media/figIIR15.eps" mime-type="application/postscript"/></media>
+        
+      <caption>Lowpass to Bandpass Transformation</caption></figure>
+      
+      <para id="id2256057">In order that the transformation give <m:math><m:mrow><m:mo>-</m:mo><m:msub><m:mi>ω</m:mi><m:mi>p</m:mi></m:msub><m:mo>=</m:mo><m:mrow><m:mo>(</m:mo><m:msubsup><m:mi>ω</m:mi><m:mn>2</m:mn><m:mn>2</m:mn></m:msubsup><m:mo>-</m:mo><m:msubsup><m:mi>ω</m:mi><m:mn>0</m:mn><m:mn>2</m:mn></m:msubsup><m:mo>)</m:mo></m:mrow><m:mo>/</m:mo><m:msub><m:mi>ω</m:mi><m:mn>2</m:mn></m:msub></m:mrow></m:math>
+and <m:math><m:mrow><m:msub><m:mi>ω</m:mi><m:mi>p</m:mi></m:msub><m:mo>=</m:mo><m:mrow><m:mo>(</m:mo><m:msubsup><m:mi>ω</m:mi><m:mn>3</m:mn><m:mn>2</m:mn></m:msubsup><m:mo>-</m:mo><m:msubsup><m:mi>ω</m:mi><m:mn>0</m:mn><m:mn>2</m:mn></m:msubsup><m:mo>)</m:mo></m:mrow><m:mo>/</m:mo><m:msub><m:mi>ω</m:mi><m:mn>3</m:mn></m:msub></m:mrow></m:math>, the “center"
+frequency <m:math><m:msub><m:mi>ω</m:mi><m:mn>0</m:mn></m:msub></m:math> must be</para>
+      <equation id="uid7">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi>ω</m:mi>
+              <m:mn>0</m:mn>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:msqrt>
+              <m:mrow>
+                <m:msub>
+                  <m:mi>ω</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msub>
+                <m:msub>
+                  <m:mi>ω</m:mi>
+                  <m:mn>3</m:mn>
+                </m:msub>
+              </m:mrow>
+            </m:msqrt>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256230">However, because <m:math><m:mrow><m:mo>-</m:mo><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub><m:mo>=</m:mo><m:mrow><m:mo>(</m:mo><m:msubsup><m:mi>ω</m:mi><m:mn>1</m:mn><m:mn>2</m:mn></m:msubsup><m:mo>-</m:mo><m:msubsup><m:mi>ω</m:mi><m:mn>0</m:mn><m:mn>2</m:mn></m:msubsup><m:mo>)</m:mo></m:mrow><m:mo>/</m:mo><m:msub><m:mi>ω</m:mi><m:mn>1</m:mn></m:msub></m:mrow></m:math> and <m:math><m:mrow><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub><m:mo>=</m:mo><m:mrow><m:mo>(</m:mo><m:msubsup><m:mi>ω</m:mi><m:mn>4</m:mn><m:mn>2</m:mn></m:msubsup><m:mo>-</m:mo><m:msubsup><m:mi>ω</m:mi><m:mn>0</m:mn><m:mn>2</m:mn></m:msubsup><m:mo>)</m:mo></m:mrow><m:mo>/</m:mo><m:msub><m:mi>ω</m:mi><m:mn>4</m:mn></m:msub></m:mrow></m:math>,
+the center frequency must also be</para>
+      <equation id="uid8">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi>ω</m:mi>
+              <m:mn>0</m:mn>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:msqrt>
+              <m:mrow>
+                <m:msub>
+                  <m:mi>ω</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:msub>
+                  <m:mi>ω</m:mi>
+                  <m:mn>4</m:mn>
+                </m:msub>
+              </m:mrow>
+            </m:msqrt>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256625">This means that only three of the four bandedge frequencies <m:math><m:msub><m:mi>ω</m:mi><m:mn>1</m:mn></m:msub></m:math>,
+<m:math><m:msub><m:mi>ω</m:mi><m:mn>2</m:mn></m:msub></m:math>, <m:math><m:msub><m:mi>ω</m:mi><m:mn>3</m:mn></m:msub></m:math>, and <m:math><m:msub><m:mi>ω</m:mi><m:mn>4</m:mn></m:msub></m:math> can be independently specified. Normally, <m:math><m:msub><m:mi>ω</m:mi><m:mn>0</m:mn></m:msub></m:math>
+is determined by <m:math><m:msub><m:mi>ω</m:mi><m:mn>2</m:mn></m:msub></m:math> and <m:math><m:msub><m:mi>ω</m:mi><m:mn>3</m:mn></m:msub></m:math> which then specifies the prototype
+passband edge by</para>
+      <equation id="uid9">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi>ω</m:mi>
+              <m:mi>p</m:mi>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:msubsup>
+                  <m:mi>ω</m:mi>
+                  <m:mn>3</m:mn>
+                  <m:mn>2</m:mn>
+                </m:msubsup>
+                <m:mo>-</m:mo>
+                <m:msubsup>
+                  <m:mi>ω</m:mi>
+                  <m:mn>0</m:mn>
+                  <m:mn>2</m:mn>
+                </m:msubsup>
+              </m:mrow>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mn>3</m:mn>
+              </m:msub>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256783">and, using the same <m:math><m:msub><m:mi>ω</m:mi><m:mn>0</m:mn></m:msub></m:math>, the stopband edge is set by either <m:math><m:msub><m:mi>ω</m:mi><m:mn>1</m:mn></m:msub></m:math>
+or <m:math><m:msub><m:mi>ω</m:mi><m:mn>4</m:mn></m:msub></m:math>, whichever gives the smaller <m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math>.</para>
+      <equation id="uid10">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi>ω</m:mi>
+              <m:mi>s</m:mi>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:msubsup>
+                  <m:mi>ω</m:mi>
+                  <m:mn>4</m:mn>
+                  <m:mn>2</m:mn>
+                </m:msubsup>
+                <m:mo>-</m:mo>
+                <m:msubsup>
+                  <m:mi>ω</m:mi>
+                  <m:mn>0</m:mn>
+                  <m:mn>2</m:mn>
+                </m:msubsup>
+              </m:mrow>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mn>4</m:mn>
+              </m:msub>
+            </m:mfrac>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mtext>or</m:mtext>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mfrac>
+              <m:mrow>
+                <m:msubsup>
+                  <m:mi>ω</m:mi>
+                  <m:mn>0</m:mn>
+                  <m:mn>2</m:mn>
+                </m:msubsup>
+                <m:mo>-</m:mo>
+                <m:msubsup>
+                  <m:mi>ω</m:mi>
+                  <m:mn>1</m:mn>
+                  <m:mn>2</m:mn>
+                </m:msubsup>
+              </m:mrow>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256948">The finally designed bandpass filter will meet both passband
+edges and one transition band width, but the other will be
+narrower than originally specified. This is not a problem with
+the Butterworth or either of the Chebyshev approximation because
+they only have passband edges or stopband edges, but not both.
+The elliptic-function has both.</para>
+      <para id="id2256957">After the bandedges for the prototype lowpass filter <m:math><m:msub><m:mi>ω</m:mi><m:mi>p</m:mi></m:msub></m:math>
+and/or <m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math> are calculated, the filter is designed by one of the
+optimal approximation methods discussed in this section or any
+other means. Because most of these methods give the pole and zero
+locations directly, they can be individually transformed to give
+the bandpass filter transfer function in factored form. This is
+accomplished by solving <m:math><m:mrow><m:msup><m:mi>s</m:mi><m:mn>2</m:mn></m:msup><m:mo>-</m:mo><m:mi>p</m:mi><m:mi>s</m:mi><m:mo>+</m:mo><m:msubsup><m:mi>ω</m:mi><m:mn>0</m:mn><m:mn>2</m:mn></m:msubsup></m:mrow></m:math> from the original
+transformation to give for the root locations</para>
+      <equation id="uid11">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>s</m:mi>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:mi>p</m:mi>
+                <m:mo>±</m:mo>
+                <m:msqrt>
+                  <m:mrow>
+                    <m:msup>
+                      <m:mi>p</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                    <m:mo>-</m:mo>
+                    <m:mn>4</m:mn>
+                    <m:msubsup>
+                      <m:mi>ω</m:mi>
+                      <m:mn>0</m:mn>
+                      <m:mn>2</m:mn>
+                    </m:msubsup>
+                  </m:mrow>
+                </m:msqrt>
+              </m:mrow>
+              <m:mn>2</m:mn>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257084">This gives two transformed roots for each prototype root which
+doubles the order as expected.</para>
+      <para id="id2257089">The roots that result from transforming the real pole of an odd-
+order prototype cause some complication in programming this
+procedure. Program 8 should be studied to understand how this is
+carried out.</para>
+    </section>
+    <section id="uid12">
+      <title>The Band-Reject Filter</title>
+      <para id="id2257104">To design a filter that will reject a band of frequencies, a
+frequency transformation of the form</para>
+      <equation id="uid13">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>p</m:mi>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mi>s</m:mi>
+              <m:mrow>
+                <m:msup>
+                  <m:mi>s</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mo>+</m:mo>
+                <m:msubsup>
+                  <m:mi>ω</m:mi>
+                  <m:mn>0</m:mn>
+                  <m:mn>2</m:mn>
+                </m:msubsup>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257150">is used on the prototype lowpass filter. This transforms the origin of
+the <m:math><m:mi>p</m:mi></m:math>-plane into both the origin and infinity of the <m:math><m:mi>s</m:mi></m:math>-plane. It maps
+infinity in the <m:math><m:mi>p</m:mi></m:math>-plane into j<m:math><m:msub><m:mi>ω</m:mi><m:mn>0</m:mn></m:msub></m:math> in the <m:math><m:mi>s</m:mi></m:math>-plane.</para>
+      <para id="id2257204">Similar to the bandpass case, the transformation must give
+<m:math><m:mrow><m:mo>-</m:mo><m:msub><m:mi>ω</m:mi><m:mi>p</m:mi></m:msub><m:mo>=</m:mo><m:msub><m:mi>ω</m:mi><m:mn>4</m:mn></m:msub><m:mo>/</m:mo><m:mrow><m:mo>(</m:mo><m:msubsup><m:mi>ω</m:mi><m:mn>0</m:mn><m:mn>2</m:mn></m:msubsup><m:mo>-</m:mo><m:msubsup><m:mi>ω</m:mi><m:mn>4</m:mn><m:mn>2</m:mn></m:msubsup><m:mo>)</m:mo></m:mrow></m:mrow></m:math> and <m:math><m:mrow><m:msub><m:mi>ω</m:mi><m:mi>p</m:mi></m:msub><m:mo>=</m:mo><m:msub><m:mi>ω</m:mi><m:mn>1</m:mn></m:msub><m:mo>/</m:mo><m:mrow><m:mo>(</m:mo><m:msubsup><m:mi>ω</m:mi><m:mn>0</m:mn><m:mn>2</m:mn></m:msubsup><m:mo>-</m:mo><m:msubsup><m:mi>ω</m:mi><m:mn>1</m:mn><m:mn>2</m:mn></m:msubsup><m:mo>)</m:mo></m:mrow></m:mrow></m:math>.
+A similar relation
+of <m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math> to <m:math><m:msub><m:mi>ω</m:mi><m:mn>2</m:mn></m:msub></m:math> and <m:math><m:msub><m:mi>ω</m:mi><m:mn>3</m:mn></m:msub></m:math> requires that the center frequency <m:math><m:msub><m:mi>ω</m:mi><m:mn>0</m:mn></m:msub></m:math> must be</para>
+      <equation id="uid14">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi>ω</m:mi>
+              <m:mn>0</m:mn>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:msqrt>
+              <m:mrow>
+                <m:msub>
+                  <m:mi>ω</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:msub>
+                  <m:mi>ω</m:mi>
+                  <m:mn>4</m:mn>
+                </m:msub>
+              </m:mrow>
+            </m:msqrt>
+            <m:mo>=</m:mo>
+            <m:msqrt>
+              <m:mrow>
+                <m:msub>
+                  <m:mi>ω</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msub>
+                <m:msub>
+                  <m:mi>ω</m:mi>
+                  <m:mn>3</m:mn>
+                </m:msub>
+              </m:mrow>
+            </m:msqrt>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257440">As before, only three of the four bandedge frequencies can be
+independently specified. Normally, <m:math><m:msub><m:mi>ω</m:mi><m:mn>0</m:mn></m:msub></m:math> is determined by <m:math><m:msub><m:mi>ω</m:mi><m:mn>1</m:mn></m:msub></m:math> and
+<m:math><m:msub><m:mi>ω</m:mi><m:mn>4</m:mn></m:msub></m:math> which then specifies the prototype passband edge by</para>
+      <equation id="uid15">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi>ω</m:mi>
+              <m:mi>p</m:mi>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:mrow>
+                <m:msubsup>
+                  <m:mi>ω</m:mi>
+                  <m:mn>0</m:mn>
+                  <m:mn>2</m:mn>
+                </m:msubsup>
+                <m:mo>-</m:mo>
+                <m:msubsup>
+                  <m:mi>ω</m:mi>
+                  <m:mn>1</m:mn>
+                  <m:mn>2</m:mn>
+                </m:msubsup>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257547">and, using the same <m:math><m:msub><m:mi>ω</m:mi><m:mn>0</m:mn></m:msub></m:math>, the stopband edge is set by either <m:math><m:msub><m:mi>ω</m:mi><m:mn>2</m:mn></m:msub></m:math>
+or <m:math><m:msub><m:mi>ω</m:mi><m:mn>3</m:mn></m:msub></m:math>, whichever gives the smaller <m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math>.</para>
+      <equation id="uid16">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi>ω</m:mi>
+              <m:mi>s</m:mi>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mn>2</m:mn>
+              </m:msub>
+              <m:mrow>
+                <m:msubsup>
+                  <m:mi>ω</m:mi>
+                  <m:mn>0</m:mn>
+                  <m:mn>2</m:mn>
+                </m:msubsup>
+                <m:mo>-</m:mo>
+                <m:msubsup>
+                  <m:mi>ω</m:mi>
+                  <m:mn>2</m:mn>
+                  <m:mn>2</m:mn>
+                </m:msubsup>
+              </m:mrow>
+            </m:mfrac>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mtext>or</m:mtext>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mfrac>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mn>3</m:mn>
+              </m:msub>
+              <m:mrow>
+                <m:msubsup>
+                  <m:mi>ω</m:mi>
+                  <m:mn>4</m:mn>
+                  <m:mn>2</m:mn>
+                </m:msubsup>
+                <m:mo>-</m:mo>
+                <m:msubsup>
+                  <m:mi>ω</m:mi>
+                  <m:mn>0</m:mn>
+                  <m:mn>2</m:mn>
+                </m:msubsup>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257722">The finally designed bandpass filter will meet both passband
+edges and one transition-band width, but the other will be
+narrower than originally specified. This does not occur with
+the Butterworth or either Chebyshev approximation, only with the
+elliptic-function.</para>
+      <para id="id2257729">After the bandedges for the prototype lowpass filter <m:math><m:msub><m:mi>ω</m:mi><m:mi>p</m:mi></m:msub></m:math>
+and/or <m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math> are calculated, the filter is designed. The poles and
+zeros of this filter are individually transformed to give the
+bandreject filter transfer function in factored form. This is
+carried out by solving <m:math><m:mrow><m:msup><m:mi>s</m:mi><m:mn>2</m:mn></m:msup><m:mo>-</m:mo><m:mrow><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>/</m:mo><m:mi>p</m:mi><m:mo>)</m:mo></m:mrow><m:mi>s</m:mi><m:mo>+</m:mo><m:msubsup><m:mi>ω</m:mi><m:mn>0</m:mn><m:mn>2</m:mn></m:msubsup></m:mrow></m:math> to give for the root
+locations</para>
+      <equation id="uid17">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>s</m:mi>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:mn>1</m:mn>
+                <m:mo>/</m:mo>
+                <m:mi>p</m:mi>
+                <m:mo>±</m:mo>
+                <m:msqrt>
+                  <m:mrow>
+                    <m:msup>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mn>1</m:mn>
+                        <m:mo>/</m:mo>
+                        <m:mi>p</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                    <m:mo>-</m:mo>
+                    <m:mn>4</m:mn>
+                    <m:msubsup>
+                      <m:mi>ω</m:mi>
+                      <m:mn>0</m:mn>
+                      <m:mn>2</m:mn>
+                    </m:msubsup>
+                  </m:mrow>
+                </m:msqrt>
+              </m:mrow>
+              <m:mn>2</m:mn>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257874">A more complicated set of transformations could be developed
+by using a general map of <m:math><m:mrow><m:mi>s</m:mi><m:mo>=</m:mo><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>)</m:mo></m:mrow></m:math> with a higher order. Several
+pass or stopbands could be specified, but the calculations become
+fairly complicated.</para>
+      <para id="id2257902">Although this method of transformation is a powerful and
+simple way for designing bandpass and bandreject filters, it
+does impose certain restrictions. A Chebyshev bandpass filter
+will be equal-ripple in the passband and maximally flat at both
+zero and infinity, but the transformation forces the degree of
+flatness at zero and infinity to be equal. The elliptic-function
+bandpass filter will bave the same number of ripples in both
+stopbands even if they are of very different widths. These
+restrictions are usually considered mild when compared with the
+complexity of alternative design methods.</para>
+      
+    </section>
+  </content>
+  <bib:file/>
+</document>

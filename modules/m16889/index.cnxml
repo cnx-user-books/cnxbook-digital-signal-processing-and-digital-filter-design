@@ -1,0 +1,3974 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:bib="http://bibtexml.sf.net/">
+  <title>FIR Digital Filters</title>
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m16889</md:content-id>
+  <md:title>FIR Digital Filters</md:title>
+  <md:abstract/>
+  <md:uuid>12927e3f-7e46-41a9-9f48-7fdbf2d6ef78</md:uuid>
+</metadata>
+  <content>
+    <para id="id2255546">There are two types of linear, time-invariant digital filters. We will
+investigate digital filters with a <emphasis>finite-duration impulse response</emphasis>
+(FIR) in this section and those with an <emphasis>infinite-duration impulse
+response</emphasis> (IIR) in another document. FIR filters have characteristics
+that make them useful in many applications <link target-id="bid0"/>, <link target-id="bid1"/>.</para>
+    <list id="id2255576" list-type="enumerated">
+      <item id="uid1">FIR filters can achieve an exactly linear phase frequency response
+</item>
+      <item id="uid2">FIR filters cannot be unstable.
+</item>
+      <item id="uid3">FIR filters are generally less
+sensitive to coefficient round-off and finite-precision arithmetic than
+IIR filters.
+</item>
+      <item id="uid4">FIR filters design methods are generally linear.
+</item>
+      <item id="uid5">FIR filters can be efficiently realized on general or special-purpose
+hardware.
+</item>
+    </list>
+    <para id="id2255633">However, frequency responses that need a rapid transition
+between bands and do not require linear phase are often more efficiently
+realized with IIR filters.</para>
+    <para id="id2255639">It is the purpose of this section to examine and
+evaluate these characteristics which are important in the design
+of the four basic types of linear-phase FIR filters.</para>
+    <para id="id2255646">Because of the usual methods of implementation, the Finite Impulse
+Response (FIR) filter is also called a <emphasis>nonrecursive</emphasis> filter or
+a convolution filter. From the time-domain view of this operation,
+the FIR filter is sometimes called a <emphasis>moving-average</emphasis> or <emphasis>running-average</emphasis> filter. All of these names represent useful
+interpretations that are discussed in this section; however, the
+name, FIR, is most commonly seen in filter-design literature and is
+used in these notes.</para>
+    <para id="id2255673">The duration or sequence length of the impulse response of
+these filters is by definition finite; therefore, the output can
+be written as a finite convolution sum by</para>
+    <equation id="uid6"><m:math mode="display">
+        <m:mrow>
+          <m:mi>y</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mspace width="0.166667em"/>
+          <m:mo>=</m:mo>
+          <m:mspace width="0.166667em"/>
+          <m:munderover>
+<m:mrow>
+            <m:mo>∑</m:mo>
+</m:mrow>        
+    <m:mrow>
+              <m:mi>m</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+            </m:mrow>
+            <m:mrow>
+              <m:mi>N</m:mi>
+              <m:mo>-</m:mo>
+              <m:mn>1</m:mn>
+            </m:mrow>
+          </m:munderover>
+          <m:mi>h</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>m</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mi>x</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>-</m:mo>
+            <m:mi>m</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:mrow>
+      </m:math>
+    </equation>
+    <para id="id2254916">where <m:math><m:mi>n</m:mi></m:math> and <m:math><m:mi>m</m:mi></m:math> are integers, perhaps representing samples in time,
+and where <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is the input sequence, <m:math><m:mrow><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> the output sequence,
+and <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is the length-N impulse response of the filter.
+With a change of index variables, this can also be written as</para>
+    <equation id="uid7"><m:math mode="display">
+        <m:mrow>
+          <m:mi>y</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mspace width="0.166667em"/>
+          <m:mo>=</m:mo>
+          <m:mspace width="0.166667em"/>
+          <m:munderover>
+<m:mrow>
+            <m:mo>∑</m:mo>
+</m:mrow>        
+    <m:mrow>
+              <m:mi>m</m:mi>
+              <m:mo>=</m:mo>
+              <m:mi>n</m:mi>
+            </m:mrow>
+            <m:mrow>
+              <m:mi>n</m:mi>
+              <m:mo>-</m:mo>
+              <m:mi>N</m:mi>
+              <m:mo>+</m:mo>
+              <m:mn>1</m:mn>
+            </m:mrow>
+          </m:munderover>
+          <m:mi>h</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>-</m:mo>
+            <m:mi>m</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mi>x</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>m</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mo>.</m:mo>
+        </m:mrow>
+      </m:math>
+    </equation>
+    <para id="id2256154">If the FIR filter is interpreted as an extension of a
+moving sum or as a weighted moving average, some of its properties
+can easily be seen. If one has a
+sequence of numbers, e.g., prices from the daily stock market
+for a particular stock, and would like to remove the erratic
+variations in order to discover longer term trends, each number could
+be replaced by the average of itself and the preceding three
+numbers, i.e., the variations within a four-day period would be
+“averaged out" while the longer-term variations would remain. To
+illustrate how this happens, consider an artificial signal
+<m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> containing a linear term, <m:math><m:mrow><m:msub><m:mi>K</m:mi><m:mn>1</m:mn></m:msub><m:mi>n</m:mi></m:mrow></m:math>, and an undesired oscillating
+term added to it, such that</para>
+    <equation id="uid8">
+      <m:math mode="display">
+        <m:mrow>
+          <m:mi>x</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mspace width="0.166667em"/>
+          <m:mo>=</m:mo>
+          <m:mspace width="0.166667em"/>
+          <m:msub>
+            <m:mi>K</m:mi>
+            <m:mn>1</m:mn>
+          </m:msub>
+          <m:mi>n</m:mi>
+          <m:mo>+</m:mo>
+          <m:msub>
+            <m:mi>K</m:mi>
+            <m:mn>2</m:mn>
+          </m:msub>
+          <m:mo form="prefix">cos</m:mo>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>π</m:mi>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:mrow>
+      </m:math>
+    </equation>
+    <para id="id2256274">If a length-2 averaging filter is used with</para>
+    <equation id="uid9">
+      <m:math mode="display">
+        <m:mrow>
+          <m:mi>h</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mspace width="0.166667em"/>
+          <m:mo>=</m:mo>
+          <m:mspace width="0.166667em"/>
+          <m:mfenced separators="" open="{" close="">
+            <m:mtable>
+              <m:mtr>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mn>1</m:mn>
+                    <m:mo>/</m:mo>
+                    <m:mn>2</m:mn>
+                  </m:mrow>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mspace width="4.pt"/>
+                    <m:mtext>for</m:mtext>
+                    <m:mspace width="4.pt"/>
+                    <m:mrow>
+                      <m:mi>n</m:mi>
+                      <m:mo>=</m:mo>
+                      <m:mn>0</m:mn>
+                      <m:mo>,</m:mo>
+                      <m:mn>1</m:mn>
+                    </m:mrow>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+              <m:mtr>
+                <m:mtd columnalign="left">
+                  <m:mn>0</m:mn>
+                </m:mtd>
+                <m:mtd columnalign="left">
+                  <m:mrow>
+                    <m:mspace width="4.pt"/>
+                    <m:mtext>otherwise</m:mtext>
+                  </m:mrow>
+                </m:mtd>
+              </m:mtr>
+            </m:mtable>
+          </m:mfenced>
+        </m:mrow>
+      </m:math>
+    </equation>
+    <para id="id2256374">it can be verified that, after two outputs, the output <m:math><m:mrow><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is
+exactly the linear term <m:math><m:mrow><m:mi>x</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> with a delay of one half sample interval
+and no oscillation.</para>
+    <para id="id2256414">This example illustrates the basic FIR filter-design
+problem: determine N, the number of terms for <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>, and the
+values of <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> for achieving a desired effect on the signal.
+The reader should examine simple examples to obtain an intuitive idea
+of the FIR filter as a moving average; however, this simple
+time-domain interpretation
+will not suffice for complicated problems where the concept of
+frequency becomes more valuable.</para>
+    <section id="uid10">
+      <title>Frequency-Domain Description of FIR Filters</title>
+      <para id="id2256463">The output of a length-N FIR filter can be calculated from the input using
+convolution.</para>
+      <equation id="id2256467"><m:math mode="display">
+          <m:mrow>
+            <m:mi>y</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>k</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+              </m:mrow>
+              <m:mrow>
+                <m:mi>N</m:mi>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:munderover>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="4pt"/>
+            <m:mi>x</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>-</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256536">and the transfer function of an FIR filter is given by the z-transform
+of the finite length impulse response <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> as</para>
+      <equation id="uid11"><m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>n</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+              </m:mrow>
+              <m:mrow>
+                <m:mi>N</m:mi>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:munderover>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:msup>
+              <m:mi>z</m:mi>
+              <m:mrow>
+                <m:mo>-</m:mo>
+                <m:mi>n</m:mi>
+              </m:mrow>
+            </m:msup>
+            <m:mo>.</m:mo>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256636">The frequency response of a filter, is found by setting
+<m:math><m:mrow><m:mi>z</m:mi><m:mo>=</m:mo><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mi>ω</m:mi></m:mrow></m:msup></m:mrow></m:math>, which is the same as the discrete-time Fourier
+transform (DTFT) of <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>,
+which gives</para>
+      <equation id="uid12"><m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>n</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+              </m:mrow>
+              <m:mrow>
+                <m:mi>N</m:mi>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:munderover>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:msup>
+              <m:mi>e</m:mi>
+              <m:mrow>
+                <m:mo>-</m:mo>
+                <m:mi>j</m:mi>
+                <m:mi>ω</m:mi>
+                <m:mi>n</m:mi>
+              </m:mrow>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256757">with <m:math><m:mi>ω</m:mi></m:math> being frequency in radians per second.
+Strictly speaking, the exponent should be <m:math><m:mrow><m:mo>-</m:mo><m:mi>j</m:mi><m:mi>ω</m:mi><m:mi>T</m:mi><m:mi>n</m:mi></m:mrow></m:math> where <m:math><m:mi>T</m:mi></m:math> is the
+time interval between the integer steps of <m:math><m:mi>n</m:mi></m:math> (the sampling interval).
+But to simplify notation, it will be assumed that <m:math><m:mrow><m:mi>T</m:mi><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow></m:math> until later in the
+notes where the relation between <m:math><m:mi>n</m:mi></m:math> and time is more important. Also to
+simplify notation, <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is used to represent the frequency response
+rather that <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:msup><m:mi>e</m:mi><m:mrow><m:mi>j</m:mi><m:mi>ω</m:mi></m:mrow></m:msup><m:mo>)</m:mo></m:mrow></m:math>. It should always be clear from the context
+whether <m:math><m:mi>H</m:mi></m:math> is a function of <m:math><m:mi>z</m:mi></m:math> or <m:math><m:mi>ω</m:mi></m:math>.</para>
+      <para id="id2256903">This frequency-response function is complex-valued and
+consists of a magnitude and a phase. Even though the impulse
+response is a function of the discrete variable <m:math><m:mi>n</m:mi></m:math>, the
+frequency response is a function of the continuous-frequency
+variable <m:math><m:mi>ω</m:mi></m:math> and is periodic with period <m:math><m:mrow><m:mn>2</m:mn><m:mi>π</m:mi></m:mrow></m:math>. This periodicity is
+easily shown by</para>
+      <equation id="uid13">
+        <m:math mode="display">
+          <m:mtable displaystyle="true">
+            <m:mtr>
+              <m:mtd columnalign="right">
+                <m:mrow>
+                  <m:mi>H</m:mi>
+                  <m:mo>(</m:mo>
+                  <m:mi>w</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mi>π</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mtd>
+              <m:mtd>
+                <m:mrow>
+                  <m:mspace width="0.166667em"/>
+                  <m:mo>=</m:mo>
+                  <m:mspace width="0.166667em"/>
+                </m:mrow>
+              </m:mtd>
+              <m:mtd columnalign="left">
+                <m:mrow>
+                  <m:munderover>
+                    <m:mo>∑</m:mo>
+                    <m:mrow>
+                      <m:mi>n</m:mi>
+                      <m:mo>=</m:mo>
+                      <m:mn>0</m:mn>
+                    </m:mrow>
+                    <m:mrow>
+                      <m:mi>N</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mn>1</m:mn>
+                    </m:mrow>
+                  </m:munderover>
+                  <m:mi>h</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>n</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:msup>
+                    <m:mi>e</m:mi>
+                    <m:mrow>
+                      <m:mo>-</m:mo>
+                      <m:mi>j</m:mi>
+                      <m:mo>(</m:mo>
+                      <m:mi>w</m:mi>
+                      <m:mo>+</m:mo>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                      <m:mo>)</m:mo>
+                      <m:mi>n</m:mi>
+                    </m:mrow>
+                  </m:msup>
+                </m:mrow>
+              </m:mtd>
+            </m:mtr>
+            <m:mtr>
+              <m:mtd/>
+              <m:mtd>
+                <m:mrow>
+                  <m:mspace width="0.166667em"/>
+                  <m:mo>=</m:mo>
+                  <m:mspace width="0.166667em"/>
+                </m:mrow>
+              </m:mtd>
+              <m:mtd columnalign="left">
+                <m:mrow>
+                  <m:munderover>
+                    <m:mo>∑</m:mo>
+                    <m:mrow>
+                      <m:mi>n</m:mi>
+                      <m:mo>=</m:mo>
+                      <m:mn>0</m:mn>
+                    </m:mrow>
+                    <m:mrow>
+                      <m:mi>N</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mn>1</m:mn>
+                    </m:mrow>
+                  </m:munderover>
+                  <m:mi>h</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>n</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:msup>
+                    <m:mi>e</m:mi>
+                    <m:mrow>
+                      <m:mo>-</m:mo>
+                      <m:mi>j</m:mi>
+                      <m:mi>ω</m:mi>
+                      <m:mi>n</m:mi>
+                    </m:mrow>
+                  </m:msup>
+                  <m:msup>
+                    <m:mi>e</m:mi>
+                    <m:mrow>
+                      <m:mo>-</m:mo>
+                      <m:mi>j</m:mi>
+                      <m:mn>2</m:mn>
+                      <m:mi>π</m:mi>
+                      <m:mi>n</m:mi>
+                    </m:mrow>
+                  </m:msup>
+                  <m:mspace width="0.166667em"/>
+                  <m:mo>=</m:mo>
+                  <m:mspace width="0.166667em"/>
+                  <m:mi>H</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mrow>
+              </m:mtd>
+            </m:mtr>
+          </m:mtable>
+        </m:math>
+      </equation>
+      <para id="id2257142">with frequency denoted by <m:math><m:mi>ω</m:mi></m:math> in radians per second or by <m:math><m:mi>f</m:mi></m:math> in Hz
+(hertz or cycles per second). These are related by</para>
+      <equation id="uid14">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>ω</m:mi>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mn>2</m:mn>
+            <m:mi>π</m:mi>
+            <m:mi>f</m:mi>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257195">An example of a length-5 filter might be</para>
+      <equation id="uid15">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>h</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mrow>
+              <m:mn>2</m:mn>
+              <m:mo>,</m:mo>
+              <m:mn>3</m:mn>
+              <m:mo>,</m:mo>
+              <m:mn>4</m:mn>
+              <m:mo>,</m:mo>
+              <m:mn>3</m:mn>
+              <m:mo>,</m:mo>
+              <m:mn>2</m:mn>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257249">with a frequency-response plot shown over the base
+frequency band (<m:math><m:mrow><m:mn>0</m:mn><m:mo>&lt;</m:mo><m:mi>ω</m:mi><m:mo>&lt;</m:mo><m:mi>π</m:mi></m:mrow></m:math> or <m:math><m:mrow><m:mn>0</m:mn><m:mo>&lt;</m:mo><m:mi>f</m:mi><m:mo>&lt;</m:mo><m:mn>1</m:mn></m:mrow></m:math> in <link target-id="uid16"/>.
+To illustrate the periodic nature of the total frequency response,
+<link target-id="uid17"/> shows the response over a wider set of frequencies.</para>
+      <figure id="uid16" orient="horizontal"><media id="id8915326" alt="A graph comparing Normalized frequency f on the x axis to Magnitude response |H(w)| on the y axis. The x axis ranges from 0-1 at intevals of .2. While the y axis ranges from 0-15 at intervals of 5. The line originates ot about (0,14) proceeding along a negative slope to around (.5,0) making a slight arch from that point to (.8,0) and the following a positive slope to about (1, 2)."><image src="../../media/fig51.png" mime-type="image/png" width="418"/><image for="pdf" src="../../media/fig51.eps" mime-type="application/postscript"/></media>
+        
+      <caption>Frequency Response of Example Filter</caption></figure>
+      <figure id="uid17" orient="horizontal"><media id="id8915369" alt="A graph of FIR Filter Frequency Response over 4p. The X axis is labeled Normalized Frequency ranging from -2 to 2 and the y axis is labeled Magnitude Response M ranging from 0-14. The line representing the response begins at around (-2,14) following a drasticly negative slope to about (-1.5,0) creating a small arch from that point to (-1.75,0) a larger arch from that point to (-.75,0), and then another arch the same size as the first small arch from point (-.75,-.5). From there the line progresses with an extremely positive slope  up to (0,14). The shape of the line is mirrored exactly on the positive of side of the x axis and ends at the point (2,14)."><image src="../../media/fig51a.png" mime-type="image/png" width="419"/><image for="pdf" src="../../media/fig51a.eps" mime-type="application/postscript"/></media>
+        
+      <caption>Frequency Response of Example Filter over a wide band of
+frequencies</caption></figure>
+      <para id="id2257331">The Discrete Fourier Transform (DFT) can be used to evaluate the
+frequency response at certain frequencies. The DFT <link target-id="bid2"/> of the
+length-N impulse response <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is defined as</para>
+      <equation id="uid18"><m:math mode="display">
+          <m:mrow>
+            <m:mi>C</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>n</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+              </m:mrow>
+              <m:mrow>
+                <m:mi>N</m:mi>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:munderover>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:msup>
+              <m:mi>e</m:mi>
+              <m:mrow>
+                <m:mo>-</m:mo>
+                <m:mi>j</m:mi>
+                <m:mn>2</m:mn>
+                <m:mi>π</m:mi>
+                <m:mi>n</m:mi>
+                <m:mi>k</m:mi>
+                <m:mo>/</m:mo>
+                <m:mi>N</m:mi>
+              </m:mrow>
+            </m:msup>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mrow>
+              <m:mi>k</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+              <m:mo>,</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>,</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>,</m:mo>
+              <m:mi>N</m:mi>
+              <m:mo>-</m:mo>
+              <m:mn>1</m:mn>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257488">which, when compared to <link target-id="uid12"/>, gives</para>
+      <equation id="uid19">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>C</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mn>2</m:mn>
+              <m:mi>π</m:mi>
+              <m:mi>k</m:mi>
+              <m:mo>/</m:mo>
+              <m:mi>N</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mrow>
+              <m:mi>k</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+              <m:mo>,</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>,</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>,</m:mo>
+              <m:mi>N</m:mi>
+              <m:mo>-</m:mo>
+              <m:mn>1</m:mn>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257617">for <m:math><m:mrow><m:msub><m:mi>ω</m:mi><m:mi>k</m:mi></m:msub><m:mo>=</m:mo><m:mn>2</m:mn><m:mi>π</m:mi><m:mi>k</m:mi><m:mo>/</m:mo><m:mi>N</m:mi></m:mrow></m:math>.</para>
+      <para id="id2257651">This states that the DFT of <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> gives <m:math><m:mi>N</m:mi></m:math> samples of the
+frequency-response function <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math>. This sampling at <m:math><m:mi>N</m:mi></m:math> points
+may not give enough detail, and, therefore, more samples are
+needed. Any number of equally spaced samples can be found with
+the DFT by simply appending <m:math><m:mrow><m:mi>L</m:mi><m:mo>-</m:mo><m:mi>N</m:mi></m:mrow></m:math> zeros to <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> and taking an
+L-length DFT. This is often useful when an accurate picture of
+all of <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is required. Indeed, when the number of appended
+zeros goes to infinity, the DFT becomes the discrete-time Fourier transform of
+<m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>.</para>
+      <para id="id2257778">The fact that the DFT of <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is a set of <m:math><m:mi>N</m:mi></m:math> samples of the
+frequency response suggests a method of designing FIR filters in
+which the inverse DFT of <m:math><m:mi>N</m:mi></m:math> samples of a desired frequency
+response gives the filter coefficients <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>. That approach is
+called frequency sampling and is developed in another section.</para>
+    </section>
+    <section id="uid20">
+      <title>Linear-Phase FIR Filters</title>
+      <para id="id2257848">A particular property of FIR filters that has proven to be very powerful
+is that a linear phase shift for the frequency response is possible. This
+is especially important to time domain details of a signal. The spectrum
+of a signal contains the individual frequency domain components separated
+in frequency. The process of filtering usually involves passing some of
+these components and rejecting others. This is done by multiplying the
+desired ones by one and the undesired ones by zero. When they are
+recombined, it is important that the components have the same time domain
+alignment as they originally did. That is exactly what linear phase
+insures. A phase response that is linear with frequency keeps all of the
+frequency components properly registered with each other. That is
+especially important in seismic, radar, and sonar signal analysis as well
+as for many medical signals where the relative time locations of events
+contains the information of interest.</para>
+      <para id="id2257867">To develop the theory for linear phase FIR filters, a careful definition
+of phase shift is necessary. If the real and imaginary parts of
+<m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> are given by</para>
+      <equation id="uid22">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mi>R</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+            <m:mo>+</m:mo>
+            <m:mi>j</m:mi>
+            <m:mi>I</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2257942">where <m:math><m:mrow><m:mi>j</m:mi><m:mo>=</m:mo><m:msqrt><m:mrow><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:msqrt></m:mrow></m:math> and the magnitude is defined
+by</para>
+      <equation id="uid23">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mrow>
+              <m:mo>|</m:mo>
+              <m:mi>H</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>|</m:mo>
+              <m:mspace width="0.166667em"/>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:msqrt>
+              <m:mrow>
+                <m:msup>
+                  <m:mi>R</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mo>+</m:mo>
+                <m:msup>
+                  <m:mi>I</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+              </m:mrow>
+            </m:msqrt>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2258023">and the phase by</para>
+      <equation id="uid24">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>Φ</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mo form="prefix">arctan</m:mo>
+            <m:mo>(</m:mo>
+            <m:mi>I</m:mi>
+            <m:mo>/</m:mo>
+            <m:mi>R</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2258074">which gives</para>
+      <equation id="uid25">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mo>|</m:mo>
+              <m:mi>H</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>|</m:mo>
+            </m:mrow>
+            <m:msup>
+              <m:mi>e</m:mi>
+              <m:mrow>
+                <m:mi>j</m:mi>
+                <m:mi>Φ</m:mi>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2258143">in terms of the magnitude and phase. Using the real and imaginary parts is
+using a rectangular coordinate system and using the magnitude and phase is
+using a polar coordinate system. Often, the polar system is easier to
+interpret.</para>
+      <para id="id2258153">Mathematical problems arise from using <m:math><m:mrow><m:mo>|</m:mo><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo><m:mo>|</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>Φ</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math>,
+because <m:math><m:mrow><m:mo>|</m:mo><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo><m:mo>|</m:mo></m:mrow></m:math> is not analytic and <m:math><m:mrow><m:mi>Φ</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> not continuous.
+This problem is solved by introducing an amplitude function <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math>
+that is real valued and may be positive or negative. The frequency
+response is written as</para>
+      <equation id="uid26">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mi>A</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:msup>
+              <m:mi>e</m:mi>
+              <m:mrow>
+                <m:mi>j</m:mi>
+                <m:mi>Θ</m:mi>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2258311">where <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is called the amplitude in order to
+distinguish it from the magnitude <m:math><m:mrow><m:mo>|</m:mo><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo><m:mo>|</m:mo></m:mrow></m:math>, and <m:math><m:mrow><m:mi>Θ</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is
+the continuous version of <m:math><m:mrow><m:mi>Φ</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math>. <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is a real, analytic
+function that is related to the magnitude by</para>
+      <equation id="uid27">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>A</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mo>±</m:mo>
+            <m:mo>|</m:mo>
+            <m:mi>H</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+            <m:mo>|</m:mo>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2258454">or</para>
+      <equation id="uid28">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mo>|</m:mo>
+            <m:mi>A</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+            <m:mo>|</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mo>|</m:mo>
+            <m:mi>H</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+            <m:mo>|</m:mo>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2258506">With this definition, <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> can be made analytic and
+<m:math><m:mrow><m:mi>Θ</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> continuous. These are much easier to work with than
+<m:math><m:mrow><m:mo>|</m:mo><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo><m:mo>|</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>Φ</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math>. The relationship of <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> and
+<m:math><m:mrow><m:mo>|</m:mo><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo><m:mo>|</m:mo></m:mrow></m:math>, and of <m:math><m:mrow><m:mi>Θ</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>Φ</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> are shown in
+<link target-id="uid29"/>.</para>
+      <figure id="uid29" orient="horizontal"><media id="id8093602" alt="This image consist of four graphs. Above each graph is the label FIR Filter Frequency Response. The top left graph compares the normalized frequency on the x axis with the magnitude response, M on the y axis. The line for this graph follows a negative slope from point (0,14) to about (.5,0). The line then makes a shallow arch from that point to about (.75.0). The line then follows a positive slope as it runs off the graph. The top right graph is similar except that y axis is labeled Amplitude response, A. The line starts at (14,0) and follows a negative slope falls below the x axis and the then the slope turns positive and proceeds off the graph. The bottom left graph has a y axis labeled Phase in Radians, F. This line is very jagged and consist only of straight lines. The line begins with a negative slope from the origin to (.5,-3). Then the line proceeds vertically to point(.5,0). Then the line takes on the same negative slope as the first line and then goes vertical again crossing over the x axis to a point around(.75,1), and then the line takes on the same negative slope again and ends at (1,0). The bottom right graph is simpler. A single straight line follows a negative slope from the origin to about (1,-6) where the line ends. The y axis in this graph is labeled Phase in Radians Q."><image src="../../media/fig52.png" mime-type="image/png" width="427"/><image for="pdf" src="../../media/fig52.eps" mime-type="application/postscript"/></media>
+        
+      <caption>Magnitude and Amplitude Frequency Responses and
+Corresponding Phase Frequency Response of Example Filter</caption></figure>
+      <para id="id2258676">To develop the characteristics and properties of linear-phase
+filters, assume a general linear plus constant form for the phase
+function as</para>
+      <equation id="uid30">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>Θ</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:msub>
+              <m:mi>K</m:mi>
+              <m:mn>1</m:mn>
+            </m:msub>
+            <m:mo>+</m:mo>
+            <m:msub>
+              <m:mi>K</m:mi>
+              <m:mn>2</m:mn>
+            </m:msub>
+            <m:mi>ω</m:mi>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2258732">This gives the frequency response function of a length-N FIR
+filter as</para>
+      <equation id="uid31"><m:math mode="display">
+          <m:mtable displaystyle="true">
+            <m:mtr>
+              <m:mtd columnalign="right">
+                <m:mrow>
+                  <m:mi>H</m:mi>
+                  <m:mo>(</m:mo>
+                  <m:mi>ω</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mtd>
+              <m:mtd>
+                <m:mrow>
+                  <m:mspace width="0.166667em"/>
+                  <m:mo>=</m:mo>
+                  <m:mspace width="0.166667em"/>
+                </m:mrow>
+              </m:mtd>
+              <m:mtd columnalign="left">
+                <m:mrow>
+                  <m:munderover>
+                    <m:mo>∑</m:mo>
+                    <m:mrow>
+                      <m:mi>n</m:mi>
+                      <m:mo>=</m:mo>
+                      <m:mn>0</m:mn>
+                    </m:mrow>
+                    <m:mrow>
+                      <m:mi>N</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mn>1</m:mn>
+                    </m:mrow>
+                  </m:munderover>
+                  <m:mi>h</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>n</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:msup>
+                    <m:mi>e</m:mi>
+                    <m:mrow>
+                      <m:mo>-</m:mo>
+                      <m:mi>j</m:mi>
+                      <m:mi>ω</m:mi>
+                      <m:mi>n</m:mi>
+                    </m:mrow>
+                  </m:msup>
+                </m:mrow>
+              </m:mtd>
+            </m:mtr>
+            <m:mtr>
+              <m:mtd/>
+              <m:mtd>
+                <m:mrow>
+                  <m:mspace width="0.166667em"/>
+                  
+
+
+<m:mo>=</m:mo>
+                  <m:mspace width="0.166667em"/>
+                </m:mrow>
+              </m:mtd>
+              <m:mtd columnalign="left">
+                <m:mrow>
+                  <m:msup>
+                    <m:mi>e</m:mi>
+                    <m:mrow>
+                      <m:mo>-</m:mo>
+                      <m:mi>j</m:mi>
+                      <m:mi>ω</m:mi>
+                      <m:mi>M</m:mi>
+                    </m:mrow>
+                  </m:msup>
+                  <m:munderover>
+                    <m:mo>∑</m:mo>
+                    <m:mrow>
+                      <m:mi>n</m:mi>
+                      <m:mo>=</m:mo>
+                      <m:mn>0</m:mn>
+                    </m:mrow>
+                    <m:mrow>
+                      <m:mi>N</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mn>1</m:mn>
+                    </m:mrow>
+                  </m:munderover>
+                  <m:mi>h</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>n</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:msup>
+                    <m:mi>e</m:mi>
+                    <m:mrow>
+                      <m:mi>j</m:mi>
+                      <m:mi>ω</m:mi>
+                      <m:mo>(</m:mo>
+                      <m:mi>M</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mi>n</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:msup>
+                </m:mrow>
+              </m:mtd>
+            </m:mtr>
+          </m:mtable>
+        </m:math>
+      </equation>
+      <para id="id2258914">and</para>
+      <equation id="uid32">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:msup>
+              <m:mi>e</m:mi>
+              <m:mrow>
+                <m:mo>-</m:mo>
+                <m:mi>j</m:mi>
+                <m:mi>ω</m:mi>
+                <m:mi>M</m:mi>
+              </m:mrow>
+            </m:msup>
+            <m:mrow>
+              <m:mo>[</m:mo>
+              <m:msub>
+                <m:mi>h</m:mi>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mi>ω</m:mi>
+                  <m:mi>M</m:mi>
+                </m:mrow>
+              </m:msup>
+              <m:mo>+</m:mo>
+              <m:msub>
+                <m:mi>h</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mi>ω</m:mi>
+                  <m:mo>(</m:mo>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:msup>
+              <m:mo>+</m:mo>
+              <m:mspace width="4pt"/>
+              <m:mo>⋯</m:mo>
+              <m:mspace width="4pt"/>
+              <m:mo>+</m:mo>
+              <m:msub>
+                <m:mi>h</m:mi>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msub>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mi>ω</m:mi>
+                  <m:mo>(</m:mo>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>N</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:msup>
+              <m:mo>]</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2259075"><link target-id="uid32"/> can be put in the form of</para>
+      <equation id="uid33">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mi>A</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:msup>
+              <m:mi>e</m:mi>
+              <m:mrow>
+                <m:mi>j</m:mi>
+                <m:mo>(</m:mo>
+                <m:msub>
+                  <m:mi>K</m:mi>
+                  <m:mn>1</m:mn>
+                </m:msub>
+                <m:mo>+</m:mo>
+                <m:msub>
+                  <m:mi>K</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msub>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2259159">if <m:math><m:mi>M</m:mi></m:math> (not necessarily an integer) is defined by</para>
+      <equation id="uid34">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>M</m:mi>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mfrac>
+              <m:mrow>
+                <m:mi>N</m:mi>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+              <m:mn>2</m:mn>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2259209">or equivalently,</para>
+      <equation id="uid35">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>M</m:mi>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mi>N</m:mi>
+            <m:mo>-</m:mo>
+            <m:mi>M</m:mi>
+            <m:mo>-</m:mo>
+            <m:mn>1</m:mn>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2259249"><link target-id="uid32"/> then becomes</para>
+      <equation id="uid36">
+        <m:math mode="display">
+          <m:mtable displaystyle="true">
+            <m:mtr>
+              <m:mtd columnalign="right">
+                <m:mrow>
+                  <m:mi>H</m:mi>
+                  <m:mo>(</m:mo>
+                  <m:mi>ω</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mtd>
+              <m:mtd>
+                <m:mrow>
+                  <m:mspace width="0.166667em"/>
+                  <m:mo>=</m:mo>
+                  <m:mspace width="0.166667em"/>
+                </m:mrow>
+              </m:mtd>
+              <m:mtd columnalign="left">
+                <m:mrow>
+                  <m:msup>
+                    <m:mi>e</m:mi>
+                    <m:mrow>
+                      <m:mo>-</m:mo>
+                      <m:mi>j</m:mi>
+                      <m:mi>ω</m:mi>
+                      <m:mi>M</m:mi>
+                    </m:mrow>
+                  </m:msup>
+                  <m:mrow>
+                    <m:mo>[</m:mo>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                    <m:mo>+</m:mo>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mrow>
+                        <m:mi>N</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:mn>1</m:mn>
+                      </m:mrow>
+                    </m:msub>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo form="prefix">cos</m:mo>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mi>M</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>+</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                    <m:mo>-</m:mo>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mrow>
+                        <m:mi>N</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:mn>1</m:mn>
+                      </m:mrow>
+                    </m:msub>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo form="prefix">sin</m:mo>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mi>M</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mrow>
+              </m:mtd>
+            </m:mtr>
+            <m:mtr>
+              <m:mtd/>
+              <m:mtd/>
+              <m:mtd columnalign="left">
+                <m:mrow>
+                  <m:mo>+</m:mo>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mn>1</m:mn>
+                    </m:msub>
+                    <m:mo>+</m:mo>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mrow>
+                        <m:mi>N</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:mn>2</m:mn>
+                      </m:mrow>
+                    </m:msub>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo form="prefix">cos</m:mo>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>M</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mn>1</m:mn>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>+</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mn>1</m:mn>
+                    </m:msub>
+                    <m:mo>-</m:mo>
+                    <m:msub>
+                      <m:mi>h</m:mi>
+                      <m:mrow>
+                        <m:mi>N</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:mn>2</m:mn>
+                      </m:mrow>
+                    </m:msub>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo form="prefix">sin</m:mo>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>w</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>M</m:mi>
+                      <m:mo>-</m:mo>
+                      <m:mn>1</m:mn>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mo>+</m:mo>
+                    <m:mspace width="4pt"/>
+                    <m:mo>⋯</m:mo>
+                    <m:mspace width="4pt"/>
+                    <m:mspace width="4pt"/>
+                    <m:mo>]</m:mo>
+                  </m:mrow>
+                </m:mrow>
+              </m:mtd>
+            </m:mtr>
+          </m:mtable>
+        </m:math>
+      </equation>
+      <para id="id2259544">There are two possibilities for putting this in the form of
+<link target-id="uid33"/> where <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is real: <m:math><m:mrow><m:msub><m:mi>K</m:mi><m:mn>1</m:mn></m:msub><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math> or <m:math><m:mrow><m:msub><m:mi>K</m:mi><m:mn>1</m:mn></m:msub><m:mo>=</m:mo><m:mi>π</m:mi><m:mo>/</m:mo><m:mn>2</m:mn></m:mrow></m:math>. The first case
+requires a special even symmetry in <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> of the form</para>
+      <equation id="uid37">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>h</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mi>h</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>N</m:mi>
+            <m:mo>-</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>-</m:mo>
+            <m:mn>1</m:mn>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2259678">which gives</para>
+      <equation id="uid38">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mi>A</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:msup>
+              <m:mi>e</m:mi>
+              <m:mrow>
+                <m:mo>-</m:mo>
+                <m:mi>j</m:mi>
+                <m:mi>M</m:mi>
+                <m:mi>ω</m:mi>
+              </m:mrow>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2259740">where <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is the amplitude, a real-valued function of <m:math><m:mi>ω</m:mi></m:math> and
+<m:math><m:msup><m:mi>e</m:mi><m:mrow><m:mo>-</m:mo><m:mi>j</m:mi><m:mi>M</m:mi><m:mi>ω</m:mi></m:mrow></m:msup></m:math> gives the linear phase with <m:math><m:mi>M</m:mi></m:math> being the group delay.
+For the case where <m:math><m:mi>N</m:mi></m:math> is odd, using
+<link target-id="uid36"/>, <link target-id="uid37"/>, and <link target-id="uid38"/>, we have</para>
+      <equation id="uid39"><m:math mode="display">
+          <m:mrow>
+            <m:mi>A</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>n</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+              </m:mrow>
+              <m:mrow>
+                <m:mi>M</m:mi>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:munderover>
+            <m:mn>2</m:mn>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo form="prefix">cos</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>M</m:mi>
+              <m:mo>-</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>+</m:mo>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>M</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2259922">or with a change of variables,</para>
+      <equation id="uid40"><m:math mode="display">
+          <m:mrow>
+            <m:mi>A</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>n</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+              <m:mi>M</m:mi>
+            </m:munderover>
+            <m:mn>2</m:mn>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>M</m:mi>
+              <m:mo>-</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo form="prefix">cos</m:mo>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>+</m:mo>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>M</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2260017">which becomes</para>
+      <equation id="uid41"><m:math mode="display">
+          <m:mrow>
+            <m:mi>A</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>n</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+              <m:mi>M</m:mi>
+            </m:munderover>
+            <m:mn>2</m:mn>
+            <m:mover accent="true">
+              <m:mi>h</m:mi>
+              <m:mo>^</m:mo>
+            </m:mover>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo form="prefix">cos</m:mo>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>+</m:mo>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>M</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2260115">where <m:math><m:mrow><m:mover accent="true"><m:mi>h</m:mi><m:mo>^</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>h</m:mi><m:mrow><m:mo>(</m:mo><m:mi>M</m:mi><m:mo>-</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is a shifted <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>.
+These formulas can be made simpler by defining new coefficients so that
+<link target-id="uid39"/> becomes</para>
+      <equation id="uid42"><m:math mode="display">
+          <m:mrow>
+            <m:mi>A</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>   
+           <m:mrow>
+                <m:mi>n</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+              </m:mrow>
+              <m:mi>M</m:mi>
+            </m:munderover>
+            <m:mi>a</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo form="prefix">cos</m:mo>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>M</m:mi>
+                <m:mo>-</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      
+
+<para id="element-410">where</para><equation id="element-214"><m:math>
+<m:mrow>
+<m:mi>a</m:mi>
+<m:mo>(</m:mo>
+<m:mi>n</m:mi>
+<m:mo>)</m:mo>
+</m:mrow>
+<m:mo>=</m:mo>
+<m:mo>{</m:mo>
+<m:mtable>
+<m:mtr>
+<m:mtd columnalign="left">
+<m:mn>2</m:mn>
+<m:mi>h</m:mi>
+<m:mo>(</m:mo>
+<m:mi>n</m:mi>
+<m:mo>)</m:mo>
+</m:mtd>
+<m:mtd columnalign="left">
+<m:mtext>for</m:mtext>
+<m:mspace width="5pt"/>
+<m:mn>0</m:mn>
+<m:mo>≤</m:mo>
+<m:mi>n</m:mi>
+<m:mo>≤</m:mo>
+<m:mi>M</m:mi>
+<m:mo>-</m:mo>
+<m:mn>1</m:mn>
+</m:mtd>
+</m:mtr>
+<m:mtr>
+<m:mtd columnalign="left">
+<m:mi>h</m:mi>
+<m:mo>(</m:mo>
+<m:mi>M</m:mi>
+<m:mo>)</m:mo>
+</m:mtd>
+<m:mtd columnalign="left">
+<m:mtext>for</m:mtext>
+<m:mspace width="5pt"/>
+<m:mi>n</m:mi>
+<m:mo>=</m:mo>
+<m:mi>M</m:mi>
+</m:mtd>
+</m:mtr>
+<m:mtr>
+<m:mtd columnalign="left">
+<m:mn>0</m:mn>
+</m:mtd>
+<m:mtd columnalign="left">
+<m:mtext>otherwise</m:mtext>
+</m:mtd>
+</m:mtr>
+</m:mtable>
+</m:math></equation><para id="id22555400">and <link target-id="uid41"/> becomes</para>
+    <equation id="uid1009"><m:math mode="display">
+        <m:mrow>
+          <m:mi>A</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mspace width="0.166667em"/>
+          <m:mo>=</m:mo>
+          <m:mspace width="0.166667em"/>
+          <m:munderover>
+<m:mrow>
+            <m:mo>∑</m:mo>
+</m:mrow>        
+    <m:mrow>
+              <m:mi>n</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+            </m:mrow>
+            <m:mi>M</m:mi>
+          </m:munderover>
+          <m:mi>a</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mspace width="0.166667em"/>
+          <m:mo form="prefix">cos</m:mo>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:mrow>
+      </m:math>
+    </equation>
+    <para id="element-195">with</para><equation id="element-687"><m:math>
+<m:mrow>
+<m:mi>a</m:mi>
+<m:mo>(</m:mo>
+<m:mi>n</m:mi>
+<m:mo>)</m:mo>
+</m:mrow>
+<m:mo>=</m:mo>
+<m:mo>{</m:mo>
+<m:mtable>
+<m:mtr>
+<m:mtd columnalign="left">
+<m:mi>h</m:mi>
+<m:mo>(</m:mo>
+<m:mi>M</m:mi>
+<m:mo>)</m:mo>
+</m:mtd>
+<m:mtd columnalign="left">
+<m:mtext>for</m:mtext>
+<m:mspace width="5pt"/>
+<m:mi>n</m:mi>
+<m:mo>=</m:mo>
+<m:mn>0</m:mn>
+</m:mtd>
+</m:mtr>
+<m:mtr>
+<m:mtd columnalign="left">
+<m:mn>2</m:mn>
+<m:mi>h</m:mi>
+<m:mo>(</m:mo>
+<m:mi>M</m:mi>
+<m:mo>+</m:mo>
+<m:mi>n</m:mi>
+<m:mo>)</m:mo>
+</m:mtd>
+<m:mtd columnalign="left">
+<m:mtext>for</m:mtext>
+<m:mspace width="5pt"/>
+<m:mn>1</m:mn>
+<m:mo>≤</m:mo>
+<m:mi>n</m:mi>
+<m:mo>≤</m:mo>
+<m:mi>M</m:mi>
+</m:mtd>
+</m:mtr>
+<m:mtr>
+<m:mtd columnalign="left">
+<m:mn>0</m:mn>
+</m:mtd>
+<m:mtd columnalign="left">
+<m:mtext>otherwise</m:mtext>
+</m:mtd>
+</m:mtr>
+</m:mtable>
+<m:mo>.</m:mo>
+</m:math></equation><para id="id2255628">Notice from <link target-id="uid1009"/> for <m:math><m:mi>N</m:mi></m:math> odd, <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is an even function around
+<m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math> and <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mi>π</m:mi></m:mrow></m:math>, and is periodic with period <m:math><m:mrow><m:mn>2</m:mn><m:mi>π</m:mi></m:mrow></m:math>.</para>
+    <para id="id2255705">For the case where <m:math><m:mi>N</m:mi></m:math> is even,</para>
+    <equation id="uid2100"><m:math mode="display">
+        <m:mrow>
+          <m:mi>A</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mspace width="0.166667em"/>
+          <m:mo>=</m:mo>
+          <m:mspace width="0.166667em"/>
+          <m:munderover>
+<m:mrow>
+            <m:mo>∑</m:mo>
+</m:mrow>        
+    <m:mrow>
+              <m:mi>n</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+            </m:mrow>
+            <m:mrow>
+              <m:mi>N</m:mi>
+              <m:mo>/</m:mo>
+              <m:mn>2</m:mn>
+              <m:mo>-</m:mo>
+              <m:mn>1</m:mn>
+            </m:mrow>
+          </m:munderover>
+          <m:mn>2</m:mn>
+          <m:mi>h</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mo form="prefix">cos</m:mo>
+          <m:mi>ω</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>M</m:mi>
+            <m:mo>-</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:mrow>
+      </m:math>
+    </equation>
+    <para id="id2254922">or with a change of variables,</para>
+    <equation id="uid30009"><m:math mode="display">
+        <m:mrow>
+          <m:mi>A</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mspace width="0.166667em"/>
+          <m:mo>=</m:mo>
+          <m:mspace width="0.166667em"/>
+          <m:munderover>
+<m:mrow>
+            <m:mo>∑</m:mo>
+</m:mrow>        
+    <m:mrow>
+              <m:mi>n</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>1</m:mn>
+            </m:mrow>
+            <m:mrow>
+              <m:mi>N</m:mi>
+              <m:mo>/</m:mo>
+              <m:mn>2</m:mn>
+            </m:mrow>
+          </m:munderover>
+          <m:mn>2</m:mn>
+          <m:mi>h</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>N</m:mi>
+            <m:mo>/</m:mo>
+            <m:mn>2</m:mn>
+            <m:mo>-</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mo form="prefix">cos</m:mo>
+          <m:mi>ω</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>-</m:mo>
+            <m:mn>1</m:mn>
+            <m:mo>/</m:mo>
+            <m:mn>2</m:mn>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:mrow>
+      </m:math>
+    </equation>
+    <para id="id2256142">These formulas can also be made simpler by defining new coefficients so that
+<link target-id="uid2100"/> becomes</para>
+    <equation id="uid40009"><m:math mode="display">
+        <m:mrow>
+          <m:mi>A</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mspace width="0.166667em"/>
+          <m:mo>=</m:mo>
+          <m:mspace width="0.166667em"/>
+          <m:munderover>
+<m:mrow>
+            <m:mo>∑</m:mo>
+</m:mrow>        
+    <m:mrow>
+              <m:mi>n</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+            </m:mrow>
+            <m:mrow>
+              <m:mi>N</m:mi>
+              <m:mo>/</m:mo>
+              <m:mn>2</m:mn>
+              <m:mo>-</m:mo>
+              <m:mn>1</m:mn>
+            </m:mrow>
+          </m:munderover>
+          <m:mi>a</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mspace width="0.166667em"/>
+          <m:mo form="prefix">cos</m:mo>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>M</m:mi>
+              <m:mo>-</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:mrow>
+      </m:math>
+    </equation>
+    <para id="id2256243">where
+</para>
+    <equation id="uid50009"><m:math>
+<m:mrow>
+<m:mi>a</m:mi>
+<m:mo>(</m:mo>
+<m:mi>n</m:mi>
+<m:mo>)</m:mo>
+</m:mrow>
+<m:mo>=</m:mo>
+<m:mo>{</m:mo>
+<m:mtable>
+<m:mtr>
+<m:mtd columnalign="left">
+<m:mn>2</m:mn>
+<m:mi>h</m:mi>
+<m:mo>(</m:mo>
+<m:mi>n</m:mi>
+<m:mo>)</m:mo>
+</m:mtd>
+<m:mtd columnalign="left">
+<m:mtext>for</m:mtext>
+<m:mn>0</m:mn>
+<m:mo>≤</m:mo>
+<m:mi>n</m:mi>
+<m:mo>≤</m:mo>
+<m:mi>N</m:mi>
+<m:mo>/</m:mo>
+<m:mn>2</m:mn>
+<m:mo>-</m:mo>
+<m:mn>1</m:mn>
+</m:mtd>
+</m:mtr>
+<m:mtr>
+<m:mtd columnalign="left">
+<m:mn>0</m:mn>
+</m:mtd>
+<m:mtd columnalign="left">
+<m:mtext>otherwise</m:mtext>
+</m:mtd>
+</m:mtr>
+</m:mtable>
+</m:math></equation>
+
+<para id="id22555461">and <link target-id="uid30009"/> becomes</para>
+    <equation id="uid11009"><m:math mode="display">
+        <m:mrow>
+          <m:mi>A</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mspace width="0.166667em"/>
+          <m:mo>=</m:mo>
+          <m:mspace width="0.166667em"/>
+          <m:munderover>
+<m:mrow>
+            <m:mo>∑</m:mo>
+</m:mrow>        
+    <m:mrow>
+              <m:mi>n</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>1</m:mn>
+            </m:mrow>
+            <m:mrow>
+              <m:mi>N</m:mi>
+              <m:mo>/</m:mo>
+              <m:mn>2</m:mn>
+            </m:mrow>
+          </m:munderover>
+          <m:mi>a</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mspace width="0.166667em"/>
+          <m:mo form="prefix">cos</m:mo>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>-</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>/</m:mo>
+              <m:mn>2</m:mn>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:mrow>
+      </m:math>
+    </equation>
+    <para id="id2255648">with
+</para>
+    <equation id="uid21009"><m:math>
+<m:mrow>
+<m:mi>a</m:mi>
+<m:mo>(</m:mo>
+<m:mi>n</m:mi>
+<m:mo>)</m:mo>
+</m:mrow>
+<m:mo>=</m:mo>
+<m:mo>{</m:mo>
+<m:mtable>
+<m:mtr>
+<m:mtd columnalign="left">
+<m:mn>2</m:mn>
+<m:mi>h</m:mi>
+<m:mo>(</m:mo>
+<m:mi>N</m:mi>
+<m:mo>/</m:mo>
+<m:mn>2</m:mn>
+<m:mo>-</m:mo>
+<m:mi>n</m:mi>
+<m:mo>)</m:mo>
+</m:mtd>
+<m:mtd columnalign="left">
+<m:mtext>for</m:mtext>
+<m:mn>1</m:mn>
+<m:mo>≤</m:mo>
+<m:mi>n</m:mi>
+<m:mo>≤</m:mo>
+<m:mi>N</m:mi>
+<m:mo>/</m:mo>
+<m:mn>2</m:mn>
+</m:mtd>
+</m:mtr>
+<m:mtr>
+<m:mtd columnalign="left">
+<m:mn>0</m:mn>
+</m:mtd>
+<m:mtd columnalign="left">
+<m:mtext>otherwise</m:mtext>
+</m:mtd>
+</m:mtr>
+</m:mtable>
+</m:math></equation>
+    <para id="element-33">Notice from <link target-id="uid11009"/> for <m:math><m:mi>N</m:mi></m:math> even, <m:math><m:mi>A(ω)</m:mi></m:math> is an even function around <m:math><m:mi>ω=0</m:mi></m:math>, an odd function around <m:math><m:mi>ω=π</m:mi></m:math>, and is periodic with period <m:math><m:mi>4π</m:mi></m:math>. This requires <m:math><m:mi>A(π)=0</m:mi></m:math>.</para><para id="id22562741">For the case in <link target-id="uid33"/> where <m:math><m:mrow><m:msub><m:mi>K</m:mi><m:mn>1</m:mn></m:msub><m:mo>=</m:mo><m:mi>π</m:mi><m:mo>/</m:mo><m:mn>2</m:mn></m:mrow></m:math>, an odd symmetry is
+required of the form</para>
+    <equation id="uid31009">
+      <m:math mode="display">
+        <m:mrow>
+          <m:mi>h</m:mi>
+          <m:mo>(</m:mo>
+          <m:mi>n</m:mi>
+          <m:mo>)</m:mo>
+          <m:mspace width="0.166667em"/>
+          <m:mo>=</m:mo>
+          <m:mspace width="0.166667em"/>
+          <m:mo>-</m:mo>
+          <m:mi>h</m:mi>
+          <m:mo>(</m:mo>
+          <m:mi>N</m:mi>
+          <m:mo>-</m:mo>
+          <m:mi>n</m:mi>
+          <m:mo>-</m:mo>
+          <m:mn>1</m:mn>
+          <m:mo>)</m:mo>
+        </m:mrow>
+      </m:math>
+    </equation>
+    <para id="id2256353">which, for <m:math><m:mi>N</m:mi></m:math> odd, gives</para>
+    <equation id="uid41009">
+      <m:math mode="display">
+        <m:mrow>
+          <m:mi>H</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mspace width="0.166667em"/>
+          <m:mo>=</m:mo>
+          <m:mspace width="0.166667em"/>
+          <m:mi>j</m:mi>
+          <m:mi>A</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:msup>
+            <m:mi>e</m:mi>
+            <m:mrow>
+              <m:mi>j</m:mi>
+              <m:mi>M</m:mi>
+              <m:mi>ω</m:mi>
+            </m:mrow>
+          </m:msup>
+        </m:mrow>
+      </m:math>
+    </equation>
+    <para id="id2256420">with</para>
+    <equation id="uid51009"><m:math mode="display">
+        <m:mrow>
+          <m:mi>A</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mspace width="0.166667em"/>
+          <m:mo>=</m:mo>
+          <m:mspace width="0.166667em"/>
+          <m:munderover>
+<m:mrow>
+            <m:mo>∑</m:mo>
+</m:mrow>        
+    <m:mrow>
+              <m:mi>n</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+            </m:mrow>
+            <m:mrow>
+              <m:mi>M</m:mi>
+              <m:mo>-</m:mo>
+              <m:mn>1</m:mn>
+            </m:mrow>
+          </m:munderover>
+          <m:mn>2</m:mn>
+          <m:mi>h</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mo form="prefix">sin</m:mo>
+          <m:mi>ω</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>M</m:mi>
+            <m:mo>-</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:mrow>
+      </m:math>
+    </equation>
+    <para id="id2256506">and for <m:math><m:mi>N</m:mi></m:math> even</para>
+    <equation id="uid61009"><m:math mode="display">
+        <m:mrow>
+          <m:mi>A</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>ω</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mspace width="0.166667em"/>
+          <m:mo>=</m:mo>
+          <m:mspace width="0.166667em"/>
+          <m:munderover>
+<m:mrow>
+            <m:mo>∑</m:mo>
+</m:mrow>        
+    <m:mrow>
+              <m:mi>n</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+            </m:mrow>
+            <m:mrow>
+              <m:mi>N</m:mi>
+              <m:mo>/</m:mo>
+              <m:mn>2</m:mn>
+              <m:mo>-</m:mo>
+              <m:mn>1</m:mn>
+            </m:mrow>
+          </m:munderover>
+          <m:mn>2</m:mn>
+          <m:mi>h</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mo form="prefix">sin</m:mo>
+          <m:mi>ω</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>M</m:mi>
+            <m:mo>-</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:mrow>
+      </m:math>
+    </equation>
+
+
+
+    <para id="id2256611">To calculate the frequency or amplitude response numerically, one must
+consider samples of the continuous frequency response function above.
+<m:math><m:mi>L</m:mi></m:math> samples of the general complex frequency response <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> in
+<link target-id="uid31"/> are calculated from</para>
+    <equation id="uid60009"><m:math mode="display">
+        <m:mrow>
+          <m:mi>H</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:msub>
+              <m:mi>ω</m:mi>
+              <m:mi>k</m:mi>
+            </m:msub>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mspace width="0.166667em"/>
+          <m:mo>=</m:mo>
+          <m:mspace width="0.166667em"/>
+          <m:munderover>
+<m:mrow>
+            <m:mo>∑</m:mo>
+</m:mrow>        
+    <m:mrow>
+              <m:mi>n</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+            </m:mrow>
+            <m:mrow>
+              <m:mi>N</m:mi>
+              <m:mo>-</m:mo>
+              <m:mn>1</m:mn>
+            </m:mrow>
+          </m:munderover>
+          <m:mi>h</m:mi>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mspace width="0.166667em"/>
+          <m:msup>
+            <m:mi>e</m:mi>
+            <m:mrow>
+              <m:mo>-</m:mo>
+              <m:mi>j</m:mi>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mi>n</m:mi>
+            </m:mrow>
+          </m:msup>
+          <m:mo>.</m:mo>
+        </m:mrow>
+      </m:math>
+    </equation>
+    <para id="id2256740">for <m:math><m:mrow><m:mi>k</m:mi><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>2</m:mn><m:mo>,</m:mo><m:mo>⋯</m:mo><m:mo>,</m:mo><m:mi>L</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math>.
+This can be written with matrix notation as</para>
+    <equation id="uid70009"><m:math mode="display">
+        <m:mrow>
+          <m:mi>H</m:mi>
+          <m:mspace width="0.166667em"/>
+          <m:mo>=</m:mo>
+          <m:mspace width="0.166667em"/>
+          <m:mi>F</m:mi>
+          <m:mspace width="0.166667em"/>
+          <m:mi>h</m:mi>
+        </m:mrow>
+      </m:math>
+    </equation>
+    <para id="id2256810">where <m:math><m:mi>H</m:mi></m:math> is an <m:math><m:mi>L</m:mi></m:math> by 1 vector of the samples of the complex
+frequency response, <m:math><m:mi>F</m:mi></m:math> is the <m:math><m:mi>L</m:mi></m:math> by <m:math><m:mi>N</m:mi></m:math> matrix of complex exponentials
+from <link target-id="uid60009"/>, and <m:math><m:mi>h</m:mi></m:math> is the <m:math><m:mi>N</m:mi></m:math> by 1 vector of real filter
+coefficients.</para>
+    
+
+      
+      <para id="id2261598">These equations are possibly redundant for equally spaced samples since
+<m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math>
+is an even function and, if the phase response is linear, <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is
+symmetric. These redundancies are removed by sampling <link target-id="uid42"/> over <m:math><m:mrow><m:mn>0</m:mn><m:mo>≤</m:mo><m:msub><m:mi>ω</m:mi><m:mi>k</m:mi></m:msub><m:mo>≤</m:mo><m:mi>π</m:mi></m:mrow></m:math> and by using <m:math><m:mi>a</m:mi></m:math> defined in <link target-id="element-214"/> rather than
+<m:math><m:mi>h</m:mi></m:math>. This can be written</para>
+      <equation id="uid44">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>A</m:mi>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mi>C</m:mi>
+            <m:mspace width="0.166667em"/>
+            <m:mi>a</m:mi>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2261725">where <m:math><m:mi>A</m:mi></m:math> is an <m:math><m:mi>L</m:mi></m:math> by 1 vector of the samples of the real valued
+amplitude frequency response, <m:math><m:mi>C</m:mi></m:math> is the <m:math><m:mi>L</m:mi></m:math> by <m:math><m:mi>M</m:mi></m:math> real matrix of
+cosines from <link target-id="uid42"/>, and <m:math><m:mi>a</m:mi></m:math> is the <m:math><m:mi>M</m:mi></m:math> by 1 vector of filter
+coefficients related to the impulse response by <link target-id="element-214"/>. A similar set
+of equations can be written from <link target-id="uid51009"/> for <m:math><m:mi>N</m:mi></m:math> odd or from
+<link target-id="uid61009"/> for <m:math><m:mi>N</m:mi></m:math> even.</para>
+      <para id="id2261830">This formulation becomes a filter design method by giving the samples of a
+desired amplitude response as <m:math><m:mrow><m:msub><m:mi>A</m:mi><m:mi>d</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> and solving <link target-id="uid44"/> for the
+filter coefficients <m:math><m:mrow><m:mi>a</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>. If the number of independent frequency
+samples is equal to the number of independent filter coefficients and if
+<m:math><m:mi>C</m:mi></m:math> is not singular, this is the frequency sampling filter design method
+and the frequency response of the designed filter will interpolate the
+specified samples. If the number of frequency samples <m:math><m:mi>L</m:mi></m:math> is larger than
+the number of filter coefficients <m:math><m:mi>N</m:mi></m:math>, <link target-id="uid44"/> may be solved
+approximately by minimizing the norm <m:math><m:mrow><m:mrow><m:mo>∥</m:mo><m:mi>A</m:mi><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow><m:mo>-</m:mo></m:mrow><m:msub><m:mi>A</m:mi><m:mi>d</m:mi></m:msub><m:mrow><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow><m:mo>∥</m:mo></m:mrow></m:mrow></m:math>.</para>
+      <section id="uid45">
+        <title>The Discrete Time Fourier Transform with Normalization</title>
+        <para id="id2261972">The discrete time Fourier transform of the impulse response of a digital
+filter is its frequency response, therefore, it is an important tool.
+When the symmetry conditions of linear phase are incorporated into the
+DTFT, it becomes similar to the discrete cosine or sine transform
+(DCT or DST). It also has an arbitrary normalization possible for
+the odd length that needs to be understood.</para>
+        <para id="id2261982">The discrete time Fourier transform (DTFT) is defined in <link target-id="uid12"/>
+which, with the conditions of an odd length-N symmetrical signal,
+becomes</para>
+        <equation id="uid47"><m:math mode="display">
+            <m:mrow>
+              <m:mi>A</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>   
+             <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+                <m:mi>M</m:mi>
+              </m:munderover>
+              <m:mi>a</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>+</m:mo>
+              <m:mi>K</m:mi>
+              <m:mspace width="0.166667em"/>
+              <m:mi>a</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2262077">where <m:math><m:mrow><m:mi>M</m:mi><m:mo>=</m:mo><m:mo>(</m:mo><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>)</m:mo><m:mo>/</m:mo><m:mn>2</m:mn></m:mrow></m:math>. Its inverse as</para>
+        <equation id="uid48">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>a</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mn>2</m:mn>
+                <m:mi>π</m:mi>
+              </m:mfrac>
+              <m:msubsup>
+                <m:mo>∫</m:mo>
+                <m:mn>0</m:mn>
+                <m:mi>π</m:mi>
+              </m:msubsup>
+              <m:mi>A</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mi>d</m:mi>
+              <m:mi>ω</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2262187">for <m:math><m:mrow><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>2</m:mn><m:mo>,</m:mo><m:mo>⋯</m:mo><m:mo>,</m:mo><m:mi>M</m:mi></m:mrow></m:math> and</para>
+        <equation id="uid49">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>a</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mrow>
+                  <m:mi>K</m:mi>
+                  <m:mi>π</m:mi>
+                </m:mrow>
+              </m:mfrac>
+              <m:msubsup>
+                <m:mo>∫</m:mo>
+                <m:mn>0</m:mn>
+                <m:mi>π</m:mi>
+              </m:msubsup>
+              <m:mi>A</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.277778em"/>
+              <m:mi>d</m:mi>
+              <m:mi>ω</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2262283">where <m:math><m:mi>K</m:mi></m:math> is a parameter of normalization for the
+<m:math><m:mrow><m:mi>a</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo></m:mrow></m:math> term with <m:math><m:mrow><m:mn>0</m:mn><m:mo>&lt;</m:mo><m:mi>K</m:mi><m:mo>&lt;</m:mo><m:mi>∞</m:mi></m:mrow></m:math>. If <m:math><m:mrow><m:mi>K</m:mi><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow></m:math>, the expansion equation
+<link target-id="uid47"/> is one summation and doesn't have to have the separate
+term for <m:math><m:mrow><m:mi>a</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo></m:mrow></m:math>. If <m:math><m:mrow><m:mi>K</m:mi><m:mo>=</m:mo><m:mn>1</m:mn><m:mo>/</m:mo><m:mn>2</m:mn></m:mrow></m:math>, the equation for the coefficients
+<link target-id="uid48"/> will also calculate the <m:math><m:mrow><m:mi>a</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo></m:mrow></m:math> term and the separate
+equation <link target-id="uid49"/> is not needed. If <m:math><m:mrow><m:mi>K</m:mi><m:mo>=</m:mo><m:mn>1</m:mn><m:mo>/</m:mo><m:msqrt><m:mn>2</m:mn></m:msqrt></m:mrow></m:math>, a symmetry
+results which simplifies equations later in the notes.</para>
+      </section>
+    </section>
+    <section id="uid50">
+      <title>Four Types of Linear-Phase FIR Filters</title>
+      <para id="id2262449">From the previous discussion, it is seen that there are four
+possible types of FIR filters <link target-id="bid2"/> that lead to the linear phase
+of <link target-id="uid30"/>. These are summarized in <link target-id="uid52"/>.</para>
+      <table id="uid52" summary="a table of four different types of Linear Phase FIR Filters">
+<tgroup cols="2"><tbody>
+            <row>
+              <entry>Type 1.</entry>
+              <entry>The impulse response has an odd length and is even symmetric about its midpoint of <m:math><m:mrow><m:mi>n</m:mi><m:mo>=</m:mo><m:mi>M</m:mi><m:mo>=</m:mo><m:mo>(</m:mo><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>)</m:mo><m:mo>/</m:mo><m:mn>2</m:mn></m:mrow></m:math> which requires <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>N</m:mi><m:mo>-</m:mo><m:mi>n</m:mi><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:math> and gives <link target-id="uid39"/> and <link target-id="uid40"/>.</entry>
+            </row>
+            <row>
+              <entry>Type 2.</entry>
+              <entry>The impulse response has an even length and is even symmetric about <m:math><m:mi>M</m:mi></m:math>, but <m:math><m:mi>M</m:mi></m:math> is not an integer. Therefore, there is no <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> at the point of symmetry, but it satisfies <link target-id="uid2100"/> and <link target-id="uid30009"/>.</entry>
+            </row>
+            <row>
+              <entry>Type 3.</entry>
+              <entry>The impulse response has an odd length as for Type 1 and has the odd symmetry of <link target-id="uid31009"/>, giving an imaginary multiplier for the linear-phase form in <link target-id="uid41009"/> with amplitude <link target-id="uid51009"/>.</entry>
+            </row>
+            <row>
+              <entry>Type 4.</entry>
+              <entry>The impulse response has an even length as for Type 2 and the odd symmetry of Type 3 in <link target-id="uid31009"/> and <link target-id="uid41009"/> with amplitude <link target-id="uid61009"/>.</entry>
+            </row>
+          </tbody>
+        
+
+</tgroup><caption>The Four Types of Linear Phase FIR Filters</caption>
+</table>
+      <para id="id2262802">Examples of the four types of linear-phase FIR filters with
+the symmetries for odd and even length are shown in <link target-id="uid53"/>.
+Note that for <m:math><m:mi>N</m:mi></m:math> odd and <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> odd symmetric, <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>M</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math>.</para>
+      <figure id="uid53" orient="horizontal"><media id="id8870142" alt="This figure consist of four separate graphs of four different types of FIR Filters. For all of these graphs the x axis is labeled Time Index, n, and the y axis is labeled Impulse response, h(n). The graphs consist of vertical lines extending from the x axis and ending in a hollow circles. The top left graph is labeled Type 1. FIR Filter. The vertical lines correspond to the numbers on the x axis 1-5. The ending points of the graph at at points (0,2), (1,3), (2,4), (3,3), and (4,2). The top right graph (Type 2) is similar except that the ending points are at (0,2), (1,3), (2,3) and (3,2). The bottom left graph (Type 3) similar with points at (0,2), (1,3), (2,0), (3,-3), and (4,-2). The bottom right graph is similar to the previous graph with points at (0,2), (1,3), (2,-3), and (-2,3)."><image src="../../media/fig53.png" mime-type="image/png" width="417"/><image for="pdf" src="../../media/fig53.eps" mime-type="application/postscript"/></media>
+        
+      <caption>Example of Impulse Responses for the Four Types of Linear Phase FIR Filters</caption></figure>
+      <para id="id2262879">For the analysis or design of linear-phase FIR filters, it
+is necessary to know the characteristics of <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math>. The most
+important characteristics are shown in <link target-id="uid54"/>.</para>
+      <table id="uid54" summary="16 by 3 table of characteristics of linear phase A(ω)">
+<tgroup cols="3"><tbody>
+            <row>
+              <entry>TYPE 1.</entry>
+              <entry>Odd length, even symmetric <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math></entry>
+              <entry/>
+            </row>
+            <row>
+              <entry/>
+              <entry><m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is even about <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math></entry>
+              <entry>
+                <m:math>
+                  <m:mrow>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                    <m:mo>=</m:mo>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mo>-</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:math>
+              </entry>
+            </row>
+            <row>
+              <entry/>
+              <entry><m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is even about <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mi>π</m:mi></m:mrow></m:math></entry>
+              <entry>
+                <m:math>
+                  <m:mrow>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>π</m:mi>
+                    <m:mo>+</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                    <m:mo>=</m:mo>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>π</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:math>
+              </entry>
+            </row>
+            <row>
+              <entry/>
+              <entry><m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is periodic with period = <m:math><m:mrow><m:mn>2</m:mn><m:mi>π</m:mi></m:mrow></m:math></entry>
+              <entry>
+                <m:math>
+                  <m:mrow>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>+</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:mi>π</m:mi>
+                    <m:mo>)</m:mo>
+                    <m:mo>=</m:mo>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:math>
+              </entry>
+            </row>
+            <row>
+              <entry>TYPE 2.</entry>
+              <entry>Even length, even symmetric <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math></entry>
+              <entry/>
+            </row>
+            <row>
+              <entry/>
+              <entry><m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is even about <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math></entry>
+              <entry>
+                <m:math>
+                  <m:mrow>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                    <m:mo>=</m:mo>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mo>-</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:math>
+              </entry>
+            </row>
+            <row>
+              <entry/>
+              <entry><m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is odd about <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mi>π</m:mi></m:mrow></m:math></entry>
+              <entry>
+                <m:math>
+                  <m:mrow>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>π</m:mi>
+                    <m:mo>+</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                    <m:mo>=</m:mo>
+                    <m:mo>-</m:mo>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>π</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:math>
+              </entry>
+            </row>
+            <row>
+              <entry/>
+              <entry><m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is periodic with period <m:math><m:mrow><m:mn>4</m:mn><m:mi>π</m:mi></m:mrow></m:math></entry>
+              <entry>
+                <m:math>
+                  <m:mrow>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>+</m:mo>
+                    <m:mn>4</m:mn>
+                    <m:mi>π</m:mi>
+                    <m:mo>)</m:mo>
+                    <m:mo>=</m:mo>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:math>
+              </entry>
+            </row>
+            <row>
+              <entry>TYPE 3.</entry>
+              <entry>Odd length, odd symmetric <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math></entry>
+              <entry/>
+            </row>
+            <row>
+              <entry/>
+              <entry><m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is odd about <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math></entry>
+              <entry>
+                <m:math>
+                  <m:mrow>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                    <m:mo>=</m:mo>
+                    <m:mo>-</m:mo>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mo>-</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:math>
+              </entry>
+            </row>
+            <row>
+              <entry/>
+              <entry><m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is odd about <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mi>π</m:mi></m:mrow></m:math></entry>
+              <entry>
+                <m:math>
+                  <m:mrow>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>π</m:mi>
+                    <m:mo>+</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                    <m:mo>=</m:mo>
+                    <m:mo>-</m:mo>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>π</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:math>
+              </entry>
+            </row>
+            <row>
+              <entry/>
+              <entry><m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is periodic with period <m:math><m:mrow><m:mo>=</m:mo><m:mn>2</m:mn><m:mi>π</m:mi></m:mrow></m:math></entry>
+              <entry>
+                <m:math>
+                  <m:mrow>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>+</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:mi>π</m:mi>
+                    <m:mo>)</m:mo>
+                    <m:mo>=</m:mo>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:math>
+              </entry>
+            </row>
+            <row>
+              <entry>TYPE 4.</entry>
+              <entry>Even length, odd symmetric <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math></entry>
+              <entry/>
+            </row>
+            <row>
+              <entry/>
+              <entry><m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is odd about <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math></entry>
+              <entry>
+                <m:math>
+                  <m:mrow>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                    <m:mo>=</m:mo>
+                    <m:mo>-</m:mo>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mo>-</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:math>
+              </entry>
+            </row>
+            <row>
+              <entry/>
+              <entry><m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is even about <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mi>π</m:mi></m:mrow></m:math></entry>
+              <entry>
+                <m:math>
+                  <m:mrow>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>π</m:mi>
+                    <m:mo>+</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                    <m:mo>=</m:mo>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>π</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:math>
+              </entry>
+            </row>
+            <row>
+              <entry/>
+              <entry><m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> is periodic with period <m:math><m:mrow><m:mo>=</m:mo><m:mn>4</m:mn><m:mi>π</m:mi></m:mrow></m:math></entry>
+              <entry>
+                <m:math>
+                  <m:mrow>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>+</m:mo>
+                    <m:mn>4</m:mn>
+                    <m:mi>π</m:mi>
+                    <m:mo>)</m:mo>
+                    <m:mo>=</m:mo>
+                    <m:mi>A</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:math>
+              </entry>
+            </row>
+          </tbody>
+        
+
+</tgroup><caption>Characteristics of <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> for Linear Phase</caption>
+</table>
+      <para id="id2264107">Examples of the amplitude function for odd and even length
+linear-phase filter <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> are shown in <link target-id="uid55"/>.</para>
+      <figure id="uid55" orient="horizontal"><media id="id8883122" alt="This figure consist of four graphs of four different type of FIR Filter Frequency Response over 2p. For all of these graphs, the x axis is labeled Normally Frequency and the y axis is labeled Amplitude Response, A. These graphs are arranged vertically. the top graph shows a wave form that has a consistent series of peaks and troughs. The peak is at about 6 and the bottom of the trough is at about 2. There are two complete wavelengths shown. The second graph is labeled Type 2. This graph has a differe waveform. The wave starts at (-2,-10) and follows a positive slope til it reaches the x axis at which point it levels out for a bit and then turns positive again. The wave peaks at (0,10) and the mirrors it rise with a negative slope with the same behavior. The third graph labeled Type 3 is similar to the first graph, except that the rise and fall of the waves are not equal. The rise to the peak of the wave is longer in duration than the fall to the bottom of the trough. The peak is at about 10 on the y axis and the bottom of the trough is at about -10. There are two complete wavelengths present. The bottom graph is labeled Type 4. It has a similar pattern to the second graph except that this one starts at the x axis and extends from peak to trough from 10 to -10 on the y axis. The wave descends from x axis with a negative slope then turns positive plateaus at the x axis and then continues its positive slope peaks and then descends."><image src="../../media/fig54.png" mime-type="image/png" width="427"/><image for="pdf" src="../../media/fig54.eps" mime-type="application/postscript"/></media>
+        
+      <caption>Example of Amplitude Responses for the Four Types of Linear Phase FIR Filters</caption></figure>
+      <para id="id2264149">These characteristics reveal several inherent features that
+are extremely important to filter design. For Types 3 and 4,
+<m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math> for any choice of filter coefficients <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>. This would
+not be desirable for a lowpass filter. Types 2 and 3 always
+have <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>π</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math> which is not desirable for a highpass filter. In
+addition to the linear-phase characteristic that represents a
+time shift, Types 3 and 4 give a constant 90-degree phase shift,
+desirable for a differentiator or Hilbert transformer. The first
+step in the design of a linear-phase FIR filter is the choice of
+the type most compatible with the specifications.</para>
+      <para id="id2264229">It is possible to uses the formulas to express the frequency response
+of a general complex or non-linear phase FIR filter by taking the
+even and odd parts of <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> and calculating a real and imaginary
+“amplitude" that would be added to give the actual frequency response.</para>
+      <section id="uid56">
+        <title>Calculation of FIR Filter Frequency Response </title>
+        <para id="id2264268">As shown earlier, <m:math><m:mi>L</m:mi></m:math> equally spaced samples of <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math>
+are easily calculated for <m:math><m:mrow><m:mi>L</m:mi><m:mo>&gt;</m:mo><m:mi>N</m:mi></m:mrow></m:math> by appending <m:math><m:mrow><m:mi>L</m:mi><m:mo>-</m:mo><m:mi>N</m:mi></m:mrow></m:math> zeros to
+<m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> for a length-L DFT. This appears as</para>
+        <equation id="uid58">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>H</m:mi>
+              <m:mo>(</m:mo>
+              <m:mn>2</m:mn>
+              <m:mi>π</m:mi>
+              <m:mi>k</m:mi>
+              <m:mo>/</m:mo>
+              <m:mi>L</m:mi>
+              <m:mo>)</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:mi mathvariant="script">DFT</m:mi>
+              <m:mo>{</m:mo>
+              <m:mi>h</m:mi>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>}</m:mo>
+              <m:mspace width="4.pt"/>
+              <m:mtext>for</m:mtext>
+              <m:mspace width="4.pt"/>
+              <m:mrow>
+                <m:mi>k</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>,</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>,</m:mo>
+                <m:mo>⋯</m:mo>
+                <m:mo>,</m:mo>
+                <m:mi>L</m:mi>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2264434">This direct method of calculation is a straightforward and
+flexible approach. Only the samples of <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> that are of
+interest need to be calculated. In fact, even nonuniform spacing
+of the frequency samples can be achieved by sampling the DTFT
+defined in <link target-id="uid12"/>. The direct use of the DFT can be inefficient,
+and for linear-phase filters, it is <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math>, not <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math>, that is the
+most informative. In addition to the direct application of the
+DFT, special formulas are developed in <link document="m16891" target-id="uid11">Equation 5 from FIR Filter Design by Frequency Sampling or Interpolation</link> for evaluating
+samples of <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> that exploit the fact that <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is real and
+has certain symmetries. For long filters, even these formulas
+are too inefficient, so the DFT is used, but implemented by a
+Fast Fourier Transform (FFT) algorithm.</para>
+        <para id="id2264540">In the special case of Type 1 filters with <m:math><m:mi>L</m:mi></m:math> equally spaced
+sample points, the samples of the frequency response are of the
+form</para>
+        <equation id="uid59"><m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:mi>A</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>π</m:mi>
+                <m:mi>k</m:mi>
+                <m:mo>/</m:mo>
+                <m:mi>L</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:mn>2</m:mn>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>π</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mi>k</m:mi>
+                <m:mo>/</m:mo>
+                <m:mi>L</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>+</m:mo>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>M</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2264687">For Type 2 filters,</para>
+        <equation id="uid60"><m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:mi>A</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>π</m:mi>
+                <m:mi>k</m:mi>
+                <m:mo>/</m:mo>
+                <m:mi>L</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>/</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:mn>2</m:mn>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>π</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mi>k</m:mi>
+                <m:mo>/</m:mo>
+                <m:mi>L</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2264818">For Type 3 filters,</para>
+        <equation id="uid61"><m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:mi>A</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>π</m:mi>
+                <m:mi>k</m:mi>
+                <m:mo>/</m:mo>
+                <m:mi>L</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:mn>2</m:mn>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">sin</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>π</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mi>k</m:mi>
+                <m:mo>/</m:mo>
+                <m:mi>L</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2264946">For Type 4 filters,</para>
+        <equation id="uid62"><m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:mi>A</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>π</m:mi>
+                <m:mi>k</m:mi>
+                <m:mo>/</m:mo>
+                <m:mi>L</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:mn>2</m:mn>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">sin</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>π</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mi>k</m:mi>
+                <m:mo>/</m:mo>
+                <m:mi>L</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2265073">Although this section has primarily concentrated on linear-phase
+filters by taking their symmetries into account, the
+method of taking the DFT of <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> to obtain samples of the
+frequency response of an FIR filter also holds for general
+arbitrary linear phase filters.</para>
+      </section>
+    </section>
+    <section id="uid63">
+      <title>Zero Locations for Linear-Phase FIR Filters</title>
+      <para id="id2265106">A qualitative understanding of the filter characteristics
+can be obtained from an examination of the location of the <m:math><m:mrow><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math>
+zeros of an FIR filter's transfer function. This transfer
+function is given by the z-transform of the length-N impulse
+response</para>
+      <equation id="uid64"><m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>n</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+              </m:mrow>
+              <m:mrow>
+                <m:mi>N</m:mi>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:munderover>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:msup>
+              <m:mi>z</m:mi>
+              <m:mrow>
+                <m:mo>-</m:mo>
+                <m:mi>n</m:mi>
+              </m:mrow>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2265201">which can be rewritten as</para>
+      <equation id="uid65">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:msup>
+              <m:mi>z</m:mi>
+              <m:mrow>
+                <m:mo>-</m:mo>
+                <m:mi>N</m:mi>
+                <m:mo>+</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:msup>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:msub>
+                <m:mi>h</m:mi>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:msup>
+                <m:mi>z</m:mi>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mo>+</m:mo>
+              <m:msub>
+                <m:mi>h</m:mi>
+                <m:mn>1</m:mn>
+              </m:msub>
+              <m:msup>
+                <m:mi>z</m:mi>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>2</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mo>+</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>+</m:mo>
+              <m:msub>
+                <m:mi>h</m:mi>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msub>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2265324">or as</para>
+      <equation id="uid66">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:msup>
+              <m:mi>z</m:mi>
+              <m:mrow>
+                <m:mo>-</m:mo>
+                <m:mi>N</m:mi>
+                <m:mo>+</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:msup>
+            <m:mi>D</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2265385">where <m:math><m:mrow><m:mi>D</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> is an <m:math><m:mrow><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math> order polynomial that is multiplied by an
+<m:math><m:mrow><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math> order pole located at the origin of the complex z-plane. <m:math><m:mrow><m:mi>D</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math>
+is defined in order to have a simple polynomial in positive powers
+of <m:math><m:mi>z</m:mi></m:math>.</para>
+      <para id="id2265465">The fact that h(n) is real valued requires the zeros to all
+be real or occur in complex conjugate pairs. If the FIR filter is
+linear phase, there are further restrictions on the possible zero
+locations. From <link target-id="uid37"/>, it is seen that linear phase implies a
+symmetry in the impulse response and, therefore, in the
+coefficients of the polynomial <m:math><m:mrow><m:mi>D</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> in <link target-id="uid66"/>. Let the complex
+zero <m:math><m:msub><m:mi>z</m:mi><m:mn>1</m:mn></m:msub></m:math> be expressed in polar form by</para>
+      <equation id="uid67">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi>z</m:mi>
+              <m:mn>1</m:mn>
+            </m:msub>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:msub>
+              <m:mi>r</m:mi>
+              <m:mn>1</m:mn>
+            </m:msub>
+            <m:msup>
+              <m:mi>e</m:mi>
+              <m:mrow>
+                <m:mi>j</m:mi>
+                <m:mi>x</m:mi>
+              </m:mrow>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2265560">where <m:math><m:msub><m:mi>r</m:mi><m:mn>1</m:mn></m:msub></m:math> is the radial distance of <m:math><m:msub><m:mi>z</m:mi><m:mn>1</m:mn></m:msub></m:math> from the origin in the
+complex z-plane, and <m:math><m:mi>x</m:mi></m:math> is the angle from the real axis as
+shown in <link target-id="uid68"/>.</para>
+      <figure id="uid68" orient="horizontal"><media id="id8885126" alt="This Cartesian graph has an x axis labeled Real part of z, and a y axis labeled imaginary part of z. Only Quadrant I has anything present inside of it. In this quadrant is a line originating at the origin and extending to a point at about (1,1) marked by a hollow circle. There is a double-sided arrow extending from the x axis to a point about halfway up the line segment. This line is labeled angle x. Further out on this line segment is another arrow, this time on the upper side of the line poiunt down to the line labeled radius r and then pointing to the hollow circle is another arrow labeled location of zero z."><image src="../../media/zero.png" mime-type="image/png" width="541"/><image for="pdf" src="../../media/zero.eps" mime-type="application/postscript"/></media>
+        
+      <caption>Example of Impulse Responses for the Four Types of Linear Phase FIR Filters</caption></figure>
+      <para id="id2265626">Using the definition of <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>D</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> in <link target-id="uid64"/> and
+<link target-id="uid65"/> and the linear-phase even symmetry requirement of</para>
+      <equation id="uid69">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>h</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mi>h</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>N</m:mi>
+            <m:mo>-</m:mo>
+            <m:mn>1</m:mn>
+            <m:mo>-</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2265719">gives</para>
+      <equation id="uid70">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mo>(</m:mo>
+            <m:mn>1</m:mn>
+            <m:mo>/</m:mo>
+            <m:mi>z</m:mi>
+            <m:mo>)</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mi>D</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>z</m:mi>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2265767">which implies that if <m:math><m:msub><m:mi>z</m:mi><m:mn>1</m:mn></m:msub></m:math> is a zero of <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math>, then <m:math><m:mrow><m:mn>1</m:mn><m:mo>/</m:mo><m:msub><m:mi>z</m:mi><m:mn>1</m:mn></m:msub></m:mrow></m:math> is also
+a zero of <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math>. In other words, if</para>
+      <equation id="uid71">
+        <m:math mode="display">
+          <m:mtable>
+            <m:mtr>
+              <m:mtd>
+                <m:mrow>
+                  <m:mi>H</m:mi>
+                  <m:mo>(</m:mo>
+                  <m:msub>
+                    <m:mi>z</m:mi>
+                    <m:mn>1</m:mn>
+                  </m:msub>
+                  <m:mo>)</m:mo>
+                  <m:mspace width="0.166667em"/>
+                  <m:mo>=</m:mo>
+                  <m:mspace width="0.166667em"/>
+                  <m:mn>0</m:mn>
+                  <m:mo>,</m:mo>
+                </m:mrow>
+              </m:mtd>
+              <m:mtd>
+                <m:mrow>
+                  <m:mspace width="4.pt"/>
+                  <m:mtext>then</m:mtext>
+                  <m:mspace width="4.pt"/>
+                </m:mrow>
+              </m:mtd>
+              <m:mtd>
+                <m:mrow>
+                  <m:mi>H</m:mi>
+                  <m:mo>(</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>/</m:mo>
+                  <m:msub>
+                    <m:mi>z</m:mi>
+                    <m:mn>1</m:mn>
+                  </m:msub>
+                  <m:mo>)</m:mo>
+                  <m:mspace width="0.166667em"/>
+                  <m:mo>=</m:mo>
+                  <m:mspace width="0.166667em"/>
+                  <m:mn>0</m:mn>
+                  <m:mo>.</m:mo>
+                </m:mrow>
+              </m:mtd>
+            </m:mtr>
+          </m:mtable>
+        </m:math>
+      </equation>
+      <para id="id2265928">This means that if a zero exists at a radius of <m:math><m:msub><m:mi>r</m:mi><m:mn>1</m:mn></m:msub></m:math>, then one
+also exists at a radius of <m:math><m:mrow><m:mn>1</m:mn><m:mo>/</m:mo><m:msub><m:mi>r</m:mi><m:mn>1</m:mn></m:msub></m:mrow></m:math>, thus giving a special type of
+symmetry of the zeros about the unit circle. Another possibility
+is that the zero lies on the unit circle with <m:math><m:mrow><m:msub><m:mi>r</m:mi><m:mn>1</m:mn></m:msub><m:mo>=</m:mo><m:mn>1</m:mn><m:mo>/</m:mo><m:msub><m:mi>r</m:mi><m:mn>1</m:mn></m:msub><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow></m:math>.</para>
+      <para id="id2266005">There are four essentially different cases <link target-id="bid3"/> of even
+symmetric filters that have the lowest possible order. All higher
+order symmetric filters have transfer functions that can be
+factored into products of these lowest order transfer functions.
+These are illustrated by four basic filters of lowest order that
+satisfy these conditions: one length-2, two length-3, and one
+length-5.</para>
+      <para id="id2266019">The only length-2 even-symmetric linear-phase FIR filter has
+the form</para>
+      <equation id="uid72">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>D</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>z</m:mi>
+            <m:mo>)</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mo>(</m:mo>
+            <m:mi>z</m:mi>
+            <m:mo>+</m:mo>
+            <m:mn>1</m:mn>
+            <m:mo>)</m:mo>
+            <m:mi>K</m:mi>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2266067">which, for any constant <m:math><m:mi>K</m:mi></m:math>, has a single zero at <m:math><m:mrow><m:msub><m:mi>z</m:mi><m:mn>1</m:mn></m:msub><m:mo>=</m:mo><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math>.</para>
+      <para id="id2266104">The even symmetric length-3 filter has a form</para>
+      <equation id="uid73">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>D</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:msup>
+                <m:mi>z</m:mi>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mo>+</m:mo>
+              <m:mi>a</m:mi>
+              <m:mi>z</m:mi>
+              <m:mo>+</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mi>K</m:mi>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2266164">There are two possible cases. For <m:math><m:mrow><m:mo>|</m:mo><m:mi>a</m:mi><m:mo>|</m:mo><m:mo>&gt;</m:mo><m:mn>2</m:mn></m:mrow></m:math>, two real zeros can
+satisfy <link target-id="uid71"/> with <m:math><m:mrow><m:msub><m:mi>z</m:mi><m:mn>1</m:mn></m:msub><m:mo>=</m:mo><m:mi>r</m:mi></m:mrow></m:math> and <m:math><m:mrow><m:mn>1</m:mn><m:mo>/</m:mo><m:mi>r</m:mi></m:mrow></m:math>. This gives</para>
+      <equation id="uid74">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>D</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mo>(</m:mo>
+            <m:msup>
+              <m:mi>z</m:mi>
+              <m:mn>2</m:mn>
+            </m:msup>
+            <m:mo>+</m:mo>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>r</m:mi>
+              <m:mo>+</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>/</m:mo>
+              <m:mi>r</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mi>z</m:mi>
+            <m:mo>+</m:mo>
+            <m:mn>1</m:mn>
+            <m:mo>)</m:mo>
+            <m:mi>K</m:mi>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2266298">The other length-3 case for <m:math><m:mrow><m:mo>|</m:mo><m:mi>a</m:mi><m:mo>|</m:mo><m:mo>&lt;</m:mo><m:mn>2</m:mn></m:mrow></m:math> has two complex conjugate
+zeros on the unit circle and is of the form</para>
+      <equation id="uid75">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>D</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mo>(</m:mo>
+            <m:msup>
+              <m:mi>z</m:mi>
+              <m:mn>2</m:mn>
+            </m:msup>
+            <m:mo>+</m:mo>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mn>2</m:mn>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mi>x</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mi>z</m:mi>
+            <m:mo>+</m:mo>
+            <m:mn>1</m:mn>
+            <m:mo>)</m:mo>
+            <m:mi>K</m:mi>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2266391">The special case for <m:math><m:mrow><m:mi>a</m:mi><m:mo>=</m:mo><m:mn>2</m:mn></m:mrow></m:math> is not of lowest order. It can be
+factored into <link target-id="uid72"/> squared.
+Any length-4 even-symmetric filter can be factored into
+products of terms of the form of <link target-id="uid72"/> and <link target-id="uid73"/>.</para>
+      <para id="id2266427">The fourth case is of an even-symmetric length-5 filter of
+the form</para>
+      <equation id="uid76">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>D</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:msup>
+              <m:mi>z</m:mi>
+              <m:mn>4</m:mn>
+            </m:msup>
+            <m:mo>+</m:mo>
+            <m:mi>a</m:mi>
+            <m:msup>
+              <m:mi>z</m:mi>
+              <m:mn>3</m:mn>
+            </m:msup>
+            <m:mo>+</m:mo>
+            <m:mi>b</m:mi>
+            <m:msup>
+              <m:mi>z</m:mi>
+              <m:mn>2</m:mn>
+            </m:msup>
+            <m:mo>+</m:mo>
+            <m:mi>a</m:mi>
+            <m:mi>z</m:mi>
+            <m:mo>+</m:mo>
+            <m:mn>1</m:mn>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2266504">For <m:math><m:mrow><m:msup><m:mi>a</m:mi><m:mn>2</m:mn></m:msup><m:mo>&lt;</m:mo><m:mn>4</m:mn><m:mrow><m:mo>(</m:mo><m:mi>b</m:mi><m:mo>-</m:mo><m:mn>2</m:mn><m:mo>)</m:mo></m:mrow></m:mrow></m:math> and <m:math><m:mrow><m:mi>b</m:mi><m:mo>&gt;</m:mo><m:mn>2</m:mn></m:mrow></m:math>, the zeros are neither real nor
+on the unit circle; therefore, they must have complex conjugates
+and have images about the unit circle. The form of the transfer
+function is
+</para>
+      <equation id="uid77">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>D</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>z</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mo>{</m:mo>
+            <m:msup>
+              <m:mi>z</m:mi>
+              <m:mn>4</m:mn>
+            </m:msup>
+            <m:mo>+</m:mo>
+            <m:mrow>
+              <m:mo>[</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>2</m:mn>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:msup>
+                    <m:mi>r</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>/</m:mo>
+                <m:mi>r</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mi>x</m:mi>
+              <m:mo>]</m:mo>
+            </m:mrow>
+            <m:msup>
+              <m:mi>z</m:mi>
+              <m:mn>3</m:mn>
+            </m:msup>
+            <m:mo>+</m:mo>
+            <m:mrow>
+              <m:mo>[</m:mo>
+              <m:msup>
+                <m:mi>r</m:mi>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mo>+</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>/</m:mo>
+              <m:msup>
+                <m:mi>r</m:mi>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mo>+</m:mo>
+              <m:mn>4</m:mn>
+              <m:msup>
+                <m:mo form="prefix">cos</m:mo>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mi>x</m:mi>
+              <m:mo>]</m:mo>
+            </m:mrow>
+            <m:msup>
+              <m:mi>z</m:mi>
+              <m:mn>2</m:mn>
+            </m:msup>
+            <m:mo>+</m:mo>
+            <m:mrow>
+              <m:mo>[</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>2</m:mn>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:msup>
+                    <m:mi>r</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>/</m:mo>
+                <m:mi>r</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mi>x</m:mi>
+              <m:mo>]</m:mo>
+            </m:mrow>
+            <m:mi>z</m:mi>
+            <m:mo>+</m:mo>
+            <m:mn>1</m:mn>
+            <m:mo>}</m:mo>
+            <m:mi>K</m:mi>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2266764">If one of the zeros of a length-5 filter is on the real axis or
+on the unit circle, <m:math><m:mrow><m:mi>D</m:mi><m:mo>(</m:mo><m:mi>z</m:mi><m:mo>)</m:mo></m:mrow></m:math> can be factored into a product of lower
+order terms of the forms in <link target-id="uid72"/>, <link target-id="uid74"/>, and
+<link target-id="uid75"/> and, therefore, is not of lowest order.
+The odd symmetric filters of <link target-id="uid31009"/> are described by the
+above factors plus the basic length-2 filter described by</para>
+      <equation id="uid78">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>D</m:mi>
+            <m:mo>(</m:mo>
+            <m:mi>z</m:mi>
+            <m:mo>)</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mo>(</m:mo>
+            <m:mi>z</m:mi>
+            <m:mo>-</m:mo>
+            <m:mn>1</m:mn>
+            <m:mo>)</m:mo>
+            <m:mi>K</m:mi>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2266850">The zero locations for the four basic cases of Type 1 and 2 FIR
+filters are shown in <link target-id="uid79"/>. The locations for the Type 3 and
+4 odd-symmetric cases of <link target-id="uid31009"/> are the same, plus the zero at
+one from <link target-id="uid77"/>.</para>
+      <figure id="uid79" orient="horizontal"><media id="id8886837" alt="This figure consist of 5 different Cartesian graphs each containing a different circle. For each of these graphs the x axis is labeled real part of z and the y axis is labeled Imaginary part of z. The top left graph is labeled Length-2, Even Symmetric h(n). It contains a circle centered at the origin and on the far left there is a single hollow circle on the border. this circle is about at point (-1,0). The top right graph is labeled Length-2, Odd Symmetric h(n) and contains a circle centered around the origin. On the far right border of the circle there is a small circle. This circle exist near the point (1,0). The left middle graph is labeled Length-3, Even Symmetric h(n). On the large circle centered around the origin were two smaller circles on points on the border of the circle. The small circles are on the left half of the circle at points close to (-.75,.75) and (-.75,-.75). The middle right graph is labeled Length-3, Even Symmetric h(n). The graph contains a circle centered around the origin. On the left side of the circle there are two small circles. The small circles are not on the border of the circle. One was slightly to the right of the left most area of the circle a point near (.5,0). The other small circle is to the left of the left most border of the circle at a point near (-1.5,0). The bottom graph is labeled Length-5, Even Symmetric h(n), and contains a large circle centered around the origin. There are also four small circles near the left most border of the larger circle. There are two smaller circles on the inside of the circle. They are at two points near (-.5,-.5) and (-.5,.5). There are also to points to the left of the circle. These circles are near points (-1.25,.75) and (-1.25,-.75)."><image src="../../media/fig55.png" mime-type="image/png" width="531"/><image for="pdf" src="../../media/fig55.eps" mime-type="application/postscript"/></media>
+        
+      <caption>Zero Locations for the Basic Linear-Phase FIR Filter</caption></figure>
+      <para id="id2266881">From this analysis, it can be concluded that all linear-phase
+FIR filters have zeros either on the unit circle or in the
+reciprocal symmetry of <link target-id="uid74"/> or <link target-id="uid77"/> about the unit circle,
+and their transfer functions can always be factored into products
+of terms with these four basic forms. This factored form can be
+used in implementing a filter by cascading short filters to
+realize a long filter. Knowledge of the locations of the transfer
+function zeros helps in developing filter design and analysis
+programs. Notice how these zero locations are consistent with
+the amplitude responses illustrated in <link target-id="uid54"/> and <link target-id="uid55"/>.</para>
+      <section id="uid80">
+        <title>Section Summary</title>
+        <para id="id2266933">In this section the basic characteristics of the FIR filter
+have been derived. For the linear-phase case, the frequency
+response can be calculated very easily. The effects of the linear
+phase can be separated so that the amplitude can be approximated
+as a real-valued function. This is a very useful property for
+filter design. It was shown that there are four basic types of
+linear-phase FIR filters, each with characteristics that are also
+important for design. The frequency response can be calculated
+by application of the DFT to the filter coefficients or, for
+greater resolution, to the <m:math><m:mi>N</m:mi></m:math> filter coefficients with zeros added
+to increase the length. A very efficient calculation of the DFT
+uses the Fast Fourier Transform (FFT). The frequency response can
+also be calculated by special formulas that include the effects
+of linear phase.</para>
+        <para id="id2266961">Because of the linear-phase requirements, the zeros of the
+transfer function must lie on the unit circle in the z plane or
+occur in reciprocal pairs around the unit circle. This gives
+insight into the effects of the zero locations on the frequency
+response and can be used in the implementation of the filter.</para>
+        <para id="id2266969">The FIR filter is very attractive from several points of
+view. It alone can achieve exactly linear phase. It is easily
+designed using methods that are linear. The filter cannot be
+unstable. The implementation or realization in hardware or on a
+computer is basically the calculation of an inner product, which
+can be accomplished very efficiently. On the negative side, the
+FIR filter may require a rather long length to achieve certain
+frequency responses. This means a large number of arithmetic
+operations per output value and a large number of coefficients
+that have to be stored. The linear-phase characteristic makes the
+time delay of the filter equal to half its length, which may be
+large.</para>
+        <para id="id2255371">How the FIR filter is implemented and whether it is chosen over
+alternatives depends strongly on the hardware or computer to be
+used. If an array processor is used, an FFT implementation <link target-id="bid0"/> would probably be selected. If a fixed point TMS320 signal processor is
+used, a direct calculation of the inner product is probably best. If
+a floating point DSP or microprocessor with floating-point
+arithmetic is used, an IIR filter may be chosen over the FIR, or the
+implementation of the FIR might take into account the symmetries of
+the filter coefficients to reduce arithmetic. To make these choices,
+the characteristics developed in this chapter, together with the
+results developed later in these notes, must be considered.</para>
+      </section>
+    </section>
+    <section id="uid81">
+      <title>FIR Digital Filter Design</title>
+      <para id="id2255395">A central characteristic of engineering is design. Basic to DSP is
+the design of digital filters. In many cases, the specifications of
+a design is given in the frequency domain and the evaluation of the
+design is often done in the frequency domain. A typical sequence of
+steps in design might be:</para>
+      <list id="id2255403" list-type="enumerated">
+        <item id="uid82">From an application, choose a desired ideal response,
+typically described in the frequency domain.
+</item>
+        <item id="uid83">From the available hardware and software, choose an allowed
+class of filters (e.g. a length-N FIR digital filter).
+</item>
+        <item id="uid84">From the application, set a measure or criterion of
+“goodness" for the response of an allowed filter compared to the
+desired response.
+</item>
+        <item id="uid85">Develop a method to find (or directly generate) the best member of
+the allowed class of linear phase FIR filters as measured by the criterion
+of goodness.
+</item>
+      </list>
+      <para id="id2255458">This approach is often used iteratively. After the best filter is
+designed and evaluated, the desired response and/or the allowed
+class and/or the measure of quality might be changed; then the
+filter would be redesigned and reevaluated.</para>
+      <para id="id2255465">The ideal response of a lowpass filter is given in
+<link target-id="uid86"/>.</para>
+      <figure id="uid86" orient="horizontal"><media id="id8887140" alt="This figure contains three graphs. For all of these graphs the x axis is labeled Normalized Frequency, f and the y axis is labeled Ideaal Amplitude, A_d. The top graph is labeled a. Ideal Lowpass Filter Amplitude Response. The graph consist of a right angle formed by a line extending from the y axis at 1 and then a line extending from the x axis at .4. The area contained with in this right angle is labeled with two arrows pointing up from the word passband and then the area to the right of the line extending from the x axis was labeled the same way with the word stopband. The second graph is labeled b. Ideal Lowpass Filter with Transition Function and consist of a line extending from the y axis at 1 and then at about .3 there is a diagonal line extending down and to the right until it the line reached 0 on the x axis. Below the x axis parallel to the the line extending from the y axis are to arrows designation the area of the passband and then another two arrow under the diagonal line designation the area of the transitionband. To the right of where the diagonal line stops is a similar designation for the stopband. Another arrow points to the diagonal line labeling it transition function. The third graph is similar to the last graph except that the diagonal line and the area of the x axis that below it have been omitted as has the arrow labeling the diagonal line."><image src="../../media/IdealLP.png" mime-type="image/png" width="404"/><image for="pdf" src="../../media/IdealLP.eps" mime-type="application/postscript"/></media>
+        
+      <caption>Ideal Amplitude Responses of Linear Phase FIR Filters</caption></figure>
+      <para id="id2255490"><link target-id="uid86"/>a is the basic lowpass response that exactly
+passes frequencies from zero up to a certain frequency, then rejects
+(multiplies those frequency components by zero)the frequencies above
+that. <link target-id="uid86"/>b introduces a “transitionband" between
+the pass and stopband to make the design easier and more efficient.
+<link target-id="uid86"/>c introducess a transitionband which is not used
+in the approximation of the actual to the ideal responses. Each of
+these ideal responses (or other similar ones) will fit a particular
+application best.</para>
+      
+    </section>
+  </content>
+  <bib:file>
+    <bib:entry id="bid2">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Burrus, C. S. and Parks, T. W.</bib:author>
+        <bib:title>DFT/FFT and Convolution Algorithms</bib:title>
+        <bib:publisher>John Wiley &amp; Sons</bib:publisher>
+        <bib:year>1985</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid1">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Mitra, Sanjit K.</bib:author>
+        <bib:title>Digital Signal Processing, A Computer-Based Approach</bib:title>
+        <bib:publisher>McGraw-Hill</bib:publisher>
+        <bib:year>2006</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition>Third</bib:edition>
+        <bib:month/>
+        <bib:note>First edition in 1998, second in 2001</bib:note>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid0">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Oppenheim, A. V. and Schafer, R. W.</bib:author>
+        <bib:title>Discrete-Time Signal Processing</bib:title>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1999</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Englewood Cliffs, NJ</bib:address>
+        <bib:edition>Second</bib:edition>
+        <bib:month/>
+        <bib:note>Earlier editions in 1975 and 1989</bib:note>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid3">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Parks, T. W. and Burrus, C. S.</bib:author>
+        <bib:title>Digital Filter Design</bib:title>
+        <bib:publisher>John Wiley &amp; Sons</bib:publisher>
+        <bib:year>1987</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+  </bib:file>
+</document>

@@ -1,0 +1,1827 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:bib="http://bibtexml.sf.net/">
+  <title>FIR Filter Design by Frequency Sampling or Interpolation</title>
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m16891</md:content-id>
+  <md:title>FIR Filter Design by Frequency Sampling or Interpolation</md:title>
+  <md:abstract/>
+  <md:uuid>ff4e2faa-3367-46a9-861b-713774bc67ec</md:uuid>
+</metadata>
+  <content>
+    <para id="id2255546">Since samples of the frequency response of an FIR filter can be calculated
+by taking the DFT of the impulse response <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>, one could propose a
+filter design method consisting of taking the inverse DFT of samples of a
+desired frequency response. This can indeed be done and is called <emphasis>frequency sampling design</emphasis>. The resulting filter has a frequency response
+that exactly interpolates the given samples, but there is no explicit control
+of the behavior between the samples <link target-id="bid0"/>, <link target-id="bid1"/>.</para>
+    <para id="id2255592">Three methods for frequency sampling design are:</para>
+    <list id="id2255596" list-type="enumerated">
+      <item id="uid1">Take the inverse DFT (perhaps using the FFT) of equally spaced
+samples of the
+desired frequency response. Care must be taken to use the correct phase
+response to obtain a real valued causal <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> with reasonable behavior
+between sample response. This method works for general nonlinear phase
+design as well as for linear phase.
+</item>
+      <item id="uid2">Derive formulas for the inverse DFT which take the symmetries, phase, and
+causality into account. It is interesting to notice these analysis and design
+formulas turn
+out to be the discrete cosine and sine transforms and their inverses.
+</item>
+      <item id="uid3">Solve the set of simultaneous linear equations that result from
+calculating the sampled
+frequency response from the impulse response. This method allows unevenly
+spaced samples of the desired frequency response but the resulting equations
+may be ill conditioned.
+</item>
+    </list>
+    <section id="uid4">
+      <title>Frequency Sampling Filter Design by Inverse DFT</title>
+      <para id="id2255667">The most direct frequency sampling design method is to simply take the
+inverse DFT of equally spaced samples of the desired complex frequency
+response <m:math><m:mrow><m:msub><m:mi>H</m:mi><m:mi>d</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:msub><m:mi>ω</m:mi><m:mi>k</m:mi></m:msub><m:mo>)</m:mo></m:mrow></m:mrow></m:math>. This is done by</para>
+      <equation id="uid5"><m:math mode="display">
+          <m:mrow>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:mspace width="0.166667em"/>
+            <m:mfrac>
+              <m:mn>1</m:mn>
+              <m:mi>N</m:mi>
+            </m:mfrac>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>k</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+              </m:mrow>
+              <m:mrow>
+                <m:mi>N</m:mi>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:munderover>
+            <m:msub>
+              <m:mi>H</m:mi>
+              <m:mi>d</m:mi>
+            </m:msub>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mfrac>
+                <m:mrow>
+                  <m:mn>2</m:mn>
+                  <m:mi>π</m:mi>
+                </m:mrow>
+                <m:mi>N</m:mi>
+              </m:mfrac>
+              <m:mi>k</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:msup>
+              <m:mi>e</m:mi>
+              <m:mrow>
+                <m:mi>j</m:mi>
+                <m:mn>2</m:mn>
+                <m:mi>π</m:mi>
+                <m:mi>n</m:mi>
+                <m:mi>k</m:mi>
+                <m:mo>/</m:mo>
+                <m:mi>N</m:mi>
+              </m:mrow>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2256054">where care must be taken to insure that the real and imaginary parts
+(or magnitude and phase) of
+<m:math><m:mrow><m:msub><m:mi>H</m:mi><m:mi>d</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:msub><m:mi>ω</m:mi><m:mi>k</m:mi></m:msub><m:mo>)</m:mo></m:mrow></m:mrow></m:math> satisfy the symmetry conditions that give a real, causal <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>.
+This method will allow a general complex <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> as well as a linear
+phase. In most cases, it is easier to specify proper and consistent
+samples if it is the magnitude and phase that are set rather than the
+real and imaginary parts. For example, it is important that the desired
+phase be consistent with the specified length being even or odd as is given
+in <link document="m16889" target-id="uid38">Equation 28 from FIR Digital Filters</link> and <link document="m16889" target-id="uid34">Equation 24 from FIR Digital Filters</link>.</para>
+      <para id="id2256132">Since the frequency sampling design method will always produce a filter
+with a frequency response that interpolates the specified samples, the
+results of inappropriate phase specifications will show up as undesired
+behavior between the samples.</para>
+    </section>
+    <section id="uid6">
+      <title>Frequency Sampling Filter Design by Formulas</title>
+      <para id="id2256147">When equally spaced samples of the desired frequency response are used,
+it is possible to derive formulas for the inverse DFT and, therefore,
+for the filter coefficients. This is because of the orthogonal basis
+function of the DFT. These formulas can incorporate the various
+constraints of a real <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> and/or linear phase and eliminate the
+problems of inconsistency in specifying <m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:msub><m:mi>ω</m:mi><m:mi>k</m:mi></m:msub><m:mo>)</m:mo></m:mrow></m:math>.</para>
+      <para id="id2256194">To develop explicit formulas for frequency-sampling design of linear-phase
+FIR filters, a direct use of the inverse DFT is most straightforward. When
+<m:math><m:mrow><m:mi>H</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math> has linear phase, <link target-id="uid5"/> may be simplified using the
+formulas for the four types of linear-phase FIR filters.</para>
+      <section id="uid7">
+        <title>Type 1. Odd Sampling</title>
+        <para id="id2256229">Samples of the frequency response <link document="m16889" target-id="uid39"> Equation 29 from FIR Digital Filters</link> for the
+filter where <m:math><m:mi>N</m:mi></m:math> is odd, <m:math><m:mrow><m:mi>L</m:mi><m:mo>=</m:mo><m:mi>N</m:mi></m:mrow></m:math>, and <m:math><m:mrow><m:mi>M</m:mi><m:mo>=</m:mo><m:mo>(</m:mo><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>)</m:mo><m:mo>/</m:mo><m:mn>2</m:mn></m:mrow></m:math>, and where
+there is a frequency sample at <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math> is given as</para>
+        <equation id="uid8"><m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:mn>2</m:mn>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>π</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mi>k</m:mi>
+                <m:mo>/</m:mo>
+                <m:mi>N</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>+</m:mo>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>M</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256406">Using the amplitude function <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:math>, defined in <link document="m16889" target-id="uid38">Equation 28 from FIR Digital Filters</link>, of the
+form <link target-id="uid8"/> and the IDFT <link target-id="uid5"/> gives for the impulse response</para>
+        <equation id="uid9"><m:math mode="display">
+            <m:mrow>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mi>N</m:mi>
+              </m:mfrac>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>k</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mn>2</m:mn>
+                  <m:mi>π</m:mi>
+                  <m:mi>M</m:mi>
+                  <m:mi>k</m:mi>
+                  <m:mo>/</m:mo>
+                  <m:mi>N</m:mi>
+                </m:mrow>
+              </m:msup>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mn>2</m:mn>
+                  <m:mi>π</m:mi>
+                  <m:mi>n</m:mi>
+                  <m:mi>k</m:mi>
+                  <m:mo>/</m:mo>
+                  <m:mi>N</m:mi>
+                </m:mrow>
+              </m:msup>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256548">or</para>
+        <equation id="uid10"><m:math mode="display">
+            <m:mrow>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mi>N</m:mi>
+              </m:mfrac>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>k</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:msup>
+                <m:mi>e</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mn>2</m:mn>
+                  <m:mi>π</m:mi>
+                  <m:mo>(</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>M</m:mi>
+                  <m:mo>)</m:mo>
+                  <m:mi>k</m:mi>
+                  <m:mo>/</m:mo>
+                  <m:mi>N</m:mi>
+                </m:mrow>
+              </m:msup>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256650">Because <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is real, <m:math><m:mrow><m:msub><m:mi>A</m:mi><m:mi>k</m:mi></m:msub><m:mo>=</m:mo><m:msub><m:mi>A</m:mi><m:mrow><m:mi>N</m:mi><m:mo>-</m:mo><m:mi>k</m:mi></m:mrow></m:msub></m:mrow></m:math> and <link target-id="uid10"/> becomes</para>
+        <equation id="uid11"><m:math mode="display">
+            <m:mrow>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mi>N</m:mi>
+              </m:mfrac>
+              <m:mrow>
+                <m:mo>[</m:mo>
+                <m:msub>
+                  <m:mi>A</m:mi>
+                  <m:mn>0</m:mn>
+                </m:msub>
+                <m:mo>+</m:mo>
+                <m:munderover>
+<m:mrow>
+                  <m:mo>∑</m:mo>
+</m:mrow>        
+          <m:mrow>
+                    <m:mi>k</m:mi>
+                    <m:mo>=</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mi>M</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:munderover>
+                <m:mn>2</m:mn>
+                <m:msub>
+                  <m:mi>A</m:mi>
+                  <m:mi>k</m:mi>
+                </m:msub>
+                <m:mo form="prefix">cos</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mi>π</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>n</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mi>M</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mi>k</m:mi>
+                  <m:mo>/</m:mo>
+                  <m:mi>N</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>]</m:mo>
+              </m:mrow>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256822">Only <m:math><m:mrow><m:mi>M</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:math> of the <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> need be calculated because of the symmetries
+in <link document="m16889" target-id="uid37">Equation 27 from FIR Digital Filters</link>.</para>
+        <para id="id2256861">This formula calculates the impulse response values <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>
+from the desired frequency samples <m:math><m:msub><m:mi>A</m:mi><m:mi>k</m:mi></m:msub></m:math> and requires <m:math><m:msup><m:mi>M</m:mi><m:mn>2</m:mn></m:msup></m:math>
+operations rather than <m:math><m:msup><m:mi>N</m:mi><m:mn>2</m:mn></m:msup></m:math>. An interesting observation is that
+not only are <link target-id="uid8"/> and <link target-id="uid11"/> a pair of analysis and design
+formulas, they are also a transform pair. Indeed, they are of the
+same form as a discrete cosine transform (DCT).</para>
+      </section>
+      <section id="uid12">
+        <title>Type 2. Odd Sampling</title>
+        <para id="id2256943">A similar development applied to the cases for even <m:math><m:mi>N</m:mi></m:math> from
+<link document="m16889" target-id="uid2100">Equation 36 from FIR Digital Filters</link> gives the amplitude frequency response samples as</para>
+        <equation id="uid13"><m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>/</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:mn>2</m:mn>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>π</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mi>k</m:mi>
+                <m:mo>/</m:mo>
+                <m:mi>N</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257056">with the design formula of</para>
+        <equation id="uid14"><m:math mode="display">
+            <m:mrow>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mi>N</m:mi>
+              </m:mfrac>
+              <m:mrow>
+                <m:mo>[</m:mo>
+                <m:msub>
+                  <m:mi>A</m:mi>
+                  <m:mn>0</m:mn>
+                </m:msub>
+                <m:mo>+</m:mo>
+                <m:munderover>
+<m:mrow>
+                  <m:mo>∑</m:mo>
+</m:mrow>        
+          <m:mrow>
+                    <m:mi>k</m:mi>
+                    <m:mo>=</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mi>N</m:mi>
+                    <m:mo>/</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:munderover>
+                <m:mn>2</m:mn>
+                <m:msub>
+                  <m:mi>A</m:mi>
+                  <m:mi>k</m:mi>
+                </m:msub>
+                <m:mo form="prefix">cos</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mi>π</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>n</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mi>M</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mi>k</m:mi>
+                  <m:mo>/</m:mo>
+                  <m:mi>N</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>]</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257179">which is of the same form as <link target-id="uid11"/>, except that the upper limit
+on the summation recognizes <m:math><m:mi>N</m:mi></m:math> as even and
+<m:math><m:msub><m:mi>A</m:mi><m:mrow><m:mi>N</m:mi><m:mo>/</m:mo><m:mn>2</m:mn></m:mrow></m:msub></m:math> equals zero.</para>
+      </section>
+      <section id="uid15">
+        <title>Even Sampling</title>
+        <para id="id2257226">The schemes just described use frequency samples at</para>
+        <equation id="uid16">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>ω</m:mi>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:mn>2</m:mn>
+              <m:mi>π</m:mi>
+              <m:mi>k</m:mi>
+              <m:mo>/</m:mo>
+              <m:mi>N</m:mi>
+              <m:mo>,</m:mo>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4.pt"/>
+              <m:mrow>
+                <m:mi>k</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>,</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>,</m:mo>
+                <m:mn>2</m:mn>
+                <m:mo>,</m:mo>
+                <m:mo>.</m:mo>
+                <m:mo>.</m:mo>
+                <m:mo>.</m:mo>
+                <m:mo>,</m:mo>
+                <m:mi>N</m:mi>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257317">which are <m:math><m:mi>N</m:mi></m:math> equally-spaced samples starting at <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math>. Another
+possible pattern for frequency sampling that allows design
+formulas has no sample at <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math>, but uses <m:math><m:mi>N</m:mi></m:math> equally-spaced
+samples located at</para>
+        <equation id="uid17">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>ω</m:mi>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:mo>(</m:mo>
+              <m:mn>2</m:mn>
+              <m:mi>k</m:mi>
+              <m:mo>+</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>)</m:mo>
+              <m:mi>π</m:mi>
+              <m:mo>/</m:mo>
+              <m:mi>N</m:mi>
+              <m:mo>,</m:mo>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4.pt"/>
+              <m:mrow>
+                <m:mi>k</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>,</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>,</m:mo>
+                <m:mn>2</m:mn>
+                <m:mo>,</m:mo>
+                <m:mo>.</m:mo>
+                <m:mo>.</m:mo>
+                <m:mo>.</m:mo>
+                <m:mo>,</m:mo>
+                <m:mi>N</m:mi>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257465">This form of frequency sampling is more difficult to relate to
+the DFT than the sampling of <link target-id="uid16"/>, but it can be done by
+stretching <m:math><m:msub><m:mi>A</m:mi><m:mi>k</m:mi></m:msub></m:math> and taking a 2N-length DFT <link target-id="bid0"/>.</para>
+      </section>
+      <section id="uid18">
+        <title>Type 1. Even Sampling</title>
+        <para id="id2257504">The two cases for odd and even lengths and the two for
+samples at zero and not at zero frequency give a total of four
+cases for the frequency-sampling design method applied to linear-
+phase FIR filters of Types 1 and 2, as defined in the section <link document="m16889" target-id="uid20">Linear-Phase FIR Filters</link>.
+For the case of an odd length and no zero sample, the analysis
+and design formulas are derived in a way analogous to <link target-id="uid8"/> and
+<link target-id="uid14"/> to give</para>
+        <equation id="uid19"><m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>   
+             <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:mn>2</m:mn>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>π</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>k</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>/</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>/</m:mo>
+                <m:mi>N</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>+</m:mo>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>M</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257646">The design formula becomes</para>
+        <equation id="uid20"><m:math mode="display">
+            <m:mrow>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mi>N</m:mi>
+              </m:mfrac>
+              <m:mrow>
+                <m:mo>[</m:mo>
+                <m:munderover>
+<m:mrow>
+                  <m:mo>∑</m:mo>
+</m:mrow>        
+          <m:mrow>
+                    <m:mi>k</m:mi>
+                    <m:mo>=</m:mo>
+                    <m:mn>0</m:mn>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mi>M</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:munderover>
+                <m:mn>2</m:mn>
+                <m:msub>
+                  <m:mi>A</m:mi>
+                  <m:mi>k</m:mi>
+                </m:msub>
+                <m:mo form="prefix">cos</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mi>π</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>n</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mi>M</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>k</m:mi>
+                    <m:mo>+</m:mo>
+                    <m:mn>1</m:mn>
+                    <m:mo>/</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>/</m:mo>
+                  <m:mi>N</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>+</m:mo>
+                <m:msub>
+                  <m:mi>A</m:mi>
+                  <m:mi>M</m:mi>
+                </m:msub>
+                <m:mo form="prefix">cos</m:mo>
+                <m:mi>π</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>M</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>]</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+      </section>
+      <section id="uid21">
+        <title>Type 2. Even Sampling</title>
+        <para id="id2257807">The fourth case, for an even length and no zero frequency
+sample, gives the analysis formula</para>
+        <equation id="uid22"><m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>/</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:mn>2</m:mn>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>π</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>k</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>/</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>/</m:mo>
+                <m:mi>N</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257925">and the design formula</para>
+        <equation id="uid23"><m:math mode="display">
+            <m:mrow>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mi>N</m:mi>
+              </m:mfrac>
+              <m:mrow>
+                <m:mo>[</m:mo>
+                <m:munderover>
+<m:mrow>
+                  <m:mo>∑</m:mo>
+</m:mrow>        
+          <m:mrow>
+                    <m:mi>k</m:mi>
+                    <m:mo>=</m:mo>
+                    <m:mn>0</m:mn>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mi>N</m:mi>
+                    <m:mo>/</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:munderover>
+                <m:mn>2</m:mn>
+                <m:msub>
+                  <m:mi>A</m:mi>
+                  <m:mi>k</m:mi>
+                </m:msub>
+                <m:mo form="prefix">cos</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mi>π</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>n</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mi>M</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>k</m:mi>
+                    <m:mo>+</m:mo>
+                    <m:mn>1</m:mn>
+                    <m:mo>/</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>/</m:mo>
+                  <m:mi>N</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>]</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258056">These formulas in <link target-id="uid11"/>, <link target-id="uid14"/>, <link target-id="uid20"/>, and
+<link target-id="uid23"/> allow a very
+straightforward design of the four frequency-sampling cases. They
+and their analysis companions in <link target-id="uid8"/>, <link target-id="uid13"/>,
+<link target-id="uid19"/>, and <link target-id="uid22"/>
+also are the four forms of discrete cosine and inverse-cosine
+transforms. Matlab
+ programs which implement these four designs
+are given in the appendix.</para>
+      </section>
+      <section id="uid24">
+        <title>Type 3. Odd Sampling</title>
+        <para id="id2258114">The design of even-symmetric linear-phase FIR filters of Types 1 and 2 in
+the section <link document="m16889" target-id="uid20">Linear-Phase FIR Filters</link> have been developed here. A similar development for the
+odd-symmetric filters, Types 3 and 4, can easily be performed with the
+results closely related to the discrete sine transform. The Type 3
+analysis and design results using the frequency sampling scheme of
+<link target-id="uid16"/> are</para>
+        <equation id="uid25"><m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>b</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:mn>2</m:mn>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">sin</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>π</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mi>k</m:mi>
+                <m:mo>/</m:mo>
+                <m:mi>N</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258231">and</para>
+        <equation id="uid26"><m:math mode="display">
+            <m:mrow>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mi>N</m:mi>
+              </m:mfrac>
+              <m:mrow>
+                <m:mo>[</m:mo>
+                <m:munderover>
+<m:mrow>
+                  <m:mo>∑</m:mo>
+</m:mrow>        
+          <m:mrow>
+                    <m:mi>k</m:mi>
+                    <m:mo>=</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                  <m:mi>M</m:mi>
+                </m:munderover>
+                <m:mn>2</m:mn>
+                <m:msub>
+                  <m:mi>A</m:mi>
+                  <m:mi>k</m:mi>
+                </m:msub>
+                <m:mo form="prefix">sin</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mi>π</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>M</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mi>n</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mi>k</m:mi>
+                  <m:mo>/</m:mo>
+                  <m:mi>N</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>]</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+      </section>
+      <section id="uid27">
+        <title>Type 4. Odd Sampling</title>
+        <para id="id2258345">For Type 4 they are</para>
+        <equation id="uid28"><m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>/</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:mn>2</m:mn>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">sin</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>π</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mi>k</m:mi>
+                <m:mo>/</m:mo>
+                <m:mi>N</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258447">and</para>
+        <equation id="uid29"><m:math mode="display">
+            <m:mrow>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mi>N</m:mi>
+              </m:mfrac>
+              <m:mrow>
+                <m:mo>[</m:mo>
+                <m:munderover>
+<m:mrow>
+                  <m:mo>∑</m:mo>
+</m:mrow>        
+          <m:mrow>
+                    <m:mi>k</m:mi>
+                    <m:mo>=</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mi>N</m:mi>
+                    <m:mo>/</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:munderover>
+                <m:mn>2</m:mn>
+                <m:msub>
+                  <m:mi>A</m:mi>
+                  <m:mi>k</m:mi>
+                </m:msub>
+                <m:mo form="prefix">sin</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mi>π</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>M</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mi>n</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mi>k</m:mi>
+                  <m:mo>/</m:mo>
+                  <m:mi>N</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>+</m:mo>
+                <m:msub>
+                  <m:mi>A</m:mi>
+                  <m:mrow>
+                    <m:mi>N</m:mi>
+                    <m:mo>/</m:mo>
+                    <m:mn>2</m:mn>
+                  </m:mrow>
+                </m:msub>
+                <m:mo form="prefix">sin</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>π</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>M</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mi>n</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>]</m:mo>
+              </m:mrow>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+      </section>
+      <section id="uid30">
+        <title>Type 3. Even Sampling</title>
+        <para id="id2258612">Using the frequency sampling scheme of <link target-id="uid17"/>, the Type 3 equations become</para>
+        <equation id="uid31"><m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:mn>2</m:mn>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">sin</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>π</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>k</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>/</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>/</m:mo>
+                <m:mi>N</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258730">and</para>
+        <equation id="uid32"><m:math mode="display">
+            <m:mrow>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mi>N</m:mi>
+              </m:mfrac>
+              <m:mrow>
+                <m:mo>[</m:mo>
+                <m:munderover>
+<m:mrow>
+                  <m:mo>∑</m:mo>
+</m:mrow>        
+          <m:mrow>
+                    <m:mi>k</m:mi>
+                    <m:mo>=</m:mo>
+                    <m:mn>0</m:mn>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mi>M</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:munderover>
+                <m:mn>2</m:mn>
+                <m:msub>
+                  <m:mi>A</m:mi>
+                  <m:mi>k</m:mi>
+                </m:msub>
+                <m:mo form="prefix">sin</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mi>π</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>M</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mi>n</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>k</m:mi>
+                    <m:mo>+</m:mo>
+                    <m:mn>1</m:mn>
+                    <m:mo>/</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>/</m:mo>
+                  <m:mi>N</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>]</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+      </section>
+      <section id="uid33">
+        <title>Type 4. Even Sampling</title>
+        <para id="id2258863">For Type 4 they are</para>
+        <equation id="uid34"><m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>A</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:munderover>
+<m:mrow>
+                <m:mo>∑</m:mo>
+</m:mrow>        
+        <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>/</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:mn>2</m:mn>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">sin</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>π</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>M</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>k</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>/</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>/</m:mo>
+                <m:mi>N</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258979">and</para>
+        <equation id="uid35"><m:math mode="display">
+            <m:mrow>
+              <m:mi>h</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mspace width="0.166667em"/>
+              <m:mo>=</m:mo>
+              <m:mspace width="0.166667em"/>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mi>N</m:mi>
+              </m:mfrac>
+              <m:mrow>
+                <m:mo>[</m:mo>
+                <m:munderover>
+<m:mrow>
+                  <m:mo>∑</m:mo>
+</m:mrow>        
+          <m:mrow>
+                    <m:mi>k</m:mi>
+                    <m:mo>=</m:mo>
+                    <m:mn>0</m:mn>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mi>N</m:mi>
+                    <m:mo>/</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:munderover>
+                <m:mn>2</m:mn>
+                <m:msub>
+                  <m:mi>A</m:mi>
+                  <m:mi>k</m:mi>
+                </m:msub>
+                <m:mo form="prefix">sin</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mi>π</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>M</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mi>n</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>k</m:mi>
+                    <m:mo>+</m:mo>
+                    <m:mn>1</m:mn>
+                    <m:mo>/</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>/</m:mo>
+                  <m:mi>N</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>]</m:mo>
+              </m:mrow>
+              <m:mo>.</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259111">These Type 3 and 4 formulas are useful in the design of
+differentiators and Hilbert transformers [1,2,9,31] directly and
+as the base of the discrete least-squared-error methods in
+the section <link document="m16892" target-id="uid1">Discrete Frequency Samples of Error</link>.</para>
+      </section>
+    </section>
+    <section id="uid36">
+      <title>Frequency Sampling Design of FIR Filters by Solution of
+Simultaneous Equations</title>
+      <para id="id2259132">A direct way of designing FIR filters from samples of a desired amplitude
+simply takes the sampled definition of the frequency response
+<link document="m16889" target-id="uid39">Equation 29 from FIR Digital Filters</link> as</para>
+      <equation id="uid37"><m:math mode="display">
+          <m:mrow>
+            <m:mi>A</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>n</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+              </m:mrow>
+              <m:mrow>
+                <m:mi>M</m:mi>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:munderover>
+            <m:mn>2</m:mn>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo form="prefix">cos</m:mo>
+            <m:msub>
+              <m:mi>ω</m:mi>
+              <m:mi>k</m:mi>
+            </m:msub>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>M</m:mi>
+              <m:mo>-</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>+</m:mo>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>M</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2259245">or the reduced form from <link document="m16889" target-id="uid30009">Equation 37 from FIR Digital Filters</link> as</para>
+      <equation id="uid38"><m:math mode="display">
+          <m:mrow>
+            <m:mi>A</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>n</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+              </m:mrow>
+              <m:mi>M</m:mi>
+            </m:munderover>
+            <m:mi>a</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo form="prefix">cos</m:mo>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>M</m:mi>
+                <m:mo>-</m:mo>
+                <m:mi>n</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2259348">where
+</para>
+      <equation id="uid39"><m:math>
+<m:mrow>
+<m:mi>a</m:mi>
+<m:mo>(</m:mo>
+<m:mi>n</m:mi>
+<m:mo>)</m:mo>
+</m:mrow>
+<m:mo>=</m:mo>
+<m:mo>{</m:mo>
+<m:mtable>
+<m:mtr>
+<m:mtd columnalign="left">
+<m:mn>2</m:mn>
+<m:mi>h</m:mi>
+<m:mo>(</m:mo>
+<m:mi>n</m:mi>
+<m:mo>)</m:mo>
+</m:mtd>
+<m:mtd columnalign="left">
+<m:mtext>for</m:mtext>
+<m:mspace width="5pt"/>
+<m:mn>0</m:mn>
+<m:mo>≤</m:mo>
+<m:mi>n</m:mi>
+<m:mo>≤</m:mo>
+<m:mi>M</m:mi>
+<m:mo>-</m:mo>
+<m:mn>1</m:mn>
+</m:mtd>
+</m:mtr>
+<m:mtr>
+<m:mtd columnalign="left">
+<m:mi>h</m:mi>
+<m:mo>(</m:mo>
+<m:mi>M</m:mi>
+<m:mo>)</m:mo>
+</m:mtd>
+<m:mtd columnalign="left">
+<m:mtext>for</m:mtext>
+<m:mspace width="5pt"/>
+<m:mi>n</m:mi>
+<m:mo>=</m:mo>
+<m:mi>M</m:mi>
+</m:mtd>
+</m:mtr>
+<m:mtr>
+<m:mtd columnalign="left">
+<m:mn>0</m:mn>
+</m:mtd>
+<m:mtd columnalign="left">
+<m:mtext>otherwise</m:mtext>
+</m:mtd>
+</m:mtr>
+</m:mtable>
+</m:math>
+</equation>
+      <para id="element-343">for <m:math><m:mi>k=0,1,2,...,M</m:mi></m:math> and solves the  <m:math><m:mi>M+1</m:mi></m:math> simultaneous equations for <m:math><m:mi>a(n)</m:mi></m:math> or equivalently, <m:math><m:mi>h(n)</m:mi></m:math>. Indeed, this approach can be taken with general non-linear phase design from</para><para id="id2259658">Indeed, this approach can be taken with general non-linear phase design from</para>
+      <equation id="uid40"><m:math mode="display">
+          <m:mrow>
+            <m:mi>H</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:mo>=</m:mo>
+            <m:mspace width="0.166667em"/>
+            <m:munderover>
+<m:mrow>
+              <m:mo>∑</m:mo>
+</m:mrow>        
+      <m:mrow>
+                <m:mi>n</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+              </m:mrow>
+              <m:mrow>
+                <m:mi>N</m:mi>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:munderover>
+            <m:mi>h</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>n</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mspace width="0.166667em"/>
+            <m:msup>
+              <m:mi>e</m:mi>
+              <m:mrow>
+                <m:mi>j</m:mi>
+                <m:msub>
+                  <m:mi>ω</m:mi>
+                  <m:mi>k</m:mi>
+                </m:msub>
+                <m:mi>n</m:mi>
+              </m:mrow>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2259754">for <m:math><m:mrow><m:mi>k</m:mi><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>2</m:mn><m:mo>,</m:mo><m:mo>⋯</m:mo><m:mo>,</m:mo><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math> which gives <m:math><m:mi>N</m:mi></m:math> equations with <m:math><m:mi>N</m:mi></m:math> unknowns.</para>
+      <para id="id2259815">This design by solving simultaneous equations allows non-equally spaced
+samples of the desired response. The disadvantage comes from the numerical
+calculations taking considerable time and being subject to inaccuracies if
+the equations are ill-conditioned.</para>
+      <para id="id2259822">The frequency sampling design method is interesting but is seldom used
+for direct design of filters. It is sometimes used as an interpolating
+method in other design procedures to find <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> from calculated <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:msub><m:mi>ω</m:mi><m:mi>k</m:mi></m:msub><m:mo>)</m:mo></m:mrow></m:math>.
+It is also used as a basis for a least squares design method discussed in
+the next section.</para>
+    </section>
+    <section id="uid41">
+      <title>Examples of Frequency Sampling FIR Filter Design</title>
+      <para id="id2259877">To show some of the characteristics of FIR filters designed by frequency sampling,
+we will design a Type 1., length-15 FIR low pass filter. Desired amplitude response
+was one in the pass band and zero in the stop band. The cutoff frequency was set
+at approximately <m:math><m:mrow><m:mi>f</m:mi><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>.</m:mo><m:mn>35</m:mn></m:mrow></m:math> normalized. Using the formulas <link target-id="uid11"/>, <link target-id="uid14"/>, <link target-id="uid20"/>,
+and <link target-id="uid23"/>, we got impulse responses <m:math><m:mrow><m:mi>h</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>, which are use to generate the results
+shown in Figures <link target-id="uid42"/> and <link target-id="uid43"/>.</para>
+      <para id="id2259951">The Type 1, length-15 filter impulse response is:</para>
+      <equation id="id2259955">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>h</m:mi>
+            <m:mn>1</m:mn>
+            <m:mo>=</m:mo>
+            <m:mo>-</m:mo>
+            <m:mn>0</m:mn>
+            <m:mo>.</m:mo>
+            <m:mn>5</m:mn>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mn>0</m:mn>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mn>1</m:mn>
+            <m:mo>.</m:mo>
+            <m:mn>1099</m:mn>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mn>0</m:mn>
+            <m:mspace width="4pt"/>
+            <m:mo>-</m:mo>
+            <m:mn>1</m:mn>
+            <m:mo>.</m:mo>
+            <m:mn>6039</m:mn>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mn>0</m:mn>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mn>4</m:mn>
+            <m:mo>.</m:mo>
+            <m:mn>494</m:mn>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mn>7</m:mn>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mn>4</m:mn>
+            <m:mo>.</m:mo>
+            <m:mn>494</m:mn>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mn>0</m:mn>
+            <m:mspace width="4pt"/>
+            <m:mo>-</m:mo>
+            <m:mn>1</m:mn>
+            <m:mo>.</m:mo>
+            <m:mn>6039</m:mn>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mn>0</m:mn>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mn>1</m:mn>
+            <m:mo>.</m:mo>
+            <m:mn>1099</m:mn>
+            <m:mspace width="4pt"/>
+            <m:mspace width="4pt"/>
+            <m:mn>0</m:mn>
+            <m:mspace width="4pt"/>
+            <m:mo>-</m:mo>
+            <m:mn>0</m:mn>
+            <m:mo>.</m:mo>
+            <m:mn>5</m:mn>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2260122">The amplitude frequency response and zero locations
+are shown in <link target-id="uid42"/>a</para>
+      <figure id="uid42" orient="horizontal"><media id="id1169169929662" alt="This image consist of 4 sets of parallel graphs. The left column of graphs are frequency responses and the right column of graphs are Zero locations. For all of the left column graphs the x axis is labeled Normalized Frequency and the y axis is labeled Amplitude Response, A. For all of the right column of graphs the x axis labeled the real part of z and the y axis is labeled the Imaginary part of z. The first Row of graphs is labeled Type 1. Frequency sample with odd spacing. The graph on the left consist of a right angle formed by a line extending from the y axis at 1 to the right where in intersects a line rising from the x axis at about .3. There is also a wave form with smaller hollow circles at points along it. This line begins at the same point as the line from the y axis. This line falls below the line from the y axis and then goes above it and the takes a more negative slope before reaching the right angle formed by the two lines. The line falls below the x axis and then archs above and below the axis until it runs off the graph. The first graph in the right column consists of  circle centered at the origin, with 10 smaller hollow circles around the left two-thirds of the circumference of the circle, two inside the circle on the inner right and two outside and to the right of the larger circle. The second row of graphs is very similar to the first row; these graphs are labeled Type 2.Frequency samples with odd spacing. The left graph is the same as the first in this column except that the line forming the right angle are a little smaller which in turn causes the waveform to reach the x axis a little earlier than the first graph. The graph in the right column looks exactly the same as the first one in the right column except that there are 11 hollow circle along the circumference of the circle. The third row of graphs is similar to the other graphs, but these are labeled Type 1. Frequency Sample with even spacing. The lines forming the right angle are a little larger and the waveform line starts above the line extending out from the y axis. Also once the wave intersects the x axis the wave amplitude is much less pronounced and almost looks like a straight line. The graph in the right column looks the same as the previous ones in the column except that there are only 9 hollow circles on the circumference of the circle. The graphs on the fourth and final row look exactly the same as the previous row, except that the organization of the hollow circles on the graph on the right is a little different. There are 11 hollow circles around the circumference of the larger circle. The middle three are tighly compressed together on the far left of the circumference whereas the remaining four on both the top and bottom are spread out at equal distances from one another."><image src="../../media/fsFig1.png" mime-type="image/png" width="651"/><image for="pdf" src="../../media/fsFig1.eps" mime-type="application/postscript"/></media>
+        
+      <caption>Frequency Responses and Zero Locations of Length-15 and 16
+FIR Filters Designed by Frequency Sampling</caption></figure>
+      <para id="id2260150">We see a good lowpass filter frequency response with the actual amplitude
+interpolating the desired values at 8 equally spaced points. Notice there
+is considerable overshoot near the cutoff frequency. This is
+characteristic of frequency sampling designs and is a sort of “Gibbs
+phenomenon" but is even worse than that in a Fourier series expansion of a
+discontinuity. This Gibbs phenomenon could be reduced by using unequally
+spaced samples and designing by solving simultaneous equations. Imagine
+sampling in the pass and stop bands of <link document="m16889" target-id="uid86">Figure 8c from FIR Digital Filters</link> but not in
+the transitionband. The other responses and zero locations show the
+results of different interpolation locations and lengths. Note the zero
+at -1 for the even filters.</para>
+      <para id="id2260177">Examples of longer filters and of highpass and bandpass frequency sampling
+designs are shown in <link target-id="uid43"/>. Note the difference of even and
+odd distributions of samples with with or without an interpolation point
+at zero frequency. Note the results of different ideal filters and Type 1
+or 2. Also note the relationship of the amplitude response and zero
+locations.</para>
+      <figure id="uid43" orient="horizontal"><media id="id1169177793708" alt="This image consist of 4 sets of parallel graphs. The left column of graphs are frequency responses and the right column of graphs are Zero locations. For all of the left column graphs the x axis is labeled Normalized Frequency and the y axis is labeled Amplitude Response, A. For all of the right column of graphs the x axis labeled the real part of z and the y axis is labeled the Imaginary part of z. The first row of graphs are labeled Type 1. Length-21 Lowpass FIR Filter. The graph on the left hand column is comprised of a right angle formed by a line extending for the y axis at 1 to the right and another line extending up from the x axis at around .3. The waveform starts at (0,1) proceeding with a slight curve upward above the top line of the right angle and then curves under the line and again above the line. After this last curve the wave takes on a negative slope just before reaching the corner of the right angle. The line then progresses down to the y axis curves down and then undulates above and below the axis until the form runs off the graph. The graph in the right hand column is comprised of a circle centered around the origin 14 hollow circles around the left hand side of circumference of the larger circle, three hollow circles on the right inside area of the larger circle, and also three hollow circles to the right side outside the larger circle. The second row labeled Type 2. Length-20 Lowpass FIR Filter is very similar to the first row. The graph in the left column is exactly the same except that the lines creating the right angle are larger and thus the waveform proceeds a little bit earlier than the previous graph. The graph in the right column looks exactly the same except that there are only 13 small hollow circles around the circumference. The third row is labeled Type 1. FIR Length-21 Highpass FIR Filter is exactly the same as the previous two except that the graphs appear to be reversed horizontally. The fourth row of graphs is labeled Type 2. Length-20 Bandpass FIR Filter and is completely different from the previous graphs. The graph on the left hand side consists of a box formed by a two lines extending up from the x axis around .2 and .6 and then a line between the tops of these lines at 1. The waveform begins on the x axis undulating above and below the axis and then the waveform takes on a positive slope and restarts its undulation on the line between the two vertical lines and then the wave takes on a negative slope at the end of the line between the  vertical lines and the waveform then returns back to the x axis where the undulation above and below the axis. The graph on the right column is also completely different. There is a circle centered around the origin. On the circumference of this circle there are 7 small hollow circles on the left side and then 5 small hollow circles on the right side of the circumference. There is another hollow circle to the just to the left of the origin. There are also two hollow circles present on the inside of the larger circle. The bottom circle is at the bottom inside of the circle a little to the right of the x=0 and then there is another circle there on the top inside of the circle. Outside the circle there are also two circles, one above or below the larger circle. These circles are present to the right of x=0."><image src="../../media/fsFig2.png" mime-type="image/png" width="494"/><image for="pdf" src="../../media/fsFig2.eps" mime-type="application/postscript"/></media>
+        
+      <caption>Frequency Response and Zero Locations of FIR Filters
+Designed by Frequency Sampling</caption></figure>
+      
+    </section>
+  </content>
+  <bib:file>
+    <bib:entry id="bid0">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Parks, T. W. and Burrus, C. S.</bib:author>
+        <bib:title>Digital Filter Design</bib:title>
+        <bib:publisher>John Wiley &amp; Sons</bib:publisher>
+        <bib:year>1987</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid1">
+      <bib:incollection>
+<!--required fields-->
+        <bib:author>Smith, L. M. and Bomar, B. W.</bib:author>
+        <bib:title>Least Squares and Related Techniques</bib:title>
+        <bib:booktitle>The Circuits and Filters Handbook</bib:booktitle>
+        <bib:publisher>CRC Press and IEEE Press</bib:publisher>
+        <bib:year>1995</bib:year>
+<!--optional fields-->
+        <bib:editor>Chen, Wai-Kai</bib:editor>
+        <bib:number/>
+        <bib:series/>
+        <bib:type/>
+        <bib:chapter>82.2</bib:chapter>
+        <bib:pages>2562–2572</bib:pages>
+        <bib:address>Boca Raton</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:incollection>
+    </bib:entry>
+  </bib:file>
+</document>

@@ -1,0 +1,2514 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:bib="http://bibtexml.sf.net/">
+  <title>Chebyshev Filter Properties</title>
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m16906</md:content-id>
+  <md:title>Chebyshev Filter Properties</md:title>
+  <md:abstract/>
+  <md:uuid>0eaa1728-2824-4aed-b7b2-75981117e57a</md:uuid>
+</metadata>
+
+<content>
+    <section id="uid1">
+      <title>Chebyshev Filter Properties</title>
+      <para id="id2255554">The Butterworth filter does not give a sufficiently good
+approximation across the complete passband in many cases. The
+Taylor's series approximation is often not suited to the way
+specifications are given for filters. An alternate error measure is
+the maximum of the absolute value of the difference between the
+actual filter response and the ideal. This is considered over the
+total passband. This is the Chebyshev error measure and was defined
+and applied to the FIR filter design problem. For the IIR filter,
+the Chebyshev error is minimized over the passband and a Taylor's
+series approximation at <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mi>∞</m:mi></m:mrow></m:math> is used to determine the
+stopband performance. This mixture of methods in the IIR case is
+called the Chebyshev filter, and simple design formulas result, just
+as for the Butterworth filter.</para>
+      <para id="id2255586">The design of Chebyshev filters is particularly interesting,
+because the results of a very elegant theory insure that
+constructing a frequency-response function with the proper form of
+equal ripple in the error will result in a minimum Chebyshev error
+without explicitly minimizing anything. This allows a
+straightforward set of design formulas to be derived which can be
+viewed as a generalization of the Butterworth formulas
+<link target-id="bid0"/>, <link target-id="bid1"/>.</para>
+      <para id="id2255607">The form for the magnitude squared of the frequency-response
+function for the Chebyshev filter is</para>
+      <equation id="uid2">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msup>
+              <m:mrow>
+                <m:mo>|</m:mo>
+                <m:mi>F</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mi>ω</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>|</m:mo>
+              </m:mrow>
+              <m:mn>2</m:mn>
+            </m:msup>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mn>1</m:mn>
+              <m:mrow>
+                <m:mn>1</m:mn>
+                <m:mo>+</m:mo>
+                <m:msup>
+                  <m:mi>ϵ</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:msub>
+                  <m:mi>C</m:mi>
+                  <m:mi>N</m:mi>
+                </m:msub>
+                <m:msup>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>ω</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mn>2</m:mn>
+                </m:msup>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2255693">where <m:math><m:mrow><m:msub><m:mi>C</m:mi><m:mi>N</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is an Nth-order
+Chebyshev polynomial and <m:math><m:mi>ϵ</m:mi></m:math> is a parameter that controls the
+ripple size. This polynomial in <m:math><m:mi>ω</m:mi></m:math> has very special characteristics
+that result in the optimality of the response function <link target-id="uid2"/>.</para>
+      <section id="uid3">
+        <title>CHEBYSHEV POLYNOMIALS</title>
+        <para id="id2255751">The Chebyshev polynomial is a powerful function in
+approximation theory. Although the function is a polynomial, it is
+best defined and developed in terms of trigonometric functions
+by<link target-id="bid0"/>, <link target-id="bid2"/>, <link target-id="bid3"/>, <link target-id="bid1"/>.</para>
+        <equation id="uid4">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>C</m:mi>
+                <m:mi>N</m:mi>
+              </m:msub>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>N</m:mi>
+                <m:msup>
+                  <m:mo form="prefix">cos</m:mo>
+                  <m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:msup>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>ω</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2255840">where <m:math><m:mrow><m:msub><m:mi>C</m:mi><m:mi>N</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is an Nth-order,
+real-valued function of the real variable <m:math><m:mi>ω</m:mi></m:math>. The development is made
+clearer by introducing an intermediate complex variable <m:math><m:mi>φ</m:mi></m:math>.</para>
+        <equation id="uid5">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>C</m:mi>
+                <m:mi>N</m:mi>
+              </m:msub>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>N</m:mi>
+                <m:mi>φ</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2255930">where</para>
+        <equation id="uid6">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>ω</m:mi>
+              <m:mo>=</m:mo>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mo>(</m:mo>
+              <m:mi>φ</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2255961">Although this definition of <m:math><m:mrow><m:msub><m:mi>C</m:mi><m:mi>N</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> may not at first appear to
+result in a polynomial, the following recursive relation derived
+from <link target-id="uid6"/> shows that it is a polynomial.</para>
+        <equation id="uid7">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>C</m:mi>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msub>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mn>2</m:mn>
+              <m:mi>ω</m:mi>
+              <m:msub>
+                <m:mi>C</m:mi>
+                <m:mi>N</m:mi>
+              </m:msub>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>-</m:mo>
+              <m:msub>
+                <m:mi>C</m:mi>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msub>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256069">From <link target-id="uid4"/>, it is clear that <m:math><m:mrow><m:msub><m:mi>C</m:mi><m:mn>0</m:mn></m:msub><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow></m:math> and <m:math><m:mrow><m:msub><m:mi>C</m:mi><m:mn>1</m:mn></m:msub><m:mo>=</m:mo><m:mi>ω</m:mi></m:mrow></m:math>,
+and from <link target-id="uid7"/>, it follows that</para>
+        <equation id="uid8">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>C</m:mi>
+                <m:mn>2</m:mn>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mn>2</m:mn>
+              <m:msup>
+                <m:mi>ω</m:mi>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mo>-</m:mo>
+              <m:mn>1</m:mn>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid9">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>C</m:mi>
+                <m:mn>3</m:mn>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mn>4</m:mn>
+              <m:msup>
+                <m:mi>ω</m:mi>
+                <m:mn>3</m:mn>
+              </m:msup>
+              <m:mo>-</m:mo>
+              <m:mn>3</m:mn>
+              <m:mi>ω</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid10">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>C</m:mi>
+                <m:mn>4</m:mn>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mn>8</m:mn>
+              <m:msup>
+                <m:mi>ω</m:mi>
+                <m:mn>4</m:mn>
+              </m:msup>
+              <m:mo>-</m:mo>
+              <m:mn>8</m:mn>
+              <m:msup>
+                <m:mi>ω</m:mi>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mo>+</m:mo>
+              <m:mn>1</m:mn>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256479">etc.</para>
+        <para id="id2256485">Other relations useful for developing these polynomials are</para>
+        <equation id="uid11">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msubsup>
+                <m:mi>C</m:mi>
+                <m:mi>N</m:mi>
+                <m:mn>2</m:mn>
+              </m:msubsup>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msub>
+                  <m:mi>C</m:mi>
+                  <m:mrow>
+                    <m:mn>2</m:mn>
+                    <m:mi>N</m:mi>
+                  </m:mrow>
+                </m:msub>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>ω</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>+</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>/</m:mo>
+              <m:mn>2</m:mn>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid12">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>C</m:mi>
+                <m:mrow>
+                  <m:mi>M</m:mi>
+                  <m:mi>N</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:msub>
+                <m:mi>C</m:mi>
+                <m:mi>M</m:mi>
+              </m:msub>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msub>
+                  <m:mi>C</m:mi>
+                  <m:mi>N</m:mi>
+                </m:msub>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>ω</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256614">where M and N are coprime.</para>
+        <para id="id2256620">These are remarkable functions <link target-id="bid1"/>. They oscillate
+between +1 and -1 for <m:math><m:mrow><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>&lt;</m:mo><m:mi>ω</m:mi><m:mo>&lt;</m:mo><m:mn>1</m:mn></m:mrow></m:math> and go monotonically to
++/- infinity outside that domain. All <m:math><m:mi>N</m:mi></m:math> of their zeros are real
+and fall in the domain of <m:math><m:mrow><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>&lt;</m:mo><m:mi>ω</m:mi><m:mo>&lt;</m:mo><m:mn>1</m:mn></m:mrow></m:math>, i.e., <m:math><m:msub><m:mi>C</m:mi><m:mi>N</m:mi></m:msub></m:math> is an equal ripple
+approximation to zero over the range of <m:math><m:mi>ω</m:mi></m:math> from -1 to +1. In
+addition, the values for <m:math><m:mi>ω</m:mi></m:math> where <m:math><m:msub><m:mi>C</m:mi><m:mi>N</m:mi></m:msub></m:math> reaches its local maxima and
+minima and is zero are easily calculated from <link target-id="uid5"/> and <link target-id="uid6"/>. For
+<m:math><m:mrow><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>&lt;</m:mo><m:mi>ω</m:mi><m:mo>&lt;</m:mo><m:mn>1</m:mn></m:mrow></m:math>, a plot of <m:math><m:mrow><m:msub><m:mi>C</m:mi><m:mi>N</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> can be made using the
+concept of Lissajous figures. Example plots for <m:math><m:msub><m:mi>C</m:mi><m:mn>0</m:mn></m:msub></m:math>, <m:math><m:msub><m:mi>C</m:mi><m:mn>1</m:mn></m:msub></m:math>, <m:math><m:msub><m:mi>C</m:mi><m:mn>2</m:mn></m:msub></m:math>, <m:math><m:msub><m:mi>C</m:mi><m:mn>3</m:mn></m:msub></m:math>,
+and <m:math><m:msub><m:mi>C</m:mi><m:mn>4</m:mn></m:msub></m:math> are shown in <link target-id="uid13"/>.</para>
+        <figure id="uid13" orient="horizontal"><media id="id1166413091630" alt="Figure one is a graph titled Nth order chebyshev polynomials. Its horizontal axis is labeled Frequency, ω, and ranges in value from -2 to 2 in increments of 0.5. The vertical axis is labeled C_N(ω) and ranges in value from -2 to 2 in increments of 0.5. There are four curves in this figure. The first is a diagonal line with constant positive slope that passes through the origin. The second is parabolic in shape with  its vertex as a minimum of the curve at (0, -1). The third starts from the bottom-left of the graph, increases to a peak at (-0.5, 1) and then decreases to a trough at (0.5, -1), where it finally increases to the top-right area of the graph. The fourth begins in the top-left as a decreasing function, and proceeds to make a trough, a peak, and a trough at (-0.5, -1), (0, 1) and (0.5, -1) respectively. The curve then increases and ends in the top-right area."><image src="../../media/figIIR6.png" mime-type="image/png" width="419"/><image for="pdf" src="../../media/figIIR6.eps" mime-type="application/postscript"/></media>
+          
+        <caption>Chebyshev Polynomials for N = 0, 1, 2, 3, and 4</caption></figure>
+        <para id="id2256870">The filter frequency-response function for <m:math><m:mrow><m:mi>N</m:mi><m:mo>=</m:mo><m:mn>5</m:mn></m:mrow></m:math> is given in
+<link target-id="uid14"/> showing the passband ripple in terms of the parameter
+<m:math><m:mi>ϵ</m:mi></m:math>.</para>
+        <figure id="uid14" orient="horizontal"><media id="id1166413892594" alt="Figure two is a graph titled analog chebyshev filter. Its horizontal axis is labeled Frequency, ω, and ranges in value from 0 to 3 in increments of 0.5. Its vertical axis is labeled Magnitude Response and ranges in value from 0 to 1 in increments of 0.2. The curve in this graph begins at (0, 1) with a negative slope and moves in a wave-like motion of an amplitude of 0.05, completing two troughs of vertical value 0.9, and one two peaks. Two arrows point to the peaks and troughs, and are labeled, passband ripple. After the second peak, located at (1, 1), the curve then moves sharply downward with a strong negative slope, and begins decreasing at a decreasing rate until by (2, 0) it flattens along a horizontal asymptote at the vertical value 0. "><image src="../../media/figIIR7.png" mime-type="image/png" width="419"/><image for="pdf" src="../../media/figIIR7.eps" mime-type="application/postscript"/></media>
+          
+        <caption>Fifth Order Chebyshev Filter Frequency Response</caption></figure>
+        <para id="id2256912">The approximation parameters must be clearly understood. The
+passband ripple is defined to be the difference between the maximum
+and the minumum of <m:math><m:mrow><m:mo>|</m:mo><m:mi>F</m:mi><m:mo>|</m:mo></m:mrow></m:math> over the passband frequencies of <m:math><m:mrow><m:mn>0</m:mn><m:mo>&lt;</m:mo><m:mi>ω</m:mi><m:mo>&lt;</m:mo><m:mn>1</m:mn></m:mrow></m:math>. There can be confusion over this point as two
+definitions appear in the literature. Most digital
+<link target-id="bid0"/>, <link target-id="bid2"/>, <link target-id="bid4"/>, <link target-id="bid5"/> and analog <link target-id="bid1"/> filter design books
+use the definition just stated. Approximation literature, especially
+concerning FIR filters, use one half this value which is a measure
+of the maximum error, <m:math><m:mrow><m:mrow><m:mo>|</m:mo><m:mo>|</m:mo><m:mi>F</m:mi><m:mo>|</m:mo><m:mo>-</m:mo><m:mo>|</m:mo></m:mrow><m:msub><m:mi>F</m:mi><m:mi>d</m:mi></m:msub><m:mrow><m:mo>|</m:mo><m:mo>|</m:mo></m:mrow></m:mrow></m:math>, where <m:math><m:mrow><m:mrow><m:mo>|</m:mo></m:mrow><m:msub><m:mi>F</m:mi><m:mi>d</m:mi></m:msub><m:mrow><m:mo>|</m:mo></m:mrow></m:mrow></m:math> is the center
+line in the passband of <link target-id="uid14"/>, which <m:math><m:mrow><m:mo>|</m:mo><m:mi>F</m:mi><m:mo>|</m:mo></m:mrow></m:math> oscillates around.</para>
+        <para id="id2257060">The Chebyshev theory states that the maximum error over that
+band is minimum and that this optimal approximation function has
+equal ripple over the pass band. It is easy to see that e in
+<link target-id="uid2"/> determines the ripple in the passband and the order <m:math><m:mi>N</m:mi></m:math>
+determines the rate that the response goes to zero as <m:math><m:mi>ω</m:mi></m:math> goes
+to infinity.</para>
+<section id="fs-id7947840"><title>Pole Locations</title>
+        <para id="id2257100">A method for finding the pole locations for the Chebyshev
+filter transfer function is next developed. The details of this
+section can be skipped and the results in <link target-id="uid26"/>,<link target-id="uid28"/> used
+if desired.</para>
+        <para id="id2257116">From <link target-id="uid2"/>, it is seen that the poles of <m:math><m:mrow><m:mi>F</m:mi><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>)</m:mo></m:mrow></m:math> occur when</para>
+        <equation id="uid15">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mn>1</m:mn>
+              <m:mo>+</m:mo>
+              <m:msup>
+                <m:mi>ϵ</m:mi>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:msubsup>
+                <m:mi>C</m:mi>
+                <m:mi>N</m:mi>
+                <m:mn>2</m:mn>
+              </m:msubsup>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>s</m:mi>
+                <m:mo>/</m:mo>
+                <m:mi>j</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257194">or</para>
+        <equation id="uid16">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>C</m:mi>
+                <m:mi>N</m:mi>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mo>±</m:mo>
+              <m:mfrac>
+                <m:mi>j</m:mi>
+                <m:mi>ϵ</m:mi>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257231">From <link target-id="uid6"/>, define <m:math><m:mrow><m:mi>φ</m:mi><m:mo>=</m:mo><m:msup><m:mo form="prefix">cos</m:mo><m:mrow><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:msup><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> with real and imaginary parts
+given by</para>
+        <equation id="uid17">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>φ</m:mi>
+              <m:mo>=</m:mo>
+              <m:msup>
+                <m:mo form="prefix">cos</m:mo>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>ω</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mi>u</m:mi>
+              <m:mo>+</m:mo>
+              <m:mi>j</m:mi>
+              <m:mi>v</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257323">This gives,</para>
+        <equation id="uid18">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>C</m:mi>
+                <m:mi>N</m:mi>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>N</m:mi>
+                <m:mi>φ</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>N</m:mi>
+                <m:mi>u</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">cosh</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>N</m:mi>
+                <m:mi>ν</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>-</m:mo>
+              <m:mi>j</m:mi>
+              <m:mo form="prefix">sin</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>N</m:mi>
+                <m:mi>u</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">sinh</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>N</m:mi>
+                <m:mi>ν</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mo>±</m:mo>
+              <m:mfrac>
+                <m:mi>j</m:mi>
+                <m:mi>ϵ</m:mi>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257439">which implies the real part of <m:math><m:msub><m:mi>C</m:mi><m:mi>N</m:mi></m:msub></m:math> is
+zero. This requires</para>
+        <equation id="uid19">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mo>(</m:mo>
+              <m:mi>N</m:mi>
+              <m:mi>u</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo form="prefix">cosh</m:mo>
+              <m:mo>(</m:mo>
+              <m:mi>N</m:mi>
+              <m:mi>ν</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257503">which implies</para>
+        <equation id="uid20">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mo>(</m:mo>
+              <m:mi>N</m:mi>
+              <m:mi>u</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257538">which in turn implies that <m:math><m:mi>u</m:mi></m:math> takes on
+values of</para>
+        <equation id="uid21">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>u</m:mi>
+              <m:mo>=</m:mo>
+              <m:msub>
+                <m:mi>u</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>k</m:mi>
+                <m:mo>+</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mi>π</m:mi>
+              <m:mo>/</m:mo>
+              <m:mn>2</m:mn>
+              <m:mi>N</m:mi>
+              <m:mo>,</m:mo>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mi>k</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+              <m:mo>,</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>,</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>.</m:mo>
+              <m:mo>.</m:mo>
+              <m:mi>N</m:mi>
+              <m:mo>-</m:mo>
+              <m:mn>1</m:mn>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257642">For these values of <m:math><m:mi>u</m:mi></m:math>, <m:math><m:mrow><m:mo form="prefix">sin</m:mo><m:mo>(</m:mo><m:mi>n</m:mi><m:mi>u</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mo>±</m:mo><m:mn>1</m:mn></m:mrow></m:math>, we have</para>
+        <equation id="uid22">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mo form="prefix">sinh</m:mo>
+              <m:mo>(</m:mo>
+              <m:mi>N</m:mi>
+              <m:mi>ν</m:mi>
+              <m:mo>)</m:mo>
+              <m:mo>=</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>/</m:mo>
+              <m:mi>ϵ</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257718">which requires <m:math><m:mi>ν</m:mi></m:math> to take on a value of</para>
+        <equation id="uid23">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>ν</m:mi>
+              <m:mo>=</m:mo>
+              <m:msub>
+                <m:mi>ν</m:mi>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msup>
+                  <m:mo form="prefix">sinh</m:mo>
+                  <m:mrow>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:msup>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>/</m:mo>
+                  <m:mi>ϵ</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>/</m:mo>
+              <m:mi>N</m:mi>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257796">Using <m:math><m:mrow><m:mi>s</m:mi><m:mo>=</m:mo><m:mi>j</m:mi><m:mi>ω</m:mi></m:mrow></m:math> gives</para>
+        <equation id="uid24">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>s</m:mi>
+              <m:mo>=</m:mo>
+              <m:mi>j</m:mi>
+              <m:mi>ω</m:mi>
+              <m:mo>=</m:mo>
+              <m:mi>j</m:mi>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>φ</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mi>j</m:mi>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>u</m:mi>
+                <m:mo>+</m:mo>
+                <m:mi>j</m:mi>
+                <m:mi>ν</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mi>j</m:mi>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mo>(</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>k</m:mi>
+                <m:mo>+</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mi>π</m:mi>
+              <m:mo>/</m:mo>
+              <m:mn>2</m:mn>
+              <m:mi>N</m:mi>
+              <m:mo>+</m:mo>
+              <m:mi>j</m:mi>
+              <m:msub>
+                <m:mi>ν</m:mi>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257926">which gives the location of the <m:math><m:mi>N</m:mi></m:math> poles in the
+<m:math><m:mi>s</m:mi></m:math> plane as</para>
+        <equation id="uid25">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>s</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:msub>
+                <m:mi>σ</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mo>+</m:mo>
+              <m:mi>j</m:mi>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2257992">where</para>
+        <equation id="uid26">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>σ</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mo>-</m:mo>
+              <m:mo form="prefix">sinh</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msub>
+                  <m:mi>ν</m:mi>
+                  <m:mn>0</m:mn>
+                </m:msub>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>k</m:mi>
+                <m:mi>π</m:mi>
+                <m:mo>/</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>N</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid27">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mo form="prefix">cosh</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msub>
+                  <m:mi>ν</m:mi>
+                  <m:mn>0</m:mn>
+                </m:msub>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">sin</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>k</m:mi>
+                <m:mi>π</m:mi>
+                <m:mo>/</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>N</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258121">for <m:math><m:mi>N</m:mi></m:math> values of <m:math><m:mi>k</m:mi></m:math> where</para>
+        <equation id="uid28"><m:math mode="display">
+            <m:mrow>
+              <m:mi>k</m:mi>
+              <m:mo>=</m:mo>
+              <m:mo>±</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>,</m:mo>
+              <m:mo>±</m:mo>
+              <m:mn>3</m:mn>
+              <m:mo>,</m:mo>
+              <m:mo>±</m:mo>
+              <m:mn>5</m:mn>
+              <m:mo>,</m:mo>
+              <m:mo>⋯</m:mo>
+              <m:mo>,</m:mo>
+              <m:mo>±</m:mo>
+              <m:mo>(</m:mo>
+              <m:mi>N</m:mi>
+              <m:mo>-</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>)</m:mo>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+             <m:mtext> for N even</m:mtext>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid29"><m:math mode="display">
+            <m:mrow>
+              <m:mi>k</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+              <m:mo>,</m:mo>
+              <m:mo>±</m:mo>
+              <m:mn>2</m:mn>
+              <m:mo>,</m:mo>
+              <m:mo>±</m:mo>
+              <m:mn>4</m:mn>
+              <m:mo>,</m:mo>
+              <m:mo>⋯</m:mo>
+              <m:mo>,</m:mo>
+              <m:mo>±</m:mo>
+              <m:mo>(</m:mo>
+              <m:mi>N</m:mi>
+              <m:mo>-</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>)</m:mo>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mspace width="4pt"/>
+              <m:mtext>for N odd</m:mtext>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258302">A partially factored form for F(s) can be derived using the same approach as for the Butterworth filter. For N
+even, the form is</para>
+        <equation id="uid30"><m:math mode="display">
+            <m:mrow>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>s</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:munder>
+<m:mrow>
+                <m:mo>∏</m:mo>
+</m:mrow>        
+        <m:mi>k</m:mi>
+              </m:munder>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mrow>
+                  <m:msup>
+                    <m:mi>s</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>-</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:msub>
+                    <m:mi>σ</m:mi>
+                    <m:mi>k</m:mi>
+                  </m:msub>
+                  <m:mi>s</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:msubsup>
+                      <m:mi>σ</m:mi>
+                      <m:mi>k</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msubsup>
+                    <m:mo>+</m:mo>
+                    <m:msubsup>
+                      <m:mi>ω</m:mi>
+                      <m:mi>k</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msubsup>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mrow>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258403">for <m:math><m:mrow><m:mi>k</m:mi><m:mo>=</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>3</m:mn><m:mo>,</m:mo><m:mn>5</m:mn><m:mo>,</m:mo><m:mo>⋯</m:mo><m:mo>,</m:mo><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math>. For <m:math><m:mi>N</m:mi></m:math> odd, <m:math><m:mrow><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>s</m:mi><m:mo>)</m:mo></m:mrow></m:math> has a single real pole and, therefore,
+the form</para>
+        <equation id="uid31"><m:math mode="display">
+            <m:mrow>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>s</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mrow>
+                  <m:mo form="prefix">sinh</m:mo>
+                  <m:mo>(</m:mo>
+                  <m:msub>
+                    <m:mi>ν</m:mi>
+                    <m:mn>0</m:mn>
+                  </m:msub>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mfrac>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>s</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:munder>
+<m:mrow>
+                <m:mo>∏</m:mo>
+</m:mrow>        
+        <m:mi>k</m:mi>
+              </m:munder>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mrow>
+                  <m:msup>
+                    <m:mi>s</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>-</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:msub>
+                    <m:mi>σ</m:mi>
+                    <m:mi>k</m:mi>
+                  </m:msub>
+                  <m:mi>s</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:msubsup>
+                      <m:mi>σ</m:mi>
+                      <m:mi>k</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msubsup>
+                    <m:mo>+</m:mo>
+                    <m:msubsup>
+                      <m:mi>ω</m:mi>
+                      <m:mi>k</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msubsup>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mrow>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258595">for <m:math><m:mrow><m:mi>k</m:mi><m:mo>=</m:mo><m:mn>2</m:mn><m:mo>,</m:mo><m:mn>4</m:mn><m:mo>,</m:mo><m:mn>6</m:mn><m:mo>,</m:mo><m:mo>.</m:mo><m:mo>.</m:mo><m:mo>.</m:mo><m:mo>,</m:mo><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math> This is a
+convenient form for the cascade and parallel realizations.</para>
+        <para id="id2258642">A single formula for both even and odd N is</para>
+        <equation id="uid32">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>σ</m:mi>
+              <m:mo>=</m:mo>
+              <m:mo>-</m:mo>
+              <m:mo form="prefix">sinh</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msub>
+                  <m:mi>ν</m:mi>
+                  <m:mn>0</m:mn>
+                </m:msub>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">sin</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mi>k</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mi>π</m:mi>
+                <m:mo>/</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>N</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid33">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mo form="prefix">cosh</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msub>
+                  <m:mi>ν</m:mi>
+                  <m:mn>0</m:mn>
+                </m:msub>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mi>k</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mi>π</m:mi>
+                <m:mo>/</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>N</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258787">for <m:math><m:mi>N</m:mi></m:math> values of <m:math><m:mi>k</m:mi></m:math> where <m:math><m:mrow><m:mi>k</m:mi><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>2</m:mn><m:mo>,</m:mo><m:mo>⋯</m:mo><m:mo>,</m:mo><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math></para>
+        <para id="id2258846">Note the similarity to the pole locations for the Butterworth
+filter. Cross multiplying, squaring, and adding the terms in
+<link target-id="uid32"/>,<link target-id="uid33"/> gives</para>
+        <equation id="uid34">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msup>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mfrac>
+                    <m:msub>
+                      <m:mi>σ</m:mi>
+                      <m:mi>k</m:mi>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo form="prefix">sinh</m:mo>
+                      <m:mo>(</m:mo>
+                      <m:msub>
+                        <m:mi>ν</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mfrac>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mo>+</m:mo>
+              <m:msup>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mfrac>
+                    <m:msub>
+                      <m:mi>ω</m:mi>
+                      <m:mi>k</m:mi>
+                    </m:msub>
+                    <m:mrow>
+                      <m:mo form="prefix">cosh</m:mo>
+                      <m:mo>(</m:mo>
+                      <m:msub>
+                        <m:mi>ν</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                  </m:mfrac>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mo>=</m:mo>
+              <m:mn>1</m:mn>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2258955">This is the equation for an ellipse and
+shows that the poles of a Chebyshev filter lie on an ellipse similar
+to the way the poles of a Butterworth filter lie on a
+circle<link target-id="bid0"/>, <link target-id="bid2"/>, <link target-id="bid4"/>, <link target-id="bid6"/>, <link target-id="bid3"/>, <link target-id="bid1"/>.</para></section>
+        <section id="fs-id1169458151602"><title>Summary</title>
+
+        <para id="id2259008">This section has developed the classical Chebyshev filter
+approximation which minimizes the maximum error over the passband
+and uses a Taylor's series approximation at infinity. This
+results in the error being equal ripple in the passband. The
+transfer function was developed in terms of the Chebyshev
+polynomial and explicit formulas were derived for the location of
+the transfer function poles. These can be expressed as a
+modification of the pole locations for the Butterworth filter and
+are implemented in the appendix.</para>
+        <para id="id2259022">It is possible to develop a theory for Chebyshev passband
+approximation and arbitrary zero location similar to the Taylor's
+series result in <link document="m16903" target-id="uid5">Equation 5 from Butterworth Filter Properties</link>.</para>
+</section>
+      </section>
+      <section id="uid35">
+        <title>Chebyshev Filter Design Procedures</title>
+        <para id="id2259037">The Chebyshev filter has a passband optimized to minimize
+the maximum error over the complete passband frequency range, and a
+stopband controlled by the frequency response being maximally flat
+at <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mi>∞</m:mi></m:mrow></m:math>. The passband ripple and the filter order are
+the two parameters to be determined by the specifications.</para>
+        <para id="id2259061">The form for the specifications that is most consistent with
+the Chebyshev filter formulation is a maximum allowed error in the
+passband and a desired degree of “flatness" at <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mi>∞</m:mi></m:mrow></m:math>. The
+slope of the response near the transition from pass to stopband at
+<m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow></m:math> becomes steeper as both the order increases and the allowed
+passband error ripple increases. The dropoff is more rapid than for the
+Butterworth filter<link target-id="bid1"/>.</para>
+        <para id="id2259108">As stated earlier, the design parameters must be clearly
+understood to obtain a desired result. The passband ripple is defined to
+be the difference between the maximum and the minimum of <m:math><m:mrow><m:mo>|</m:mo><m:mi>F</m:mi><m:mo>|</m:mo></m:mrow></m:math> over the
+passband frequencies of <m:math><m:mrow><m:mn>0</m:mn><m:mo>&lt;</m:mo><m:mi>ω</m:mi><m:mo>&lt;</m:mo><m:mn>1</m:mn></m:mrow></m:math>. There can be confusion over
+this point as two definitions appear in the literature. Most digital
+<link target-id="bid0"/>, <link target-id="bid2"/>, <link target-id="bid4"/> and analog <link target-id="bid1"/> filter design books use the
+definition just stated. Approximation literature, especially concerning
+FIR filters, use half this value which is a measure of the maximum error,
+<m:math><m:mrow><m:mrow><m:mo>|</m:mo><m:mo>|</m:mo><m:mi>F</m:mi><m:mo>|</m:mo><m:mo>-</m:mo><m:mo>|</m:mo></m:mrow><m:msub><m:mi>F</m:mi><m:mi>d</m:mi></m:msub><m:mrow><m:mo>|</m:mo><m:mo>|</m:mo></m:mrow></m:mrow></m:math>, where <m:math><m:mrow><m:mrow><m:mo>|</m:mo></m:mrow><m:msub><m:mi>F</m:mi><m:mi>d</m:mi></m:msub><m:mrow><m:mo>|</m:mo></m:mrow></m:mrow></m:math> is the center line in the passband around
+which <m:math><m:mrow><m:mo>|</m:mo><m:mi>F</m:mi><m:mo>|</m:mo></m:mrow></m:math> oscillates. The following formulas relate the passband ripple
+<m:math><m:mi>δ</m:mi></m:math>, the passband ripple <m:math><m:mi>a</m:mi></m:math> in positive dB, and the transfer
+function parameter <m:math><m:mi>ϵ</m:mi></m:math>.</para>
+        <equation id="uid36">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>a</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>10</m:mn>
+              <m:mo form="prefix">log</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>+</m:mo>
+                <m:msup>
+                  <m:mi>ϵ</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mo>-</m:mo>
+              <m:mn>20</m:mn>
+              <m:mo form="prefix">log</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>-</m:mo>
+                <m:mi>δ</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>,</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid37">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>ϵ</m:mi>
+              <m:mo>=</m:mo>
+              <m:msqrt>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mn>2</m:mn>
+                    <m:mi>δ</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:msup>
+                      <m:mi>δ</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mn>1</m:mn>
+                    <m:mo>-</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:mi>δ</m:mi>
+                    <m:mo>+</m:mo>
+                    <m:msup>
+                      <m:mi>δ</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                  </m:mrow>
+                </m:mfrac>
+              </m:msqrt>
+              <m:mo>=</m:mo>
+              <m:msqrt>
+                <m:mrow>
+                  <m:msup>
+                    <m:mn>10</m:mn>
+                    <m:mrow>
+                      <m:mi>a</m:mi>
+                      <m:mo>/</m:mo>
+                      <m:mn>10</m:mn>
+                    </m:mrow>
+                  </m:msup>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:msqrt>
+              <m:mo>,</m:mo>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid38">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>δ</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>-</m:mo>
+              <m:msup>
+                <m:mn>10</m:mn>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mi>a</m:mi>
+                  <m:mo>/</m:mo>
+                  <m:mn>20</m:mn>
+                </m:mrow>
+              </m:msup>
+              <m:mo>=</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>-</m:mo>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:msqrt>
+                  <m:mrow>
+                    <m:mn>1</m:mn>
+                    <m:mo>+</m:mo>
+                    <m:msup>
+                      <m:mi>ϵ</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                  </m:mrow>
+                </m:msqrt>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259482">In some cases, stopband performance is not given in terms of
+degree of flatness at <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mi>∞</m:mi></m:mrow></m:math>, but in terms of a maximum
+allowed magnitude <m:math><m:mi>G</m:mi></m:math> in the stopband above a certain frequency
+<m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math>, i.e., <m:math><m:mrow><m:mi>G</m:mi><m:mo>&gt;</m:mo><m:mo>|</m:mo><m:mi>F</m:mi><m:mo>|</m:mo><m:mo>&gt;</m:mo><m:mn>0</m:mn></m:mrow></m:math> for <m:math><m:mrow><m:mn>1</m:mn><m:mo>&lt;</m:mo><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub><m:mo>&lt;</m:mo><m:mi>ω</m:mi><m:mo>&lt;</m:mo><m:mi>∞</m:mi></m:mrow></m:math>. For a given <m:math><m:mi>ϵ</m:mi></m:math>, this will determine the order as
+the smallest positive integer satisfying</para>
+        <equation id="uid39">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>N</m:mi>
+              <m:mo>≥</m:mo>
+              <m:mfrac>
+                <m:mrow>
+                  <m:msup>
+                    <m:mo form="prefix">cosh</m:mo>
+                    <m:mrow>
+                      <m:mo>-</m:mo>
+                      <m:mn>1</m:mn>
+                    </m:mrow>
+                  </m:msup>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mfrac>
+                      <m:msqrt>
+                        <m:mrow>
+                          <m:mn>1</m:mn>
+                          <m:mo>-</m:mo>
+                          <m:msup>
+                            <m:mi>G</m:mi>
+                            <m:mn>2</m:mn>
+                          </m:msup>
+                        </m:mrow>
+                      </m:msqrt>
+                      <m:mrow>
+                        <m:mi>ϵ</m:mi>
+                        <m:msup>
+                          <m:mi>G</m:mi>
+                          <m:mn>2</m:mn>
+                        </m:msup>
+                      </m:mrow>
+                    </m:mfrac>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mrow>
+                <m:mrow>
+                  <m:msup>
+                    <m:mo form="prefix">cosh</m:mo>
+                    <m:mrow>
+                      <m:mo>-</m:mo>
+                      <m:mn>1</m:mn>
+                    </m:mrow>
+                  </m:msup>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:msub>
+                      <m:mi>ω</m:mi>
+                      <m:mi>s</m:mi>
+                    </m:msub>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mrow>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2259685">The design of a Chebyshev filter
+involves the following steps:</para>
+        <list id="id2259692" list-type="bulleted">
+          <item id="uid40">The maximum-allowed passband variation must be
+in
+the form of <m:math><m:mi>δ</m:mi></m:math> or <m:math><m:mi>a</m:mi></m:math>. From this, the parameter <m:math><m:mi>ϵ</m:mi></m:math> is
+calculated using <link target-id="uid37"/>.
+</item>
+          <item id="uid41">The order <m:math><m:mi>N</m:mi></m:math> is determined by the desired flatness at
+<m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mi>∞</m:mi></m:mrow></m:math> or a maximum-allowed response for frequencies
+above <m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math> using <link target-id="uid39"/>.
+</item>
+          <item id="uid42"><m:math><m:msub><m:mi>ν</m:mi><m:mn>0</m:mn></m:msub></m:math> is calculated from <m:math><m:mi>ϵ</m:mi></m:math> and <m:math><m:mi>n</m:mi></m:math> using
+<link target-id="uid23"/>, and the
+scale factors <m:math><m:mrow><m:mo form="prefix">sinh</m:mo><m:mo>(</m:mo><m:msub><m:mi>ν</m:mi><m:mn>0</m:mn></m:msub><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mo form="prefix">cosh</m:mo><m:mo>(</m:mo><m:msub><m:mi>ν</m:mi><m:mn>0</m:mn></m:msub><m:mo>)</m:mo></m:mrow></m:math> are then
+determined.
+</item>
+          <item id="uid43">The pole locations are calculated from <link target-id="uid26"/>
+or <link target-id="uid33"/>. This can be done by scaling the poles
+of a Butterworth prototype filter.
+</item>
+          <item id="uid44">These pole locations are combined in <link target-id="uid31"/> and <link target-id="uid32"/> to give
+the final filter transfer function.
+</item>
+        </list>
+        <para id="id2259932">This process is easily programmed for computer aided design as
+illustrated in Program 8 in the appendix.</para>
+        <para id="id2259937">If the design procedure uses <link target-id="uid39"/> to determine the order
+and the right-hand side of the equation is not exactly an integer,
+it is possible to improve on the specifications. Direct use of the
+order with <m:math><m:mi>ϵ</m:mi></m:math> from <link target-id="uid37"/> gives a stopband gain at
+<m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math> that is less than <m:math><m:mi>G</m:mi></m:math>, or the same design can be viewed
+as giving the maximum-allowed gain <m:math><m:mi>G</m:mi></m:math> at a lower frequency than
+<m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math>. An alternate approach is to solve <link target-id="uid39"/> for a new
+value of <m:math><m:mi>ϵ</m:mi></m:math>, then cause <link target-id="uid39"/> to be an equation with
+the specified <m:math><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub></m:math> and <m:math><m:mi>G</m:mi></m:math>. This gives a filter that exactly
+meets the stopband specifications and gives a smaller passband
+ripple than originally requested. A similar set of alternatives
+exists for the elliptic-function filter.</para>
+        <example id="fs-id1169457547588"><title>The Design of a Chebyshev Lowpass Filter. </title><para id="id2260072">The design specifications require a maximum passband ripple
+of <m:math><m:mrow><m:mi>δ</m:mi><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>.</m:mo><m:mn>1</m:mn></m:mrow></m:math> or <m:math><m:mrow><m:mi>a</m:mi><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>.</m:mo><m:mn>91515</m:mn></m:mrow></m:math> dB, and can allow no greater
+response than <m:math><m:mrow><m:mi>G</m:mi><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>.</m:mo><m:mn>2</m:mn></m:mrow></m:math> for frequencies above <m:math><m:mrow><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub><m:mo>=</m:mo><m:mn>1</m:mn><m:mo>.</m:mo><m:mn>6</m:mn></m:mrow></m:math>
+radians per second.</para>
+        <para id="id2260161">Given <m:math><m:mrow><m:mi>δ</m:mi><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>.</m:mo><m:mn>1</m:mn></m:mrow></m:math> or <m:math><m:mrow><m:mi>a</m:mi><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>.</m:mo><m:mn>91515</m:mn></m:mrow></m:math>, equation <link target-id="uid37"/>
+implies</para>
+        <equation id="uid45">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>ϵ</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+              <m:mo>.</m:mo>
+              <m:mn>484322</m:mn>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2260230">Given <m:math><m:mrow><m:mi>G</m:mi><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>.</m:mo><m:mn>2</m:mn></m:mrow></m:math> and <m:math><m:mrow><m:msub><m:mi>ω</m:mi><m:mi>s</m:mi></m:msub><m:mo>=</m:mo><m:mn>1</m:mn><m:mo>.</m:mo><m:mn>6</m:mn></m:mrow></m:math>, equation <link target-id="uid39"/> implies an order of <m:math><m:mrow><m:mi>N</m:mi><m:mo>=</m:mo><m:mn>3</m:mn></m:mrow></m:math>. From
+<m:math><m:mi>ϵ</m:mi></m:math> and <m:math><m:mi>N</m:mi></m:math>, <m:math><m:msub><m:mi>ν</m:mi><m:mn>0</m:mn></m:msub></m:math> is 0.49074 from <link target-id="uid23"/> and</para>
+        <equation id="uid46">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mo form="prefix">sinh</m:mo>
+              <m:mo>(</m:mo>
+              <m:msub>
+                <m:mi>ν</m:mi>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:mo>)</m:mo>
+              <m:mo>=</m:mo>
+              <m:mn>0</m:mn>
+              <m:mo>.</m:mo>
+              <m:mn>510675</m:mn>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid47">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mo form="prefix">cosh</m:mo>
+              <m:mo>(</m:mo>
+              <m:msub>
+                <m:mi>ν</m:mi>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:mo>)</m:mo>
+              <m:mo>=</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>.</m:mo>
+              <m:mn>122849</m:mn>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2260411">These multipliers are used to scale the root
+locations of the example third-order Butterworth filter to give</para>
+        <equation id="uid48">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>s</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>s</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>0</m:mn>
+                  <m:mo>.</m:mo>
+                  <m:mn>51067</m:mn>
+                  <m:mo>)</m:mo>
+                  <m:mo>(</m:mo>
+                  <m:mi>s</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>0</m:mn>
+                  <m:mo>.</m:mo>
+                  <m:mn>25534</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mn>0</m:mn>
+                  <m:mo>.</m:mo>
+                  <m:mn>97242</m:mn>
+                  <m:mo>)</m:mo>
+                  <m:mo>(</m:mo>
+                  <m:mi>s</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>0</m:mn>
+                  <m:mo>.</m:mo>
+                  <m:mn>25534</m:mn>
+                  <m:mo>-</m:mo>
+                  <m:mi>j</m:mi>
+                  <m:mn>0</m:mn>
+                  <m:mo>.</m:mo>
+                  <m:mn>97242</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid49">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>s</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mrow>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>s</m:mi>
+                    <m:mo>+</m:mo>
+                    <m:mn>0</m:mn>
+                    <m:mo>.</m:mo>
+                    <m:mn>51067</m:mn>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:msup>
+                      <m:mi>s</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                    <m:mo>+</m:mo>
+                    <m:mn>0</m:mn>
+                    <m:mo>.</m:mo>
+                    <m:mn>510675</m:mn>
+                    <m:mi>s</m:mi>
+                    <m:mo>+</m:mo>
+                    <m:mn>1</m:mn>
+                    <m:mo>.</m:mo>
+                    <m:mn>010789</m:mn>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mrow>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid50">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>s</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mrow>
+                  <m:msup>
+                    <m:mi>s</m:mi>
+                    <m:mn>3</m:mn>
+                  </m:msup>
+                  <m:mo>+</m:mo>
+                  <m:mn>102135</m:mn>
+                  <m:msup>
+                    <m:mi>s</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>.</m:mo>
+                  <m:mn>271579</m:mn>
+                  <m:mi>s</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>0</m:mn>
+                  <m:mo>.</m:mo>
+                  <m:mn>516185</m:mn>
+                </m:mrow>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2260662">The frequency response is shown in <link target-id="uid51"/></para>
+        <figure id="uid51" orient="horizontal"><media id="id1166417157554" alt="Figure three is a graph titled, design of a chebyshev filter. The horizontal axis is labeled Frequency, ω, and ranges in value from 0 to 3 in increments of 0.5. The vertical axis is labeled Magnitude Response and ranges in value from 0 to 1 in increments of 0.2. There is one curve on this graph. It begins at (0, 1) and decreases in a wave-like motion to a wide trough at (0.5, 0.9), and then a narrow peak at (0.9, 1). Two arrows point to the peaks and troughs and label them, ripple d = 0.1. After the peak is a large downward-sloping portion, and after a while, the curve begins to become more shallow, terminating at (3, 0)."><image src="../../media/figIIR8.png" mime-type="image/png" width="417"/><image for="pdf" src="../../media/figIIR8.eps" mime-type="application/postscript"/></media>
+          
+        <caption>Example Design of a Third Order Chebyshev Filter Frequency
+Response</caption></figure>
+</example>
+      </section>
+    </section>
+    <section id="uid52">
+      <title>Inverse-Chebyshev Filter Properties</title>
+      <para id="id2260694">A second form of the mixture of a Chebyshev approximation
+and a Taylor's series approximation is called the Inverse Chebyshev filter
+or the Chebyshev II filter. This error measure uses a Taylor's series for
+the passband just as for the Butterworth filter and minimizes the maximum
+error over the total stopband. It reverses the types of approximation used
+in the preceding section. A fifth-order example is illustrated in
+<link document="m16909" target-id="uid15">Figure 1c from Design of Infinite Impulse Response (IIR) Filters by Frequency Transformations</link> and <link target-id="uid53"/>c.</para>
+      <para id="id2260718">Rather than developing the approximation directly, it is
+easier to modify the results from the regular Chebyshev filter. First, the
+frequency variable <m:math><m:mi>ω</m:mi></m:math> in the regular Chebyshev filter, described in
+<link target-id="uid2"/>, is replaced by <m:math><m:mrow><m:mn>1</m:mn><m:mo>/</m:mo><m:mi>ω</m:mi></m:mrow></m:math>, which interchanges the
+characteristics at <m:math><m:mi>ω</m:mi></m:math> equals zero and infinity and does not change
+the performance at <m:math><m:mi>ω</m:mi></m:math> equals unity. This converts a Chebyshev
+lowpass filter into a Chebyshev highpass filter as illustrated in
+<link target-id="uid53"/> moving from the first to second frequency response.</para>
+      <figure id="uid53" orient="horizontal"><media id="id1166420710320" alt="Figure four consists of three graphs. Each graph's horizontal axis is labeled Frequency ω, and range in value from 0 to 3 in increments of 1. Each graph's vertical axis is labeled Magnitude, and ranges in value from 0 to 1 in increments of 0.2. The first graph, titled chebyshev lowpass, begins at (0, 1), and begins decreasing first as part of a wavelike segment, with two troughs and two peaks. The amplitude of the waves is approximately 0.05. By (1, 1) the second peak is reached, and the curve moves sharply downward to an eventual horizontal asymptote along the horizontal axis by (2, 0). The second, titled chebyshev highpass, begins at the origin moving horizontally for 0.5 units, then sharply increases at an increasing rate to a peak at (1, 1). After the peak, the curve quickly decreases 0.1 units to a trough, and then slowly increases to a peak at (1.7, 1), after which it slowly decreases to a nearly horizontal segment where it terminates at (3, 0.9). The third, titled inverse cheby lowpass, begins horizontally for 0.5 units from (0, 1) to (0.5, 1), where it sharply decreases to (1, 0). This point is a kink in the graph, and from this point the curve increases to a small peak at (1.3, 0.1). After the peak, the graph decreases to another kink along the horizontal axis at (1.7, 0), and then the graph finishes by increasing to a horizontal portion that terminates at (3, 0.1)."><image src="../../media/figIIR9.png" mime-type="image/png" width="625"/><image for="pdf" src="../../media/figIIR9.eps" mime-type="application/postscript"/></media>
+        
+      <caption>Lowpass Chebyshev to Highpass Chebyshev to Lowpass Inverse
+Chebyshev</caption></figure>
+      <para id="id2260798">This highpass characteristic is subtracted from unity to give the desired
+lowpass inverse-Chebyshev frequency response illustrated in
+<link target-id="uid53"/>c. The resulting magnitude-squared frequency- response
+function is given by</para>
+      <equation id="uid54">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>F</m:mi>
+            <m:mi>F</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>j</m:mi>
+              <m:mi>ω</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:msup>
+                  <m:mi>ϵ</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:msubsup>
+                  <m:mi>C</m:mi>
+                  <m:mi>N</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msubsup>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>/</m:mo>
+                  <m:mi>ω</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mrow>
+              <m:mrow>
+                <m:mn>1</m:mn>
+                <m:mo>+</m:mo>
+                <m:msup>
+                  <m:mi>ϵ</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:msubsup>
+                  <m:mi>C</m:mi>
+                  <m:mi>N</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msubsup>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>/</m:mo>
+                  <m:mi>ω</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+<section id="fs-id3760591">
+      <title>Zero Locations</title>
+      <para id="id2260917">The zeros of the Chebyshev polynomial <m:math><m:mrow><m:msub><m:mi>C</m:mi><m:mi>N</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>ω</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> are easily found
+by</para>
+      <equation id="uid55">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi>C</m:mi>
+              <m:mi>N</m:mi>
+            </m:msub>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mn>0</m:mn>
+            <m:mo>⇒</m:mo>
+            <m:mi>N</m:mi>
+            <m:msup>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:msup>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>ω</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mn>2</m:mn>
+              <m:mi>k</m:mi>
+              <m:mo>+</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mi>π</m:mi>
+            <m:mo>/</m:mo>
+            <m:mn>2</m:mn>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2261027">which requires</para>
+      <equation id="uid56">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi>ω</m:mi>
+              <m:mi>k</m:mi>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:mo form="prefix">cos</m:mo>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>k</m:mi>
+                <m:mo>+</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mi>π</m:mi>
+              <m:mo>/</m:mo>
+              <m:mn>2</m:mn>
+              <m:mi>N</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2261085">for <m:math><m:mrow><m:mi>k</m:mi><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mo>⋯</m:mo><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math>, or</para>
+      <equation id="uid57">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi>ω</m:mi>
+              <m:mi>k</m:mi>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:mo form="prefix">sin</m:mo>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>k</m:mi>
+              <m:mi>π</m:mi>
+              <m:mo>/</m:mo>
+              <m:mn>2</m:mn>
+              <m:mi>N</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2261163">for <m:math><m:mrow><m:mi>k</m:mi><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mo>±</m:mo><m:mn>2</m:mn><m:mo>,</m:mo><m:mo>±</m:mo><m:mn>4</m:mn><m:mo>,</m:mo><m:mo>.</m:mo><m:mo>.</m:mo><m:mo>.</m:mo><m:mo>,</m:mo><m:mo>±</m:mo><m:mo>(</m:mo><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:math> : N odd</para>
+      <para id="id2261220"><m:math><m:mrow><m:mi>k</m:mi><m:mo>=</m:mo><m:mo>±</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mo>±</m:mo><m:mn>3</m:mn><m:mo>,</m:mo><m:mo>±</m:mo><m:mn>5</m:mn><m:mo>,</m:mo><m:mo>.</m:mo><m:mo>.</m:mo><m:mo>.</m:mo><m:mo>,</m:mo><m:mo>±</m:mo><m:mo>(</m:mo><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:math> : N even</para>
+      <para id="id2261279">The zeros of the inverse-Chebyshev filter transfer function are
+derived from <link target-id="uid54"/> and <link target-id="uid56"/> to give</para>
+      <equation id="uid58">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi>ω</m:mi>
+              <m:mrow>
+                <m:mi>z</m:mi>
+                <m:mi>k</m:mi>
+              </m:mrow>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:mn>1</m:mn>
+            <m:mo>/</m:mo>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mo form="prefix">cos</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mi>k</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mi>π</m:mi>
+                <m:mo>/</m:mo>
+                <m:mn>2</m:mn>
+                <m:mi>N</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>)</m:mo>
+            </m:mrow>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2261362">The zero locations are not a function of <m:math><m:mi>ϵ</m:mi></m:math>, i.e., they are
+independent of the stopband ripple.</para>
+</section>
+<section id="fs-id1890558">
+      <title>Pole Locations</title>
+      <para id="id2261388">The pole locations are the reciprocal of those for the
+regular Chebyshev filter. If the poles
+for the inverse filter are denoted by</para>
+      <equation id="uid59">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msubsup>
+              <m:mi>s</m:mi>
+              <m:mi>k</m:mi>
+              <m:mo>'</m:mo>
+            </m:msubsup>
+            <m:mo>=</m:mo>
+            <m:msubsup>
+              <m:mi>σ</m:mi>
+              <m:mi>k</m:mi>
+              <m:mo>'</m:mo>
+            </m:msubsup>
+            <m:mo>+</m:mo>
+            <m:mi>j</m:mi>
+            <m:msubsup>
+              <m:mi>ω</m:mi>
+              <m:mi>k</m:mi>
+              <m:mo>'</m:mo>
+            </m:msubsup>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2261448">the locations are</para>
+      <equation id="id2261453">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msubsup>
+              <m:mi>σ</m:mi>
+              <m:mi>k</m:mi>
+              <m:mo>'</m:mo>
+            </m:msubsup>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:msub>
+                <m:mi>σ</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mrow>
+                <m:msubsup>
+                  <m:mi>σ</m:mi>
+                  <m:mi>k</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msubsup>
+                <m:mo>+</m:mo>
+                <m:msubsup>
+                  <m:mi>ω</m:mi>
+                  <m:mi>k</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msubsup>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <equation id="uid60">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msubsup>
+              <m:mi>ω</m:mi>
+              <m:mi>k</m:mi>
+              <m:mo>'</m:mo>
+            </m:msubsup>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:msub>
+                <m:mi>ω</m:mi>
+                <m:mi>k</m:mi>
+              </m:msub>
+              <m:mrow>
+                <m:msubsup>
+                  <m:mi>σ</m:mi>
+                  <m:mi>k</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msubsup>
+                <m:mo>+</m:mo>
+                <m:msubsup>
+                  <m:mi>ω</m:mi>
+                  <m:mi>k</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msubsup>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2261572">Although this gives a straightforward formula for
+calculating the location of the poles and zeros of the inverse-
+Chebyshev filter, they do not lie on a simple geometric curve as
+did those for the Butterworth and Chebyshev filters. Note that
+the conditions for a Taylor's series approximation with
+preset zero locations are satisfied.</para>
+      <para id="id2261581">A partially factored form for the
+Butterworth filter and for the Chebyshev filter can be written for
+the inverse-Chebyshev filter using the zero locations from <link target-id="uid58"/>
+and the pole locations from the regular Chebyshev filter. For N even,
+this becomes</para>
+      <equation id="uid61">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>F</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>s</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:msub>
+                  <m:mo>∏</m:mo>
+                  <m:mi>k</m:mi>
+                </m:msub>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:msup>
+                    <m:mi>s</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>+</m:mo>
+                  <m:msubsup>
+                    <m:mi>ω</m:mi>
+                    <m:mrow>
+                      <m:mi>z</m:mi>
+                      <m:mi>k</m:mi>
+                    </m:mrow>
+                    <m:mn>2</m:mn>
+                  </m:msubsup>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mrow>
+              <m:mrow>
+                <m:msub>
+                  <m:mo>∏</m:mo>
+                  <m:mi>k</m:mi>
+                </m:msub>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                </m:mrow>
+                <m:msup>
+                  <m:mi>s</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mo>-</m:mo>
+                <m:mn>2</m:mn>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:msub>
+                    <m:mi>σ</m:mi>
+                    <m:mi>k</m:mi>
+                  </m:msub>
+                  <m:mo>/</m:mo>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:msubsup>
+                      <m:mi>σ</m:mi>
+                      <m:mi>k</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msubsup>
+                    <m:mo>+</m:mo>
+                    <m:msubsup>
+                      <m:mi>ω</m:mi>
+                      <m:mi>k</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msubsup>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mi>s</m:mi>
+                <m:mo>+</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>/</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:msubsup>
+                    <m:mi>σ</m:mi>
+                    <m:mi>k</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msubsup>
+                  <m:mo>+</m:mo>
+                  <m:msubsup>
+                    <m:mi>ω</m:mi>
+                    <m:mi>k</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msubsup>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2261763">for <m:math><m:mrow><m:mi>k</m:mi><m:mo>=</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>3</m:mn><m:mo>,</m:mo><m:mn>5</m:mn><m:mo>,</m:mo><m:mo>⋯</m:mo><m:mo>,</m:mo><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math>. For N odd, F(s) has
+a single pole, and therefore, is of the form</para>
+      <equation id="uid62">
+        <m:math mode="display">
+          <m:mrow>
+            <m:mi>F</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mi>s</m:mi>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:msub>
+                  <m:mo>∏</m:mo>
+                  <m:mi>k</m:mi>
+                </m:msub>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:msup>
+                    <m:mi>s</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>+</m:mo>
+                  <m:msubsup>
+                    <m:mi>ω</m:mi>
+                    <m:mrow>
+                      <m:mi>z</m:mi>
+                      <m:mi>k</m:mi>
+                    </m:mrow>
+                    <m:mn>2</m:mn>
+                  </m:msubsup>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mrow>
+              <m:mrow>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>s</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>/</m:mo>
+                  <m:mo form="prefix">sinh</m:mo>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:msub>
+                      <m:mi>ν</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:msub>
+                  <m:mo>∏</m:mo>
+                  <m:mi>k</m:mi>
+                </m:msub>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                </m:mrow>
+                <m:msup>
+                  <m:mi>s</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mo>-</m:mo>
+                <m:mn>2</m:mn>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:msub>
+                    <m:mi>σ</m:mi>
+                    <m:mi>k</m:mi>
+                  </m:msub>
+                  <m:mo>/</m:mo>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:msubsup>
+                      <m:mi>σ</m:mi>
+                      <m:mi>k</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msubsup>
+                    <m:mo>+</m:mo>
+                    <m:msubsup>
+                      <m:mi>ω</m:mi>
+                      <m:mi>k</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msubsup>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mi>s</m:mi>
+                <m:mo>+</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>/</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:msubsup>
+                    <m:mi>σ</m:mi>
+                    <m:mi>k</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msubsup>
+                  <m:mo>+</m:mo>
+                  <m:msubsup>
+                    <m:mi>ω</m:mi>
+                    <m:mi>k</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msubsup>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2262008">for <m:math><m:mrow><m:mi>k</m:mi><m:mo>=</m:mo><m:mn>2</m:mn><m:mo>,</m:mo><m:mn>4</m:mn><m:mo>,</m:mo><m:mn>6</m:mn><m:mo>,</m:mo><m:mo>⋯</m:mo><m:mo>,</m:mo><m:mi>N</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow></m:math></para>
+      <para id="id2262048">Because of the relationships between the locations of the
+poles of the Butterworth, Chebyshev, and inverse-Chebyshev
+filters, it is easy to write a design program with many common
+calculations. That is illustrated in the program in the appendix.</para>
+</section>      
+<section id="uid63">
+        <title>Inverse-Chebyshev Filter Design Procedures</title>
+        <para id="id2262062">The natural form for the specifications of an inverse-Chebyshev
+filter is in terms of the flatness of the response at
+<m:math><m:mi>ω</m:mi></m:math> to determine the passband, and a maximum allowable response
+in the stopband. The filter order and the stopband ripple are the
+parameters to be determined by the specifications. The rate of
+dropoff near the transition from pass to stopband is similar to
+the regular Chebyshev filter. Because practical specifications
+often allow more passband ripple than stopband ripple, the
+regular Chebyshev filter will usually have a sharper dropoff
+than the inverse-Chebyshev filter. Under those conditions, the
+inverse-Chebyshev filter will have a smoother phase response and
+less time-domain echo effects.</para>
+        <para id="id2262087">The stopband ripple d is simply defined as the maximum value
+that <m:math><m:mrow><m:mo>|</m:mo><m:mi>F</m:mi><m:mo>(</m:mo><m:mi>j</m:mi><m:mi>ω</m:mi><m:mo>)</m:mo><m:mo>|</m:mo></m:mrow></m:math> assumes in the stopband, which is the set of
+frequencies <m:math><m:mrow><m:mn>1</m:mn><m:mo>&lt;</m:mo><m:mi>ω</m:mi><m:mo>&lt;</m:mo><m:mi>∞</m:mi></m:mrow></m:math>. An alternative specification is the
+minimum-allowed attenuation over stopband expressed in dB as b.
+The following formulas relate the stopband ripple <m:math><m:mi>δ</m:mi></m:math>, the stopband
+attenuation b in positive dB, and the transfer function
+parameter <m:math><m:mi>ϵ</m:mi></m:math> in <link target-id="uid54"/></para>
+        <equation id="uid64">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>ϵ</m:mi>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mi>δ</m:mi>
+                <m:msqrt>
+                  <m:mrow>
+                    <m:mn>1</m:mn>
+                    <m:mo>-</m:mo>
+                    <m:msup>
+                      <m:mi>δ</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                  </m:mrow>
+                </m:msqrt>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid65">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>δ</m:mi>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mi>ϵ</m:mi>
+                <m:msqrt>
+                  <m:mrow>
+                    <m:mn>1</m:mn>
+                    <m:mo>+</m:mo>
+                    <m:msup>
+                      <m:mi>ϵ</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                  </m:mrow>
+                </m:msqrt>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid66">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>b</m:mi>
+              <m:mo>=</m:mo>
+              <m:mo>-</m:mo>
+              <m:mn>10</m:mn>
+              <m:mo form="prefix">log</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msup>
+                  <m:mi>ϵ</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mo>/</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:msup>
+                    <m:mi>ϵ</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mo>-</m:mo>
+              <m:mn>20</m:mn>
+              <m:mo form="prefix">log</m:mo>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>d</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2262309">In some cases passband performance is not given in terms of
+degree of flatness at <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math>, but in terms of a minimum-allowed
+magnitude <m:math><m:mi>G</m:mi></m:math> in the passband up to a certain frequency <m:math><m:msub><m:mi>ω</m:mi><m:mi>p</m:mi></m:msub></m:math>, i.e.,
+<m:math><m:mrow><m:mn>1</m:mn><m:mo>&gt;</m:mo><m:mo>|</m:mo><m:mi>F</m:mi><m:mo>|</m:mo><m:mo>&gt;</m:mo><m:mi>G</m:mi></m:mrow></m:math> for <m:math><m:mrow><m:mn>0</m:mn><m:mo>&lt;</m:mo><m:mi>ω</m:mi><m:mo>&lt;</m:mo><m:msub><m:mi>ω</m:mi><m:mi>p</m:mi></m:msub><m:mo>&lt;</m:mo><m:mn>1</m:mn></m:mrow></m:math>. For a given <m:math><m:mi>ϵ</m:mi></m:math>, this requirement
+will determine the order as the smallest positive integer
+satisfying</para>
+        <equation id="uid67">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>N</m:mi>
+              <m:mo>&gt;</m:mo>
+              <m:mfrac>
+                <m:mrow>
+                  <m:msup>
+                    <m:mo form="prefix">cosh</m:mo>
+                    <m:mrow>
+                      <m:mo>-</m:mo>
+                      <m:mn>1</m:mn>
+                    </m:mrow>
+                  </m:msup>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>G</m:mi>
+                    <m:mo>/</m:mo>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>ϵ</m:mi>
+                      <m:msqrt>
+                        <m:mrow>
+                          <m:mn>1</m:mn>
+                          <m:mo>-</m:mo>
+                          <m:msup>
+                            <m:mi>G</m:mi>
+                            <m:mn>2</m:mn>
+                          </m:msup>
+                        </m:mrow>
+                      </m:msqrt>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mrow>
+                <m:mrow>
+                  <m:msup>
+                    <m:mo form="prefix">cosh</m:mo>
+                    <m:mrow>
+                      <m:mo>-</m:mo>
+                      <m:mn>1</m:mn>
+                    </m:mrow>
+                  </m:msup>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mn>1</m:mn>
+                    <m:mo>/</m:mo>
+                    <m:msub>
+                      <m:mi>ω</m:mi>
+                      <m:mi>p</m:mi>
+                    </m:msub>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mrow>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2262514">The design of an inverse-Chebyshev filter is summarized in
+the following steps:</para>
+        <list id="id2262518" list-type="enumerated">
+          <item id="uid68">The maximum-allowed stopband response must be given
+in the form of <m:math><m:mi>δ</m:mi></m:math> or b. From this, the parameter <m:math><m:mi>ϵ</m:mi></m:math> is
+calculated using <link target-id="uid64"/>.
+</item>
+          <item id="uid69">The order N is determined from the desired flatness
+at <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math>, or from a minimum allowed response for
+frequencies up to <m:math><m:msub><m:mi>ω</m:mi><m:mi>p</m:mi></m:msub></m:math> using <link target-id="uid67"/>.
+</item>
+          <item id="uid70"><m:math><m:msub><m:mi>ν</m:mi><m:mn>0</m:mn></m:msub></m:math> and <m:math><m:mrow><m:mo form="prefix">sinh</m:mo><m:mo>(</m:mo><m:msub><m:mi>ν</m:mi><m:mn>0</m:mn></m:msub><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mo form="prefix">cosh</m:mo><m:mo>(</m:mo><m:msub><m:mi>ν</m:mi><m:mn>0</m:mn></m:msub><m:mo>)</m:mo></m:mrow></m:math> are calculated
+just as for the regular Chebyshev
+filter.
+</item>
+          <item id="uid71">The pole locations for the prototype Chebyshev
+filter are calculated from <link target-id="uid59"/> and <link target-id="uid60"/> and then
+"inverted" according to <link target-id="uid54"/> to give the inverse-
+Chebyshev filter pole locations.
+</item>
+          <item id="uid72">The pole locations are combined in <link target-id="uid54"/> to give the
+final filter transfer function denominator.
+</item>
+          <item id="uid73">The zero locations are calculated from <link target-id="uid58"/> and
+combined with the pole locations to give the total
+transfer function <link target-id="uid61"/> or <link target-id="uid62"/>.
+</item>
+        </list>
+<example id="fs-id9157123">
+        <title>Example Design of an Inverse-Chebyshev Filter
+</title>
+        <para id="id2262754">A third-order inverse-Chebyshev lowpass filter is desired
+with a maximum-allowed stopband ripple of <m:math><m:mrow><m:mi>d</m:mi><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>.</m:mo><m:mn>1</m:mn></m:mrow></m:math> or <m:math><m:mrow><m:mi>b</m:mi><m:mo>=</m:mo><m:mn>20</m:mn></m:mrow></m:math> dB.
+This corresponds to an <m:math><m:mi>ϵ</m:mi></m:math> of 0.100504 and, together with <m:math><m:mrow><m:mi>N</m:mi><m:mo>=</m:mo><m:mn>3</m:mn></m:mrow></m:math>,
+results in a <m:math><m:mrow><m:msub><m:mi>ν</m:mi><m:mn>0</m:mn></m:msub><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>.</m:mo><m:mn>99774</m:mn></m:mrow></m:math>. The scale factors are <m:math><m:mrow><m:mo form="prefix">sinh</m:mo><m:mo>=</m:mo><m:mn>1</m:mn><m:mo>.</m:mo><m:mn>171717</m:mn></m:mrow></m:math>
+and <m:math><m:mrow><m:mo form="prefix">cosh</m:mo><m:mo>=</m:mo><m:mn>1</m:mn><m:mo>.</m:mo><m:mn>540429</m:mn></m:mrow></m:math>. The prototype Chebyshev filter transfer
+function is</para>
+        <equation id="uid74">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>s</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mn>1</m:mn>
+                <m:mrow>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>s</m:mi>
+                    <m:mo>+</m:mo>
+                    <m:mn>1</m:mn>
+                    <m:mo>.</m:mo>
+                    <m:mn>1717</m:mn>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:msup>
+                      <m:mi>s</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                    <m:mo>+</m:mo>
+                    <m:mn>1</m:mn>
+                    <m:mo>.</m:mo>
+                    <m:mn>1717</m:mn>
+                    <m:mi>s</m:mi>
+                    <m:mo>+</m:mo>
+                    <m:mn>2</m:mn>
+                    <m:mo>.</m:mo>
+                    <m:mn>0404</m:mn>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mrow>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2262966">The zeros are calculated from <link target-id="uid58"/>, and the poles of the prototype
+are inverted to give, from <link target-id="uid62"/>, the desired inverse- Chebyshev
+filter transfer function of</para>
+        <equation id="uid75">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>F</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>s</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:mrow>
+                  <m:msup>
+                    <m:mi>s</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>+</m:mo>
+                  <m:mn>4</m:mn>
+                  <m:mo>/</m:mo>
+                  <m:mn>3</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>s</m:mi>
+                    <m:mo>+</m:mo>
+                    <m:mn>0</m:mn>
+                    <m:mo>.</m:mo>
+                    <m:mn>85345</m:mn>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:msup>
+                      <m:mi>s</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                    <m:mo>+</m:mo>
+                    <m:mn>0</m:mn>
+                    <m:mo>.</m:mo>
+                    <m:mn>57425</m:mn>
+                    <m:mi>s</m:mi>
+                    <m:mo>+</m:mo>
+                    <m:mn>0</m:mn>
+                    <m:mo>.</m:mo>
+                    <m:mn>490095</m:mn>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mrow>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+       </example> 
+      </section>
+    </section>
+  </content>
+  <bib:file>
+    <bib:entry id="bid3">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Gold, B. and Rader, C. M.</bib:author>
+        <bib:title>Digital Processing of Signals</bib:title>
+        <bib:publisher>McGraw-Hill</bib:publisher>
+        <bib:year>1969</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid5">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Mitra, Sanjit K.</bib:author>
+        <bib:title>Digital Signal Processing, A Computer-Based Approach</bib:title>
+        <bib:publisher>McGraw-Hill</bib:publisher>
+        <bib:year>2006</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition>Third</bib:edition>
+        <bib:month/>
+        <bib:note>First edition in 1998, second in 2001</bib:note>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid4">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Oppenheim, A. V. and Schafer, R. W.</bib:author>
+        <bib:title>Discrete-Time Signal Processing</bib:title>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1999</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Englewood Cliffs, NJ</bib:address>
+        <bib:edition>Second</bib:edition>
+        <bib:month/>
+        <bib:note>Earlier editions in 1975 and 1989</bib:note>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid0">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Parks, T. W. and Burrus, C. S.</bib:author>
+        <bib:title>Digital Filter Design</bib:title>
+        <bib:publisher>John Wiley &amp; Sons</bib:publisher>
+        <bib:year>1987</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid2">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Rabiner, L. R. and Gold, B.</bib:author>
+        <bib:title>Theory and Application of Digital Signal Processing</bib:title>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1975</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>Englewood Cliffs, NJ</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid6">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Taylor, F. J.</bib:author>
+        <bib:title>Digital Filter Design Handbook</bib:title>
+        <bib:publisher>Marcel Dekker, Inc.</bib:publisher>
+        <bib:year>1983</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid1">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Valkenburg, M.E. Van</bib:author>
+        <bib:title>Analog Filter Design</bib:title>
+        <bib:publisher>Holt, Rinehart, and Winston</bib:publisher>
+        <bib:year>1982</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address>New York</bib:address>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+  </bib:file>
+</document>
